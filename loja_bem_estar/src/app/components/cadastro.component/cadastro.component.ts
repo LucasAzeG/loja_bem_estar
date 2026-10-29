@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { CadastroService } from '../../services/cadastro.service';
 import { Cliente } from '../../models/cadastro';
 
@@ -12,14 +12,17 @@ import { Cliente } from '../../models/cadastro';
   templateUrl: './cadastro.component.html',
   styleUrl: './cadastro.component.css'
 })
-export class CadastroComponent {
+export class CadastroComponent implements OnInit {
   cadastroForm: FormGroup;
+  clienteId: number | null = null;
+  isEdicao = false;
 
-  constructor(
-    private fb: FormBuilder,
-    private cadastroService: CadastroService,
-    private router: Router
-  ) {
+  private fb = inject(FormBuilder);
+  private cadastroService = inject(CadastroService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+
+  constructor() {
     this.cadastroForm = this.fb.group({
       nome: ['', [Validators.required, Validators.maxLength(100)]],
       cpf: ['', [
@@ -41,10 +44,30 @@ export class CadastroComponent {
     });
   }
 
+  ngOnInit(): void {
+    const idParam = this.route.snapshot.paramMap.get('id');
+    if (idParam) {
+      this.clienteId = Number(idParam);
+      const cliente = this.cadastroService.obterPorId(this.clienteId);
+      if (cliente) {
+        this.isEdicao = true;
+        this.cadastroForm.patchValue(cliente);
+      }
+    }
+  }
+
   onSubmit(): void {
     if (this.cadastroForm.valid) {
-      const dadosCliente: Cliente = this.cadastroForm.value;
-      this.cadastroService.adicionarCliente(dadosCliente);
+      if (this.isEdicao && this.clienteId) {
+        const clienteAtualizado: Cliente = {
+          ...this.cadastroForm.value,
+          idpessoa: this.clienteId
+        };
+        this.cadastroService.atualizarCliente(clienteAtualizado);
+      } else {
+        const dadosCliente: Cliente = this.cadastroForm.value;
+        this.cadastroService.adicionarCliente(dadosCliente);
+      }
       this.router.navigate(['/clientes']);
     }
   }

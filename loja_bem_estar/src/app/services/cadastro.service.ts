@@ -20,11 +20,21 @@ export class CadastroService {
 
   readonly clientes = this.clientesSignal.asReadonly();
 
+  obterPorId(id: number): Cliente | undefined {
+    return this.clientesSignal().find(c => c.idpessoa === id);
+  }
+
   adicionarCliente(novoCliente: Omit<Cliente, 'idpessoa'>): void {
     const clienteComId: Cliente = {
       ...novoCliente,
       idpessoa: this.clientesSignal().length + 1
     };
     this.clientesSignal.update(lista => [...lista, clienteComId]);
+  }
+
+  atualizarCliente(clienteAtualizado: Cliente): void {
+    this.clientesSignal.update(lista =>
+      lista.map(c => c.idpessoa === clienteAtualizado.idpessoa ? clienteAtualizado : c)
+    );
   }
 }

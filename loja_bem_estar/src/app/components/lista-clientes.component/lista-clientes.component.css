@@ -136,3 +136,19 @@
   color: #78716c;
   padding: 2rem;
 }
+
+.btn-editar {
+  background-color: #ffffff;
+  color: #ea580c;
+  border: 1px solid #ea580c;
+  border-radius: 0;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.btn-editar:hover {
+  background-color: #fff7ed;
+}

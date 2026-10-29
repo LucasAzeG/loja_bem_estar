@@ -6,5 +6,6 @@ import { ListaClientesComponent } from './components/lista-clientes.component/li
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'cadastro', component: CadastroComponent },
+  { path: 'cadastro/:id', component: CadastroComponent },
   { path: 'clientes', component: ListaClientesComponent }
 ];
