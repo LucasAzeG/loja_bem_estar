@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: #fffaf5;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  color: #2c1810;
+  padding: 2rem;
+}
+
+.cadastro-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Header plano e quadrado */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  background-color: #ffffff;
+  border: 1px solid #fed7aa;
+  border-radius: 0;
+  box-shadow: none;
+  margin-bottom: 1.5rem;
+}
+
+.header-container h1 {
+  color: #ea580c;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.btn-voltar {
+  background-color: #ffffff;
+  color: #ea580c;
+  border: 1px solid #ea580c;
+  border-radius: 0;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.btn-voltar:hover {
+  background-color: #fff7ed;
+}
+
+/* Formulário plano */
+.form-cadastro {
+  background-color: #ffffff;
+  border: 1px solid #fed7aa;
+  border-radius: 0;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  box-shadow: none;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #9a3412;
+}
+
+.form-group input,
+.form-group select {
+  padding: 0.75rem;
+  border: 1px solid #fed7aa;
+  border-radius: 0;
+  font-size: 0.95rem;
+  background-color: #ffffff;
+  color: #2c1810;
+  outline: none;
+  box-shadow: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #ea580c;
+}
+
+/* Botão plano de salvar */
+.btn-salvar {
+  background-color: #ea580c;
+  color: #ffffff;
+  border: none;
+  border-radius: 0;
+  padding: 0.85rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  box-shadow: none;
+  transition: background-color 0.2s ease;
+}
+
+.btn-salvar:hover:not(:disabled) {
+  background-color: #c2410c;
+}
+
+.btn-salvar:disabled {
+  background-color: #fdba74;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .form-row {
+    flex-direction: column;
+  }
+}
