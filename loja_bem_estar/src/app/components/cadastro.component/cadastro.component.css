@@ -14,7 +14,6 @@
   margin: 0 auto;
 }
 
-/* Header plano e quadrado */
 .header-container {
   display: flex;
   justify-content: space-between;
@@ -50,7 +49,6 @@
   background-color: #fff7ed;
 }
 
-/* Formulário plano */
 .form-cadastro {
   background-color: #ffffff;
   border: 1px solid #fed7aa;
@@ -100,7 +98,6 @@
   border-color: #ea580c;
 }
 
-/* Botão plano de salvar */
 .btn-salvar {
   background-color: #ea580c;
   color: #ffffff;
@@ -129,3 +126,24 @@
     flex-direction: column;
   }
 }
+
+.acoes-header {
+    display: flex;
+    gap: 0.75rem;
+  }
+  
+  .btn-lista {
+    background-color: #ea580c;
+    color: #ffffff;
+    border: none;
+    border-radius: 0;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: none;
+  }
+  
+  .btn-lista:hover {
+    background-color: #c2410c;
+  }

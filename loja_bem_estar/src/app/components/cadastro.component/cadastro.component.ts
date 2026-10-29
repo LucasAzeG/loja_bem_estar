@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { CadastroService } from '../../services/cadastro.service';
+import { Cliente } from '../../models/cadastro';
 
 @Component({
   selector: 'app-cadastro',
@@ -13,7 +15,11 @@ import { RouterLink } from '@angular/router';
 export class CadastroComponent {
   cadastroForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private cadastroService: CadastroService,
+    private router: Router
+  ) {
     this.cadastroForm = this.fb.group({
       nome: ['', [Validators.required, Validators.maxLength(100)]],
       cpf: ['', [
@@ -37,7 +43,9 @@ export class CadastroComponent {
 
   onSubmit(): void {
     if (this.cadastroForm.valid) {
-      console.log('Cliente a cadastrar:', this.cadastroForm.value);
+      const dadosCliente: Cliente = this.cadastroForm.value;
+      this.cadastroService.adicionarCliente(dadosCliente);
+      this.router.navigate(['/clientes']);
     }
   }
 }

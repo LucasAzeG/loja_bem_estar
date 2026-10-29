@@ -1,7 +1,10 @@
 <div class="cadastro-container">
     <header class="header-container">
       <h1>Cadastro de Clientes</h1>
-      <button routerLink="/" class="btn-voltar">Voltar para Home</button>
+      <div class="acoes-header">
+        <button routerLink="/clientes" class="btn-lista">Ver Clientes</button>
+        <button routerLink="/" class="btn-voltar">Voltar para Home</button>
+      </div>
     </header>
   
     <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()" class="form-cadastro">
