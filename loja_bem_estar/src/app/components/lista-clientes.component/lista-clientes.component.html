@@ -1,0 +1,51 @@
+<div class="lista-container">
+    <header class="header-container">
+      <div>
+        <h1>Clientes Cadastrados</h1>
+        <p>Gerenciamento e consulta de pessoas</p>
+      </div>
+      <div class="acoes-header">
+        <button routerLink="/cadastro" class="btn-novo">+ Novo Cliente</button>
+        <button routerLink="/" class="btn-voltar">Home</button>
+      </div>
+    </header>
+  
+    <div class="tabela-wrapper">
+      <table class="tabela-clientes">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Data Nasc.</th>
+            <th>Sexo</th>
+            <th>E-mail</th>
+            <th>Telefone</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (cliente of cadastroService.clientes(); track cliente.idpessoa) {
+            <tr>
+              <td>#{{ cliente.idpessoa }}</td>
+              <td class="col-nome">{{ cliente.nome }}</td>
+              <td>{{ cliente.cpf }}</td>
+              <td>{{ cliente.data_nascimento | date:'dd/MM/yyyy' }}</td>
+              <td>{{ cliente.sexo }}</td>
+              <td>{{ cliente.email }}</td>
+              <td>{{ cliente.telefone }}</td>
+              <td>
+                <span [class]="cliente.ativo_pessoa === 'S' ? 'status-ativo' : 'status-inativo'">
+                  {{ cliente.ativo_pessoa === 'S' ? 'Ativo' : 'Inativo' }}
+                </span>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="8" class="sem-dados">Nenhum cliente cadastrado até ao momento.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>

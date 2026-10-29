@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: #fffaf5;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  color: #2c1810;
+  padding: 2rem;
+}
+
+.lista-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  background-color: #ffffff;
+  border: 1px solid #fed7aa;
+  border-radius: 0;
+  box-shadow: none;
+  margin-bottom: 1.5rem;
+}
+
+.header-container h1 {
+  color: #ea580c;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem 0;
+}
+
+.header-container p {
+  color: #9a3412;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.acoes-header {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btn-novo {
+  background-color: #ea580c;
+  color: #ffffff;
+  border: none;
+  border-radius: 0;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.btn-novo:hover {
+  background-color: #c2410c;
+}
+
+.btn-voltar {
+  background-color: #ffffff;
+  color: #ea580c;
+  border: 1px solid #ea580c;
+  border-radius: 0;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.btn-voltar:hover {
+  background-color: #fff7ed;
+}
+
+.tabela-wrapper {
+  background-color: #ffffff;
+  border: 1px solid #fed7aa;
+  border-radius: 0;
+  box-shadow: none;
+  overflow-x: auto;
+}
+
+.tabela-clientes {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.tabela-clientes th {
+  background-color: #fff7ed;
+  color: #9a3412;
+  font-weight: 700;
+  padding: 1rem;
+  border-bottom: 1px solid #fed7aa;
+}
+
+.tabela-clientes td {
+  padding: 1rem;
+  border-bottom: 1px solid #fed7aa;
+  color: #2c1810;
+}
+
+.col-nome {
+  font-weight: 600;
+}
+
+.tabela-clientes tbody tr:hover {
+  background-color: #fffaf5;
+}
+
+.status-ativo {
+  background-color: #dcfce7;
+  color: #166534;
+  padding: 0.25rem 0.6rem;
+  font-weight: 600;
+  font-size: 0.8rem;
+  border-radius: 0;
+}
+
+.status-inativo {
+  background-color: #fee2e2;
+  color: #991b1b;
+  padding: 0.25rem 0.6rem;
+  font-weight: 600;
+  font-size: 0.8rem;
+  border-radius: 0;
+}
+
+.sem-dados {
+  text-align: center;
+  color: #78716c;
+  padding: 2rem;
+}
