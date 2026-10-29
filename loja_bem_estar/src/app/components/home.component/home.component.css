@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: #fffaf5;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  color: #2c1810;
+  padding: 2rem;
+}
+
+/* Header plano, sem bordas arredondadas e sem sombra */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  background-color: #ffffff;
+  border: 1px solid #fed7aa;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Título em Laranja */
+.titulo-container h1, h1 {
+  color: #ea580c;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem 0;
+}
+
+/* Subtítulo */
+.titulo-container p, p {
+  color: #9a3412;
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Marcador quadrado e sem brilho */
+.titulo-container p::before, p::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: #ea580c;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Botão plano, sólido e totalmente quadrado */
+.btn-cadastro, button {
+  background-color: #ea580c;
+  color: #ffffff;
+  border: none;
+  border-radius: 0;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: none;
+  transition: background-color 0.2s ease;
+}
+
+/* Mudança simples de cor ao passar o mouse */
+.btn-cadastro:hover, button:hover {
+  background-color: #c2410c;
+  transform: none;
+  box-shadow: none;
+}
