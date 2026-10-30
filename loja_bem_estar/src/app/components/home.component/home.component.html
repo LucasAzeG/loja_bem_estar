@@ -10,4 +10,57 @@
       <button routerLink="/cadastro" class="btn-novo">Ir para Cadastro</button>
     </div>
   </header>
+
+  <div class="conteudo-principal">
+    <!-- Painel Lateral de Filtros à Esquerda -->
+    <aside class="painel-categorias">
+      <div class="painel-header">
+        <h3>Categorias</h3>
+        <span class="subtitulo">Filtre o catálogo</span>
+      </div>
+
+      <ul class="lista-categorias">
+        <li 
+          class="item-categoria" 
+          [class.selecionado]="categoriaSelecionada() === null"
+          (click)="selecionarCategoria(undefined)">
+          <input 
+            type="checkbox" 
+            [checked]="categoriaSelecionada() === null" 
+            readonly 
+          />
+          <span>Todas as Categorias</span>
+        </li>
+
+        @for (cat of categoriaService.categorias(); track cat.idcategoria) {
+          <li 
+            class="item-categoria" 
+            [class.selecionado]="categoriaSelecionada() === cat.idcategoria"
+            (click)="selecionarCategoria(cat.idcategoria)">
+            <input 
+              type="checkbox" 
+              [checked]="categoriaSelecionada() === cat.idcategoria" 
+              readonly 
+            />
+            <span>{{ cat.categoria }}</span>
+          </li>
+        } @empty {
+          <li class="sem-categorias">Nenhuma categoria encontrada.</li>
+        }
+      </ul>
+    </aside>
+
+    <!-- Área Principal para o Catálogo de Serviços -->
+    <section class="area-catalogo">
+      <div class="catalogo-header">
+        <h2>Catálogo de Serviços</h2>
+        <p>Selecione uma categoria ao lado para filtrar</p>
+      </div>
+
+      <div class="card-empty-state">
+        <p>Nenhum serviço cadastrado no momento.</p>
+        <small>Quando o módulo de serviços estiver pronto, os itens filtrados aparecerão aqui.</small>
+      </div>
+    </section>
+  </div>
 </div>
