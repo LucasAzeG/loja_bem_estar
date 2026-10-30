@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: #fffaf5;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  color: #2c1810;
+  padding: 2rem;
+}
+
+.cadastro-container {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  background-color: #ffffff;
+  border: 1px solid #fed7aa;
+  margin-bottom: 1.5rem;
+}
+
+.header-container h1 {
+  color: #ea580c;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.header-container p {
+  color: #7c2d12;
+  font-size: 0.9rem;
+  margin: 0.25rem 0 0 0;
+}
+
+.btn-voltar {
+  background-color: #ffffff;
+  color: #ea580c;
+  border: 1px solid #ea580c;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-voltar:hover {
+  background-color: #fff7ed;
+}
+
+.form-cadastro {
+  background-color: #ffffff;
+  border: 1px solid #fed7aa;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #9a3412;
+}
+
+.form-group input {
+  padding: 0.75rem;
+  border: 1px solid #fed7aa;
+  font-size: 0.95rem;
+  background-color: #ffffff;
+  color: #2c1810;
+  outline: none;
+}
+
+.form-group input:focus {
+  border-color: #ea580c;
+}
+
+.botoes-form {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.btn-salvar {
+  flex: 1;
+  background-color: #ea580c;
+  color: #ffffff;
+  border: none;
+  padding: 0.85rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-salvar:hover:not(:disabled) {
+  background-color: #c2410c;
+}
+
+.btn-salvar:disabled {
+  background-color: #fdba74;
+  cursor: not-allowed;
+}
+
+.btn-cancelar {
+  flex: 1;
+  background-color: #ffffff;
+  color: #9a3412;
+  border: 1px solid #fed7aa;
+  padding: 0.85rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.2s ease;
+}
+
+.btn-cancelar:hover {
+  background-color: #fff7ed;
+}

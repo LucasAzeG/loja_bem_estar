@@ -1,0 +1,144 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: #fffaf5;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  color: #2c1810;
+  padding: 2rem;
+}
+
+.lista-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  background-color: #ffffff;
+  border: 1px solid #fed7aa;
+  margin-bottom: 1.5rem;
+}
+
+.header-container h1 {
+  color: #ea580c;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.header-container p {
+  color: #7c2d12;
+  font-size: 0.9rem;
+  margin: 0.25rem 0 0 0;
+}
+
+.acoes-header {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btn-novo {
+  background-color: #ea580c;
+  color: #ffffff;
+  border: none;
+  padding: 0.65rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-novo:hover {
+  background-color: #c2410c;
+}
+
+.btn-voltar {
+  background-color: #ffffff;
+  color: #ea580c;
+  border: 1px solid #ea580c;
+  padding: 0.65rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-voltar:hover {
+  background-color: #fff7ed;
+}
+
+.tabela-wrapper {
+  background-color: #ffffff;
+  border: 1px solid #fed7aa;
+  overflow-x: auto;
+}
+
+.tabela-categorias {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.tabela-categorias th {
+  background-color: #fff7ed;
+  color: #9a3412;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 1rem;
+  border-bottom: 1px solid #fed7aa;
+}
+
+.tabela-categorias td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid #fff7ed;
+  font-size: 0.9rem;
+  color: #2c1810;
+  vertical-align: middle;
+}
+
+.tabela-categorias tbody tr:hover {
+  background-color: #fffaf5;
+}
+
+.col-nome {
+  font-weight: 600;
+  color: #1c1917;
+}
+
+.col-id {
+  text-align: center;
+  width: 80px;
+}
+
+.col-acoes {
+  text-align: center;
+  width: 120px;
+}
+
+.btn-editar {
+  background-color: transparent;
+  color: #ea580c;
+  border: 1px solid #ea580c;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-editar:hover {
+  background-color: #ea580c;
+  color: #ffffff;
+}
+
+.sem-dados {
+  text-align: center;
+  padding: 2.5rem;
+  color: #7c2d12;
+}

@@ -9,7 +9,11 @@
   padding: 2rem;
 }
 
-/* Header plano, sem bordas arredondadas e sem sombra */
+.home-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
 .header-container {
   display: flex;
   justify-content: space-between;
@@ -21,53 +25,55 @@
   box-shadow: none;
 }
 
-/* Título em Laranja */
-.titulo-container h1, h1 {
+.header-container h1 {
   color: #ea580c;
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: 700;
-  margin: 0 0 0.25rem 0;
-}
-
-/* Subtítulo */
-.titulo-container p, p {
-  color: #9a3412;
-  font-size: 0.95rem;
-  font-weight: 500;
   margin: 0;
+}
+
+.header-container p {
+  color: #7c2d12;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin: 0.4rem 0 0 0;
+}
+
+.acoes-header {
   display: flex;
+  gap: 0.75rem;
   align-items: center;
-  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
-/* Marcador quadrado e sem brilho */
-.titulo-container p::before, p::before {
-  content: '';
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  background-color: #ea580c;
+.btn-lista {
+  background-color: #ffffff;
+  color: #ea580c;
+  border: 1px solid #ea580c;
   border-radius: 0;
-  box-shadow: none;
+  padding: 0.65rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
-/* Botão plano, sólido e totalmente quadrado */
-.btn-cadastro, button {
+.btn-lista:hover {
+  background-color: #fff7ed;
+}
+
+.btn-novo {
   background-color: #ea580c;
   color: #ffffff;
   border: none;
   border-radius: 0;
-  padding: 0.75rem 1.5rem;
-  font-size: 0.95rem;
+  padding: 0.65rem 1.25rem;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: none;
   transition: background-color 0.2s ease;
 }
 
-/* Mudança simples de cor ao passar o mouse */
-.btn-cadastro:hover, button:hover {
+.btn-novo:hover {
   background-color: #c2410c;
-  transform: none;
-  box-shadow: none;
 }

@@ -1,0 +1,33 @@
+<div class="cadastro-container">
+    <header class="header-container">
+      <div>
+        <h1>{{ isEdicao ? 'Editar Categoria' : 'Nova Categoria' }}</h1>
+        <p>Preencha os dados abaixo para {{ isEdicao ? 'atualizar' : 'cadastrar' }} a categoria</p>
+      </div>
+      <div class="acoes-header">
+        <button routerLink="/categorias" class="btn-voltar">Lista de Categorias</button>
+      </div>
+    </header>
+  
+    <form [formGroup]="categoriaForm" (ngSubmit)="onSubmit()" class="form-cadastro">
+      <div class="form-group">
+        <label for="categoria">Nome da Categoria</label>
+        <input 
+          id="categoria" 
+          type="text" 
+          formControlName="categoria" 
+          placeholder="Ex: Massagens, Tratamentos Faciais..." 
+          maxlength="35"
+        />
+      </div>
+  
+      <div class="botoes-form">
+        <button type="submit" [disabled]="categoriaForm.invalid" class="btn-salvar">
+          Salvar
+        </button>
+        <button type="button" routerLink="/categorias" class="btn-cancelar">
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
