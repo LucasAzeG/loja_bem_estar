@@ -31,13 +31,13 @@
             <td>#{{ cliente.idpessoa }}</td>
             <td class="col-nome">{{ cliente.nome }}</td>
             <td>{{ cliente.cpf }}</td>
-            <td>{{ cliente.data_nascimento | date:'dd/MM/yyyy' }}</td>
+            <td>{{ cliente.dataNascimento | date:'dd/MM/yyyy' }}</td>
             <td>{{ cliente.sexo }}</td>
             <td>{{ cliente.email }}</td>
             <td>{{ cliente.telefone }}</td>
             <td>
-              <span [class]="cliente.ativo_pessoa === 'S' ? 'status-ativo' : 'status-inativo'">
-                {{ cliente.ativo_pessoa === 'S' ? 'Ativo' : 'Inativo' }}
+              <span [class]="cliente.ativoPessoa === 'S' ? 'status-ativo' : 'status-inativo'">
+                {{ cliente.ativoPessoa === 'S' ? 'Ativo' : 'Inativo' }}
               </span>
             </td>
             <td>

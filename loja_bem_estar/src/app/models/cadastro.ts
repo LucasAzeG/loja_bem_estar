@@ -2,9 +2,9 @@ export interface Cliente {
   idpessoa?: number;
   nome: string;
   cpf: string;
-  data_nascimento: string;
-  sexo: 'M' | 'F' | 'O';
+  dataNascimento: string;
+  sexo: string;
   email: string;
   telefone: string;
-  ativo_pessoa: 'S' | 'N';
+  ativoPessoa: string;
 }

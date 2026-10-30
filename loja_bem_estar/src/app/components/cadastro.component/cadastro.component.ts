@@ -25,22 +25,12 @@ export class CadastroComponent implements OnInit {
   constructor() {
     this.cadastroForm = this.fb.group({
       nome: ['', [Validators.required, Validators.maxLength(100)]],
-      cpf: ['', [
-        Validators.required, 
-        Validators.minLength(11), 
-        Validators.maxLength(11), 
-        Validators.pattern('^[0-9]*$')
-      ]],
-      data_nascimento: ['', [Validators.required]],
+      cpf: ['', [Validators.required, Validators.minLength(11), Validators.maxLength(11), Validators.pattern('^[0-9]*$')]],
+      dataNascimento: ['', [Validators.required]],
       sexo: ['M', [Validators.required]],
       email: ['', [Validators.required, Validators.email, Validators.maxLength(100)]],
-      telefone: ['', [
-        Validators.required, 
-        Validators.minLength(10), 
-        Validators.maxLength(11), 
-        Validators.pattern('^[0-9]*$')
-      ]],
-      ativo_pessoa: ['S', [Validators.required]]
+      telefone: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(11), Validators.pattern('^[0-9]*$')]],
+      ativoPessoa: ['S', [Validators.required]]
     });
   }
 
@@ -48,27 +38,32 @@ export class CadastroComponent implements OnInit {
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam) {
       this.clienteId = Number(idParam);
-      const cliente = this.cadastroService.obterPorId(this.clienteId);
-      if (cliente) {
-        this.isEdicao = true;
-        this.cadastroForm.patchValue(cliente);
-      }
+      this.isEdicao = true;
+      this.cadastroService.obterPorId(this.clienteId).subscribe({
+        next: (cliente) => this.cadastroForm.patchValue(cliente),
+        error: (err) => console.error('Erro ao buscar cliente:', err)
+      });
     }
   }
 
   onSubmit(): void {
-    if (this.cadastroForm.valid) {
-      if (this.isEdicao && this.clienteId) {
-        const clienteAtualizado: Cliente = {
-          ...this.cadastroForm.value,
-          idpessoa: this.clienteId
-        };
-        this.cadastroService.atualizarCliente(clienteAtualizado);
-      } else {
-        const dadosCliente: Cliente = this.cadastroForm.value;
-        this.cadastroService.adicionarCliente(dadosCliente);
-      }
-      this.router.navigate(['/clientes']);
+    if (this.cadastroForm.invalid) return;
+
+    if (this.isEdicao && this.clienteId) {
+      const clienteAtualizado: Cliente = {
+        ...this.cadastroForm.value,
+        idpessoa: this.clienteId
+      };
+      this.cadastroService.atualizarCliente(clienteAtualizado).subscribe({
+        next: () => this.router.navigate(['/clientes']),
+        error: (err) => console.error('Erro ao atualizar no backend:', err)
+      });
+    } else {
+      const dadosCliente: Cliente = this.cadastroForm.value;
+      this.cadastroService.adicionarCliente(dadosCliente).subscribe({
+        next: () => this.router.navigate(['/clientes']),
+        error: (err) => console.error('Erro ao salvar no backend:', err)
+      });
     }
   }
 }

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { CadastroService } from '../../services/cadastro.service';
@@ -10,6 +10,10 @@ import { CadastroService } from '../../services/cadastro.service';
   templateUrl: './lista-clientes.component.html',
   styleUrl: './lista-clientes.component.css'
 })
-export class ListaClientesComponent {
+export class ListaClientesComponent implements OnInit {
   cadastroService = inject(CadastroService);
+
+  ngOnInit(): void {
+    this.cadastroService.carregarClientes();
+  }
 }

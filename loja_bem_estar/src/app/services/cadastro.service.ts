@@ -1,40 +1,40 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Cliente } from '../models/cadastro';
+import { Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CadastroService {
-  private clientesSignal = signal<Cliente[]>([
-    {
-      idpessoa: 1,
-      nome: 'Lucas Azevedo',
-      cpf: '12345678901',
-      data_nascimento: '2002-08-16',
-      sexo: 'M',
-      email: 'lucaszedde@gmail.com',
-      telefone: '11999998888',
-      ativo_pessoa: 'S'
-    }
-  ]);
+  private http = inject(HttpClient);
+  
+  // URL correta capturada do seu Swagger UI
+  private readonly apiUrl = 'https://localhost:7126/api/Pessoa';
 
+  private clientesSignal = signal<Cliente[]>([]);
   readonly clientes = this.clientesSignal.asReadonly();
 
-  obterPorId(id: number): Cliente | undefined {
-    return this.clientesSignal().find(c => c.idpessoa === id);
+  carregarClientes(): void {
+    this.http.get<Cliente[]>(this.apiUrl).subscribe({
+      next: (dados) => this.clientesSignal.set(dados),
+      error: (err) => console.error('Erro ao buscar clientes no banco:', err)
+    });
   }
 
-  adicionarCliente(novoCliente: Omit<Cliente, 'idpessoa'>): void {
-    const clienteComId: Cliente = {
-      ...novoCliente,
-      idpessoa: this.clientesSignal().length + 1
-    };
-    this.clientesSignal.update(lista => [...lista, clienteComId]);
+  obterPorId(id: number): Observable<Cliente> {
+    return this.http.get<Cliente>(`${this.apiUrl}/${id}`);
   }
 
-  atualizarCliente(clienteAtualizado: Cliente): void {
-    this.clientesSignal.update(lista =>
-      lista.map(c => c.idpessoa === clienteAtualizado.idpessoa ? clienteAtualizado : c)
+  adicionarCliente(novoCliente: Omit<Cliente, 'idpessoa'>): Observable<Cliente> {
+    return this.http.post<Cliente>(this.apiUrl, novoCliente).pipe(
+      tap(() => this.carregarClientes())
+    );
+  }
+
+  atualizarCliente(clienteAtualizado: Cliente): Observable<Cliente> {
+    return this.http.put<Cliente>(`${this.apiUrl}/${clienteAtualizado.idpessoa}`, clienteAtualizado).pipe(
+      tap(() => this.carregarClientes())
     );
   }
 }
