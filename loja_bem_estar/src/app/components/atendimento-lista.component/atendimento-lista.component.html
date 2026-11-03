@@ -1,1 +1,63 @@
-<p>atendimento-lista.component works!</p>
+<div class="container">
+    <header class="header-container">
+      <div>
+        <h1>Registo de Atendimentos</h1>
+        <p>Consulta e histórico de atendimentos prestados</p>
+      </div>
+      <div class="acoes">
+        <button routerLink="/atendimentos/novo" class="btn-novo">+ Novo Atendimento</button>
+        <button routerLink="/" class="btn-home">Home</button>
+      </div>
+    </header>
+  
+    <div class="lista-cards">
+      @for (atend of atendimentoService.atendimentos(); track atend.idAtendimento) {
+        <div class="card-atendimento">
+          <div class="card-header">
+            <div>
+              <span class="codigo-atendimento">Atendimento #{{ atend.idAtendimento }}</span>
+              <h3>{{ atend.nomePessoa || 'Cliente ID #' + atend.idPessoa }}</h3>
+            </div>
+            <div class="header-dir">
+              <span class="status-tag" [ngClass]="'status-' + atend.statusAtendimento.toLowerCase()">
+                {{ atend.statusAtendimento === 'A' ? 'Ativo' : (atend.statusAtendimento === 'F' ? 'Finalizado' : atend.statusAtendimento) }}
+              </span>
+              <span class="data-tag">{{ atend.dataAtendimento | date:'dd/MM/yyyy HH:mm' }}</span>
+            </div>
+          </div>
+  
+          <div class="tabela-itens">
+            <table>
+              <thead>
+                <tr>
+                  <th>Item / Serviço</th>
+                  <th>Profissional</th>
+                  <th>Qtd</th>
+                  <th>V. Unitário</th>
+                  <th>Subtotal</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (it of atend.itens; track it.idItem) {
+                  <tr>
+                    <td><strong>{{ it.item || 'Item #' + it.idItem }}</strong></td>
+                    <td>{{ it.nomeFuncionario || 'Func. #' + it.idFuncionario }} <small>({{ it.cargo || '-' }})</small></td>
+                    <td>{{ it.quantidade }}</td>
+                    <td>R$ {{ it.valorUnitario | number:'1.2-2' }}</td>
+                    <td>R$ {{ (it.quantidade * it.valorUnitario) | number:'1.2-2' }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+  
+          <div class="card-footer">
+            <span class="label-total">Total do Atendimento:</span>
+            <span class="valor-total">R$ {{ calcularTotal(atend.itens) | number:'1.2-2' }}</span>
+          </div>
+        </div>
+      } @empty {
+        <div class="sem-registros">Nenhum atendimento registado.</div>
+      }
+    </div>
+  </div>

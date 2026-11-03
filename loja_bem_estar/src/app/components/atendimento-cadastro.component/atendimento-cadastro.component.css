@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: #fffaf5;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  color: #2c1810;
+  padding: 2rem;
+}
+
+.container { max-width: 850px; margin: 0 auto; }
+
+.card-form {
+  background-color: #ffffff;
+  border: 1px solid #fed7aa;
+  padding: 2rem;
+}
+
+.card-form h2 { color: #ea580c; margin: 0 0 0.25rem 0; }
+.subtitulo { color: #7c2d12; font-size: 0.85rem; margin-bottom: 1.5rem; }
+
+.linha-dupla { display: flex; gap: 1rem; margin-bottom: 1.25rem; }
+.linha-quadrupla { display: flex; gap: 0.75rem; margin-bottom: 0.75rem; }
+
+.campo-grupo { display: flex; flex-direction: column; gap: 0.3rem; flex: 1; }
+
+label { font-size: 0.8rem; font-weight: 600; color: #2c1810; }
+
+input, select {
+  padding: 0.6rem;
+  border: 1px solid #fed7aa;
+  font-family: inherit;
+  font-size: 0.85rem;
+  background-color: #fff;
+  outline: none;
+}
+
+.painel-item-add {
+  background-color: #fff7ed;
+  border: 1px solid #fed7aa;
+  padding: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.painel-item-add h3 { margin: 0 0 0.75rem 0; font-size: 0.95rem; color: #ea580c; }
+
+.btn-add-item {
+  background-color: #ffffff;
+  color: #ea580c;
+  border: 1px solid #ea580c;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tabela-container { margin-bottom: 1.5rem; border: 1px solid #fed7aa; }
+table { width: 100%; border-collapse: collapse; }
+th { background-color: #fff7ed; color: #ea580c; font-size: 0.75rem; padding: 0.6rem; text-align: left; }
+td { padding: 0.6rem; border-bottom: 1px solid #fff7ed; font-size: 0.85rem; }
+
+.btn-remover { background: #ef4444; color: #fff; border: none; padding: 0.3rem 0.6rem; cursor: pointer; font-size: 0.75rem; }
+
+.total-bar { text-align: right; padding: 0.75rem; background-color: #fff7ed; color: #ea580c; font-size: 1rem; }
+
+.botoes { display: flex; gap: 1rem; }
+.btn-salvar { flex: 1; background-color: #ea580c; color: #fff; border: none; padding: 0.75rem; font-weight: 600; cursor: pointer; }
+.btn-cancelar { background-color: #fff; color: #ea580c; border: 1px solid #ea580c; padding: 0.75rem 1.5rem; font-weight: 600; cursor: pointer; }

@@ -9,6 +9,8 @@ import { ItemCadastroComponent } from './components/item-cadastro.component/item
 import { CatalogoProdutosComponent } from './components/catalogo-produtos.component/catalogo-produtos.component';
 import { FuncionarioListaComponent } from './components/funcionario-lista.component/funcionario-lista.component';
 import { FuncionarioCadastroComponent } from './components/funcionario-cadastro.component/funcionario-cadastro.component';
+import { AtendimentoListaComponent } from './components/atendimento-lista.component/atendimento-lista.component';
+import { AtendimentoCadastroComponent } from './components/atendimento-cadastro.component/atendimento-cadastro.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -25,5 +27,7 @@ export const routes: Routes = [
   { path: 'funcionarios', component: FuncionarioListaComponent },
   { path: 'funcionarios/novo', component: FuncionarioCadastroComponent },
   { path: 'funcionarios/editar/:id', component: FuncionarioCadastroComponent },
+  { path: 'atendimentos', component: AtendimentoListaComponent },
+  { path: 'atendimentos/novo', component: AtendimentoCadastroComponent },
   { path: '**', redirectTo: '' }
 ];

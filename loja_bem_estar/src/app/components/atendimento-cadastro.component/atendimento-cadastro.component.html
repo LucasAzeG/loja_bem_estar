@@ -1,0 +1,102 @@
+<div class="container">
+    <div class="card-form">
+      <h2>Novo Atendimento</h2>
+      <p class="subtitulo">Relacione o cliente aos serviços/itens prestados pela equipa</p>
+  
+      <form (ngSubmit)="salvarAtendimento()">
+        <div class="linha-dupla">
+          <div class="campo-grupo">
+            <label for="cliente">Cliente *</label>
+            <select id="cliente" name="cliente" [(ngModel)]="idPessoaSelecionada" required>
+              <option [value]="0">-- Selecione o Cliente --</option>
+              @for (cli of clientes; track $index) {
+                <option [value]="getCliId(cli)">{{ getCliNome(cli) }} (CPF: {{ getCliCpf(cli) }})</option>
+              }
+            </select>
+          </div>
+  
+          <div class="campo-grupo">
+            <label for="dataAtendimento">Data e Hora *</label>
+            <input type="datetime-local" id="dataAtendimento" name="dataAtendimento" [(ngModel)]="dataAtendimento" required />
+          </div>
+        </div>
+  
+        <!-- PAINEL DE ADIÇÃO DE ITENS -->
+        <div class="painel-item-add">
+          <h3>Adicionar Item / Serviço</h3>
+          <div class="linha-quadrupla">
+            <div class="campo-grupo">
+              <label>Item / Serviço</label>
+              <select name="itemTemp" [(ngModel)]="itemTemp.idItem" (change)="aoMudarItem()">
+                <option [value]="0">-- Selecione --</option>
+                @for (it of itensDisponiveis; track $index) {
+                  <option [value]="getItemId(it)">{{ getItemName(it) }}</option>
+                }
+              </select>
+            </div>
+  
+            <div class="campo-grupo">
+              <label>Profissional</label>
+              <select name="funcTemp" [(ngModel)]="itemTemp.idFuncionario">
+                <option [value]="0">-- Selecione --</option>
+                @for (func of funcionarios; track $index) {
+                  <option [value]="getFuncId(func)">{{ getFuncName(func) }} ({{ getFuncCargo(func) }})</option>
+                }
+              </select>
+            </div>
+  
+            <div class="campo-grupo">
+              <label>Qtd</label>
+              <input type="number" name="qtdTemp" [(ngModel)]="itemTemp.quantidade" min="1" />
+            </div>
+  
+            <div class="campo-grupo">
+              <label>V. Unitário (R$)</label>
+              <input type="number" name="valTemp" [(ngModel)]="itemTemp.valorUnitario" step="0.01" />
+            </div>
+          </div>
+  
+          <button type="button" (click)="adicionarItemNaLista()" class="btn-add-item">+ Adicionar Item</button>
+        </div>
+  
+        <!-- TABELA DE ITENS INCLUÍDOS -->
+        <div class="tabela-container" *ngIf="itensAtendimento.length > 0">
+          <table>
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Profissional</th>
+                <th>Qtd</th>
+                <th>V. Unitário</th>
+                <th>Subtotal</th>
+                <th>Ação</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (it of itensAtendimento; track $index) {
+                <tr>
+                  <td><strong>{{ it.item }}</strong></td>
+                  <td>{{ it.nomeFuncionario }}</td>
+                  <td>{{ it.quantidade }}</td>
+                  <td>R$ {{ it.valorUnitario | number:'1.2-2' }}</td>
+                  <td>R$ {{ (it.quantidade * it.valorUnitario) | number:'1.2-2' }}</td>
+                  <td>
+                    <button type="button" class="btn-remover" (click)="removerItem($index)">Excluir</button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+  
+          <div class="total-bar">
+            Total do Atendimento: <strong>R$ {{ calcularTotalGeral() | number:'1.2-2' }}</strong>
+          </div>
+        </div>
+  
+        <div class="botoes">
+          <button type="submit" class="btn-salvar">Finalizar e Registrar</button>
+          <button type="button" routerLink="/atendimentos" class="btn-cancelar">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>

@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: #fffaf5;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  color: #2c1810;
+  padding: 2rem;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  background-color: #ffffff;
+  border: 1px solid #fed7aa;
+  margin-bottom: 1.5rem;
+}
+
+.header-container h1 { color: #ea580c; font-size: 1.8rem; margin: 0; }
+.header-container p { color: #7c2d12; font-size: 0.85rem; margin: 0.25rem 0 0 0; }
+
+.acoes { display: flex; gap: 0.75rem; }
+
+.btn-novo {
+  background-color: #ea580c;
+  color: #ffffff;
+  border: 1px solid #ea580c;
+  padding: 0.65rem 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-home {
+  background-color: #ffffff;
+  color: #ea580c;
+  border: 1px solid #ea580c;
+  padding: 0.65rem 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.lista-cards { display: flex; flex-direction: column; gap: 1.5rem; }
+
+.card-atendimento {
+  background-color: #ffffff;
+  border: 1px solid #fed7aa;
+  padding: 1.5rem;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px solid #fff7ed;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.codigo-atendimento { font-size: 0.8rem; font-weight: 700; color: #ea580c; }
+.card-header h3 { margin: 0.2rem 0 0 0; color: #2c1810; }
+
+.header-dir { display: flex; align-items: center; gap: 0.75rem; }
+
+.status-tag {
+  background-color: #fff7ed;
+  border: 1px solid #fed7aa;
+  color: #ea580c;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.data-tag { font-size: 0.85rem; color: #7c2d12; }
+
+.tabela-itens table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
+.tabela-itens th { background-color: #fff7ed; color: #ea580c; font-size: 0.75rem; padding: 0.6rem 0.8rem; text-align: left; }
+.tabela-itens td { padding: 0.6rem 0.8rem; border-bottom: 1px solid #fff7ed; font-size: 0.85rem; }
+
+.card-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #fed7aa;
+}
+
+.label-total { font-weight: 600; color: #7c2d12; font-size: 0.9rem; }
+.valor-total { font-size: 1.2rem; font-weight: 700; color: #ea580c; }
+.sem-registros { text-align: center; color: #7c2d12; padding: 2rem; background: #ffffff; border: 1px solid #fed7aa; }
