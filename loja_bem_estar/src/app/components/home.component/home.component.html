@@ -1,66 +1,20 @@
-<div class="home-container">
+<div class="container">
   <header class="header-container">
     <div>
       <h1>Estética & Bem-Estar</h1>
       <p>■ Sistema de Gestão Integrada</p>
     </div>
-    <div class="acoes-header">
-      <button routerLink="/clientes" class="btn-lista">Ver Clientes</button>
-      <button routerLink="/categorias" class="btn-lista">Ver Categorias</button>
-      <button routerLink="/cadastro" class="btn-novo">Ir para Cadastro</button>
+    <div class="acoes">
+      <button routerLink="/clientes" class="btn-outline">Ver Clientes</button>
+      <button routerLink="/categorias" class="btn-outline">Ver Categorias</button>
+      <button routerLink="/itens" class="btn-outline">Ver Itens</button>
+      <button routerLink="/produtos/catalogo" class="btn-outline">Ver Produtos</button>
+      <button routerLink="/cadastro" class="btn-primary">Ir para Cadastro</button>
     </div>
   </header>
 
-  <div class="conteudo-principal">
-    <!-- Painel Lateral de Filtros à Esquerda -->
-    <aside class="painel-categorias">
-      <div class="painel-header">
-        <h3>Categorias</h3>
-        <span class="subtitulo">Filtre o catálogo</span>
-      </div>
-
-      <ul class="lista-categorias">
-        <li 
-          class="item-categoria" 
-          [class.selecionado]="categoriaSelecionada() === null"
-          (click)="selecionarCategoria(undefined)">
-          <input 
-            type="checkbox" 
-            [checked]="categoriaSelecionada() === null" 
-            readonly 
-          />
-          <span>Todas as Categorias</span>
-        </li>
-
-        @for (cat of categoriaService.categorias(); track cat.idcategoria) {
-          <li 
-            class="item-categoria" 
-            [class.selecionado]="categoriaSelecionada() === cat.idcategoria"
-            (click)="selecionarCategoria(cat.idcategoria)">
-            <input 
-              type="checkbox" 
-              [checked]="categoriaSelecionada() === cat.idcategoria" 
-              readonly 
-            />
-            <span>{{ cat.categoria }}</span>
-          </li>
-        } @empty {
-          <li class="sem-categorias">Nenhuma categoria encontrada.</li>
-        }
-      </ul>
-    </aside>
-
-    <!-- Área Principal para o Catálogo de Serviços -->
-    <section class="area-catalogo">
-      <div class="catalogo-header">
-        <h2>Catálogo de Serviços</h2>
-        <p>Selecione uma categoria ao lado para filtrar</p>
-      </div>
-
-      <div class="card-empty-state">
-        <p>Nenhum serviço cadastrado no momento.</p>
-        <small>Quando o módulo de serviços estiver pronto, os itens filtrados aparecerão aqui.</small>
-      </div>
-    </section>
-  </div>
+  <main class="card-bem-vindo">
+    <h2>Catálogo de Serviços e Produtos</h2>
+    <p>Utilize os botões acima para navegar entre a gestão de clientes, categorias, itens e produtos.</p>
+  </main>
 </div>

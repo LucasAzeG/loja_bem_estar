@@ -1,0 +1,180 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: #fffaf5;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  color: #2c1810;
+  padding: 2rem;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  background-color: #ffffff;
+  border: 1px solid #fed7aa;
+  margin-bottom: 1rem;
+}
+
+.header-container h1 {
+  color: #ea580c;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.header-container p {
+  color: #7c2d12;
+  font-size: 0.85rem;
+  margin: 0.25rem 0 0 0;
+}
+
+.acoes {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btn-novo {
+  background-color: #ea580c;
+  color: #ffffff;
+  border: none;
+  padding: 0.65rem 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-novo:hover {
+  background-color: #c2410c;
+}
+
+.btn-home {
+  background-color: #ffffff;
+  color: #ea580c;
+  border: 1px solid #ea580c;
+  padding: 0.65rem 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-home:hover {
+  background-color: #fff7ed;
+}
+
+.bar-filtro {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: #ffffff;
+  border: 1px solid #fed7aa;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.bar-filtro label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #7c2d12;
+}
+
+.bar-filtro select {
+  padding: 0.5rem 1rem;
+  border: 1px solid #fed7aa;
+  background-color: #fffaf5;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: #2c1810;
+  outline: none;
+  cursor: pointer;
+  min-width: 220px;
+}
+
+.bar-filtro select:focus {
+  border-color: #ea580c;
+  background-color: #ffffff;
+}
+
+.tabela-container {
+  background-color: #ffffff;
+  border: 1px solid #fed7aa;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background-color: #fff7ed;
+  color: #7c2d12;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #fed7aa;
+}
+
+td {
+  padding: 1rem;
+  border-bottom: 1px solid #fffaf5;
+  font-size: 0.9rem;
+}
+
+.descricao-sub {
+  display: block;
+  color: #7c2d12;
+  font-size: 0.75rem;
+  font-weight: normal;
+}
+
+.badge {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 2px;
+}
+
+.badge-prod { background-color: #e0f2fe; color: #0369a1; }
+.badge-serv { background-color: #fef3c7; color: #b45309; }
+
+.status-dot {
+  font-weight: 600;
+  color: #991b1b;
+}
+
+.status-dot.ativo {
+  color: #166534;
+}
+
+.texto-centro { text-align: center; }
+
+.btn-editar {
+  background-color: #ffffff;
+  color: #ea580c;
+  border: 1px solid #ea580c;
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-editar:hover {
+  background-color: #fff7ed;
+}
+
+.sem-registros {
+  text-align: center;
+  color: #7c2d12;
+  padding: 2rem;
+}

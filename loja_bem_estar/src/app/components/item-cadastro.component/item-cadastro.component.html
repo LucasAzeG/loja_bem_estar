@@ -1,0 +1,94 @@
+<div class="container">
+    <div class="card-formulario">
+      <h2>{{ modoEdicao ? 'Editar Item' : 'Novo Item' }}</h2>
+      <p class="subtitulo">Preencha as informações do produto ou serviço</p>
+  
+      <form (ngSubmit)="salvar()">
+        <div class="campo">
+          <label for="item">Nome do Item *</label>
+          <input 
+            type="text" 
+            id="item" 
+            [(ngModel)]="itemForm.item" 
+            name="item" 
+            maxlength="40" 
+            required 
+            placeholder="Ex: Limpeza de Pele"
+          />
+        </div>
+  
+        <div class="grid-2">
+          <div class="campo">
+            <label for="idcategoria">Categoria *</label>
+            <select 
+              id="idcategoria" 
+              [(ngModel)]="itemForm.idcategoria" 
+              name="idcategoria" 
+              required>
+              <option [ngValue]="0" disabled>Selecione uma categoria</option>
+              @for (cat of categoriaService.categorias(); track cat.idcategoria) {
+                <option [ngValue]="cat.idcategoria">{{ cat.categoria }}</option>
+              }
+            </select>
+          </div>
+  
+          <div class="campo">
+            <label for="preco">Preço (R$) *</label>
+            <input 
+              type="number" 
+              id="preco" 
+              [(ngModel)]="itemForm.preco" 
+              name="preco" 
+              step="0.01" 
+              min="0" 
+              required 
+              placeholder="0.00"
+            />
+          </div>
+        </div>
+  
+        <div class="grid-2">
+          <div class="campo">
+            <label for="tipo_item">Tipo de Item *</label>
+            <select 
+              id="tipo_item" 
+              [(ngModel)]="itemForm.tipo_item" 
+              name="tipo_item" 
+              required>
+              <option value="P">Produto</option>
+              <option value="S">Serviço</option>
+            </select>
+          </div>
+  
+          <div class="campo">
+            <label for="ativo_produto_servico">Status *</label>
+            <select 
+              id="ativo_produto_servico" 
+              [(ngModel)]="itemForm.ativo_produto_servico" 
+              name="ativo_produto_servico" 
+              required>
+              <option value="S">Ativo</option>
+              <option value="N">Inativo</option>
+            </select>
+          </div>
+        </div>
+  
+        <div class="campo">
+          <label for="descricao_item">Descrição</label>
+          <textarea 
+            id="descricao_item" 
+            [(ngModel)]="itemForm.descricao_item" 
+            name="descricao_item" 
+            rows="3" 
+            maxlength="200" 
+            placeholder="Descrição opcional do item...">
+          </textarea>
+        </div>
+  
+        <div class="botoes-form">
+          <button type="submit" class="btn-salvar">Salvar</button>
+          <button type="button" routerLink="/itens" class="btn-cancelar">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>

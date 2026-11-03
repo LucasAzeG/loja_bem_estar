@@ -1,0 +1,45 @@
+<div class="container">
+    <header class="header-container">
+      <div>
+        <h1>Catálogo de Produtos</h1>
+        <p>Visualização e consulta de produtos da loja</p>
+      </div>
+      <button routerLink="/" class="btn-home">Home</button>
+    </header>
+  
+    <div class="bar-filtro">
+      <label for="filtroCategoria">Filtrar por Categoria:</label>
+      <select id="filtroCategoria" [value]="categoriaSelecionadaId()" (change)="aoMudarFiltro($event)">
+        <option [value]="0">Todas as Categorias</option>
+        @for (cat of categoriaService.categorias(); track cat.idcategoria) {
+          <option [value]="cat.idcategoria">{{ cat.categoria }}</option>
+        }
+      </select>
+    </div>
+  
+    <div class="grid-catalogo">
+      @for (prod of produtosFiltrados(); track prod.codigoPreco) {
+        <div class="card-produto">
+          <div class="header-card">
+            <!-- idCategoria (com C maiúsculo) -->
+            <span class="categoria-tag">{{ obterNomeCategoria(prod.idCategoria) }}</span>
+            <!-- codigoPreco (com P maiúsculo) -->
+            <span class="codigo-tag">Cód. Preço: #{{ prod.codigoPreco }}</span>
+          </div>
+          <h3>{{ prod.item }}</h3>
+          <!-- descricaoItem (com I maiúsculo) -->
+          <p class="descricao">{{ prod.descricaoItem || 'Sem descrição cadastrada.' }}</p>
+          <div class="footer-card">
+            <div class="preco-container">
+              <span class="label-preco">Preço de Venda</span>
+              <!-- precoVenda (com V maiúsculo) -->
+              <span class="valor-preco">R$ {{ prod.precoVenda | number:'1.2-2' }}</span>
+            </div>
+            <span class="unidade-badge">{{ prod.unidade }}</span>
+          </div>
+        </div>
+      } @empty {
+        <div class="sem-registros">Nenhum produto encontrado para esta categoria.</div>
+      }
+    </div>
+  </div>
