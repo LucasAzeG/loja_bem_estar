@@ -1,0 +1,47 @@
+<div class="container">
+    <div class="card-form">
+      <h2>{{ modoEdicao ? 'Editar Funcionário' : 'Novo Funcionário' }}</h2>
+      <p class="subtitulo">Preencha os dados pessoais e profissionais</p>
+  
+      <form (ngSubmit)="salvar()">
+        <div class="campo-grupo">
+          <label for="nome">Nome Completo *</label>
+          <input type="text" id="nome" name="nome" [(ngModel)]="funcionarioForm.nome" required />
+        </div>
+  
+        <div class="linha-dupla">
+          <div class="campo-grupo">
+            <label for="cargo">Cargo *</label>
+            <input type="text" id="cargo" name="cargo" [(ngModel)]="funcionarioForm.cargo" placeholder="Ex: Esteticista, Recepcionista" required />
+          </div>
+  
+          <div class="campo-grupo">
+            <label for="dataAdmissao">Data de Admissão *</label>
+            <input type="date" id="dataAdmissao" name="dataAdmissao" [(ngModel)]="funcionarioForm.dataAdmissao" required />
+          </div>
+        </div>
+  
+        <div class="linha-dupla">
+          <div class="campo-grupo">
+            <label for="cpf">CPF</label>
+            <input type="text" id="cpf" name="cpf" [(ngModel)]="funcionarioForm.cpf" />
+          </div>
+  
+          <div class="campo-grupo">
+            <label for="telefone">Telefone</label>
+            <input type="text" id="telefone" name="telefone" [(ngModel)]="funcionarioForm.telefone" />
+          </div>
+        </div>
+  
+        <div class="campo-grupo">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" name="email" [(ngModel)]="funcionarioForm.email" />
+        </div>
+  
+        <div class="botoes">
+          <button type="submit" class="btn-salvar">Salvar</button>
+          <button type="button" routerLink="/funcionarios" class="btn-cancelar">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>

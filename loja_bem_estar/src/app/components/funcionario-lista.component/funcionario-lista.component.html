@@ -1,0 +1,45 @@
+<div class="container">
+    <header class="header-container">
+      <div>
+        <h1>Gestão de Funcionários</h1>
+        <p>Consulta e controlo da equipa da clínica</p>
+      </div>
+      <div class="acoes">
+        <button routerLink="/funcionarios/novo" class="btn-novo">+ Novo Funcionário</button>
+        <button routerLink="/" class="btn-home">Home</button>
+      </div>
+    </header>
+  
+    <div class="tabela-container">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>NOME</th>
+            <th>CARGO</th>
+            <th>DATA ADMISSÃO</th>
+            <th>CONTACTO</th>
+            <th class="texto-centro">AÇÕES</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (func of funcionarioService.funcionarios(); track (func.idpessoa || func.pessoa?.idPessoa)) {
+            <tr>
+              <td>#{{ func.idpessoa || func.pessoa?.idPessoa }}</td>
+              <td><strong>{{ func.pessoa?.nome || '-' }}</strong></td>
+              <td><span class="badge-cargo">{{ func.cargo }}</span></td>
+              <td>{{ func.dataAdmissao | date:'dd/MM/yyyy' }}</td>
+              <td>{{ func.pessoa?.telefone || func.pessoa?.email || '-' }}</td>
+              <td class="texto-centro">
+                <button [routerLink]="['/funcionarios/editar', func.idpessoa || func.pessoa?.idPessoa]" class="btn-editar">Editar</button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6" class="sem-registros">Nenhum funcionário cadastrado.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>

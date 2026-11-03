@@ -7,6 +7,8 @@ import { CategoriaCadastroComponent } from './components/categoria-cadastro.comp
 import { ItemListaComponent } from './components/item-lista.component/item-lista.component';
 import { ItemCadastroComponent } from './components/item-cadastro.component/item-cadastro.component';
 import { CatalogoProdutosComponent } from './components/catalogo-produtos.component/catalogo-produtos.component';
+import { FuncionarioListaComponent } from './components/funcionario-lista.component/funcionario-lista.component';
+import { FuncionarioCadastroComponent } from './components/funcionario-cadastro.component/funcionario-cadastro.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -20,5 +22,8 @@ export const routes: Routes = [
   { path: 'itens/novo', component: ItemCadastroComponent },
   { path: 'itens/editar/:id', component: ItemCadastroComponent },
   { path: 'produtos/catalogo', component: CatalogoProdutosComponent },
+  { path: 'funcionarios', component: FuncionarioListaComponent },
+  { path: 'funcionarios/novo', component: FuncionarioCadastroComponent },
+  { path: 'funcionarios/editar/:id', component: FuncionarioCadastroComponent },
   { path: '**', redirectTo: '' }
 ];

@@ -1,0 +1,21 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FuncionarioCadastroComponent } from './funcionario-cadastro.component';
+
+describe('FuncionarioCadastroComponent', () => {
+  let component: FuncionarioCadastroComponent;
+  let fixture: ComponentFixture<FuncionarioCadastroComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [FuncionarioCadastroComponent],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(FuncionarioCadastroComponent);
+    component = fixture.componentInstance;
+    await fixture.whenStable();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
