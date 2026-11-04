@@ -1,97 +1,148 @@
+/* ==========================================================================
+   1. IMPORTAÇÕES E CONFIGURAÇÕES GLOBAIS
+   ========================================================================== */
+
+/* Importação da fonte moderna 'Plus Jakarta Sans' do Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
+/* Configuração do container raiz da página (:host é a tag do próprio componente Angular) */
 :host {
   display: block;
   min-height: 100vh;
-  background-color: #fffaf5;
-  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-  color: #2c1810;
-  padding: 2rem;
+  background-color: #fffaf5; /* Fundo em tom creme quente e suave */
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  color: #2c1810;            /* Cor de texto principal (marrom escuro aconchegante) */
+  padding: 2.5rem 1.5rem;
 }
 
+/* Centralizador de conteúdo para evitar que a tela estique demais em monitores grandes */
 .container {
   max-width: 1100px;
   margin: 0 auto;
 }
 
+/* ==========================================================================
+   2. CABEÇALHO E BARRA DE NAVEGAÇÃO (HEADER)
+   ========================================================================== */
+
+/* Card de cabeçalho: alinha o título da loja e os botões de atalho */
 .header-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem 2rem;
+  padding: 1.75rem 2rem;
   background-color: #ffffff;
-  border: 1px solid #fed7aa;
-  margin-bottom: 1.5rem;
+  border: 1px solid #fed7aa;  /* Borda laranja pastel discreta */
+  border-radius: 12px;         /* Cantos arredondados para um visual moderno */
+  box-shadow: 0 4px 16px rgba(234, 88, 12, 0.05); /* Sombra muito suave em tom quente */
+  margin-bottom: 1.75rem;
+  gap: 1.5rem;
 }
 
+/* Título principal da loja no cabeçalho */
 .header-container h1 {
-  color: #ea580c;
-  font-size: 1.8rem;
+  color: #ea580c;             /* Laranja vibrante principal */
+  font-size: 1.85rem;
   font-weight: 700;
+  letter-spacing: -0.02em;
   margin: 0;
 }
 
+/* Subtítulo / Descrição da empresa */
 .header-container p {
   color: #7c2d12;
   font-size: 0.85rem;
-  margin: 0.25rem 0 0 0;
+  font-weight: 500;
+  margin: 0.35rem 0 0 0;
+  opacity: 0.9;
 }
 
+/* ==========================================================================
+   3. GRUPO DE BOTÕES E ATALHOS DE NAVEGAÇÃO
+   ========================================================================== */
+
+/* Agrupador flexível para alinhar os botões com quebra automática de linha */
 .acoes {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.65rem;
   flex-wrap: wrap;
 }
 
+/* Estilo base para botões secundários (vazados) */
 .btn-outline {
   background-color: #ffffff;
   color: #ea580c;
-  border: 1px solid #ea580c;
-  padding: 0.65rem 1.25rem;
+  border: 1px solid #fed7aa;   /* Borda mais suave para não poluir o visual */
+  border-radius: 8px;          /* Arredondamento elegante dos botões */
+  padding: 0.6rem 1.1rem;
   font-family: inherit;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  /* Transição suave para efeitos de hover e clique */
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Efeito ao passar o mouse nos botões secundários */
 .btn-outline:hover {
   background-color: #fff7ed;
+  border-color: #ea580c;
+  color: #c2410c;
+  transform: translateY(-1px); /* Micro-elevação para dar sensação de clique */
+  box-shadow: 0 2px 6px rgba(234, 88, 12, 0.1);
 }
 
+/* Estilo para o botão de ação principal (destaque preenchido) */
 .btn-primary {
   background-color: #ea580c;
   color: #ffffff;
   border: 1px solid #ea580c;
-  padding: 0.65rem 1.25rem;
+  border-radius: 8px;
+  padding: 0.6rem 1.25rem;
   font-family: inherit;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  /* Transição suave para a animação do botão principal */
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(234, 88, 12, 0.25); /* Destaque tridimensional */
 }
 
+/* Efeito ao passar o mouse no botão principal */
 .btn-primary:hover {
   background-color: #c2410c;
   border-color: #c2410c;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(234, 88, 12, 0.35);
 }
 
+/* ==========================================================================
+   4. CARD DE BOAS-VINDAS / CONTEÚDO PRINCIPAL
+   ========================================================================== */
+
+/* Painel principal de boas-vindas da home */
 .card-bem-vindo {
   background-color: #ffffff;
   border: 1px solid #fed7aa;
-  padding: 2rem;
+  border-radius: 12px;
+  padding: 2.25rem;
+  box-shadow: 0 4px 16px rgba(234, 88, 12, 0.05);
 }
 
+/* Título da seccional interna */
 .card-bem-vindo h2 {
   color: #ea580c;
   font-size: 1.5rem;
   font-weight: 700;
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 0.6rem 0;
+  letter-spacing: -0.01em;
 }
 
+/* Texto descritivo e orientações do painel principal */
 .card-bem-vindo p {
   color: #7c2d12;
   font-size: 0.95rem;
+  line-height: 1.6;            /* Melhora a legibilidade do texto */
   margin: 0;
 }

@@ -1,9 +1,16 @@
+<!-- Container principal que centraliza e delimita a largura do layout da Home -->
 <div class="container">
+
+  <!-- Cabeçalho da página: agrupa a identificação do sistema e a barra de navegação -->
   <header class="header-container">
+    
+    <!-- Bloco de títulos da aplicação -->
     <div>
       <h1>Estética & Bem-Estar</h1>
       <p>■ Sistema de Gestão Integrada</p>
     </div>
+
+    <!-- Seção de navegação: agrupa os botões de atalho -->
     <div class="acoes">
       <button routerLink="/clientes" class="btn-outline">Ver Clientes</button>
       <button routerLink="/categorias" class="btn-outline">Ver Categorias</button>
@@ -12,12 +19,16 @@
       <button routerLink="/funcionarios" class="btn-outline">Ver Funcionários</button>
       <button routerLink="/atendimentos" class="btn-outline">Ver Atendimentos</button>
       <button routerLink="/estoque" class="btn-outline">Ver Estoque</button>
-      <button routerLink="/cadastro" class="btn-primary">Ir para Cadastro</button>
+
+      <!-- Botão principal em destaque para abrir diretamente o Carrinho de Compras -->
+      <button routerLink="/atendimentos/novo" class="btn-primary">🛒 Carrinho de Compras</button>
     </div>
   </header>
 
+  <!-- Área de conteúdo principal -->
   <main class="card-bem-vindo">
     <h2>Catálogo de Serviços e Produtos</h2>
     <p>Utilize os botões acima para navegar entre a gestão de clientes, categorias, itens, produtos, funcionários, atendimentos e estoque.</p>
   </main>
+
 </div>

@@ -1,102 +1,136 @@
+<!-- Container principal centralizado do Carrinho de Compras -->
 <div class="container">
-    <div class="card-form">
-      <h2>Novo Atendimento</h2>
-      <p class="subtitulo">Relacione o cliente aos serviços/itens prestados pela equipa</p>
   
-      <form (ngSubmit)="salvarAtendimento()">
-        <div class="linha-dupla">
+  <!-- Cartão container do formulário estilo Checkout / Carrinho -->
+  <div class="card-form">
+    
+    <!-- ETAPA 1: Cabeçalho com identificação clara da funcionalidade do Carrinho -->
+    <h2>🛒 Carrinho de Compras & Atendimento</h2>
+    <p class="subtitulo">Selecione o cliente, adicione os produtos/serviços ao carrinho e finalize a compra.</p>
+
+    <!-- Formulário principal vinculado ao método de salvamento/finalização -->
+    <form (ngSubmit)="salvarAtendimento()">
+      
+      <!-- ETAPA 2: Dados Principais da Compra (Cliente e Data/Hora do Pedido) -->
+      <div class="linha-dupla">
+        
+        <!-- Seleção do Cliente vinculado ao pedido -->
+        <div class="campo-grupo">
+          <label for="cliente">Cliente *</label>
+          <select id="cliente" name="cliente" [(ngModel)]="idPessoaSelecionada" required>
+            <option [value]="0">-- Selecione o Cliente --</option>
+            @for (cli of clientes; track $index) {
+              <option [value]="getCliId(cli)">{{ getCliNome(cli) }} (CPF: {{ getCliCpf(cli) }})</option>
+            }
+          </select>
+        </div>
+
+        <!-- Data do registro/atendimento (padrão YYYY-MM-DD para backend .NET) -->
+        <div class="campo-grupo">
+          <label for="dataAtendimento">Data do Pedido *</label>
+          <input type="date" id="dataAtendimento" name="dataAtendimento" [(ngModel)]="dataAtendimento" required />
+        </div>
+      </div>
+
+      <!-- ETAPA 3: Painel para adicionar itens/serviços ao carrinho (RF05) -->
+      <div class="painel-item-add">
+        <h3>+ Incluir Item ou Serviço no Carrinho</h3>
+        
+        <div class="linha-quadrupla">
+          
+          <!-- Seleção do produto/serviço com atualização automática de valor unitário -->
           <div class="campo-grupo">
-            <label for="cliente">Cliente *</label>
-            <select id="cliente" name="cliente" [(ngModel)]="idPessoaSelecionada" required>
-              <option [value]="0">-- Selecione o Cliente --</option>
-              @for (cli of clientes; track $index) {
-                <option [value]="getCliId(cli)">{{ getCliNome(cli) }} (CPF: {{ getCliCpf(cli) }})</option>
+            <label>Item / Serviço</label>
+            <select name="itemTemp" [(ngModel)]="itemTemp.idItem" (change)="aoMudarItem()">
+              <option [value]="0">-- Selecione --</option>
+              @for (it of itensDisponiveis; track $index) {
+                <option [value]="getItemId(it)">{{ getItemName(it) }}</option>
               }
             </select>
           </div>
-  
+
+          <!-- Seleção do profissional responsável pelo atendimento/item -->
           <div class="campo-grupo">
-            <label for="dataAtendimento">Data e Hora *</label>
-            <input type="datetime-local" id="dataAtendimento" name="dataAtendimento" [(ngModel)]="dataAtendimento" required />
-          </div>
-        </div>
-  
-        <!-- PAINEL DE ADIÇÃO DE ITENS -->
-        <div class="painel-item-add">
-          <h3>Adicionar Item / Serviço</h3>
-          <div class="linha-quadrupla">
-            <div class="campo-grupo">
-              <label>Item / Serviço</label>
-              <select name="itemTemp" [(ngModel)]="itemTemp.idItem" (change)="aoMudarItem()">
-                <option [value]="0">-- Selecione --</option>
-                @for (it of itensDisponiveis; track $index) {
-                  <option [value]="getItemId(it)">{{ getItemName(it) }}</option>
-                }
-              </select>
-            </div>
-  
-            <div class="campo-grupo">
-              <label>Profissional</label>
-              <select name="funcTemp" [(ngModel)]="itemTemp.idFuncionario">
-                <option [value]="0">-- Selecione --</option>
-                @for (func of funcionarios; track $index) {
-                  <option [value]="getFuncId(func)">{{ getFuncName(func) }} ({{ getFuncCargo(func) }})</option>
-                }
-              </select>
-            </div>
-  
-            <div class="campo-grupo">
-              <label>Qtd</label>
-              <input type="number" name="qtdTemp" [(ngModel)]="itemTemp.quantidade" min="1" />
-            </div>
-  
-            <div class="campo-grupo">
-              <label>V. Unitário (R$)</label>
-              <input type="number" name="valTemp" [(ngModel)]="itemTemp.valorUnitario" step="0.01" />
-            </div>
-          </div>
-  
-          <button type="button" (click)="adicionarItemNaLista()" class="btn-add-item">+ Adicionar Item</button>
-        </div>
-  
-        <!-- TABELA DE ITENS INCLUÍDOS -->
-        <div class="tabela-container" *ngIf="itensAtendimento.length > 0">
-          <table>
-            <thead>
-              <tr>
-                <th>Item</th>
-                <th>Profissional</th>
-                <th>Qtd</th>
-                <th>V. Unitário</th>
-                <th>Subtotal</th>
-                <th>Ação</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (it of itensAtendimento; track $index) {
-                <tr>
-                  <td><strong>{{ it.item }}</strong></td>
-                  <td>{{ it.nomeFuncionario }}</td>
-                  <td>{{ it.quantidade }}</td>
-                  <td>R$ {{ it.valorUnitario | number:'1.2-2' }}</td>
-                  <td>R$ {{ (it.quantidade * it.valorUnitario) | number:'1.2-2' }}</td>
-                  <td>
-                    <button type="button" class="btn-remover" (click)="removerItem($index)">Excluir</button>
-                  </td>
-                </tr>
+            <label>Profissional</label>
+            <select name="funcTemp" [(ngModel)]="itemTemp.idFuncionario">
+              <option [value]="0">-- Selecione --</option>
+              @for (func of funcionarios; track $index) {
+                <option [value]="getFuncId(func)">{{ getFuncName(func) }} ({{ getFuncCargo(func) }})</option>
               }
-            </tbody>
-          </table>
-  
-          <div class="total-bar">
-            Total do Atendimento: <strong>R$ {{ calcularTotalGeral() | number:'1.2-2' }}</strong>
+            </select>
+          </div>
+
+          <!-- Definir quantidade a ser adicionada ao carrinho -->
+          <div class="campo-grupo">
+            <label>Qtd</label>
+            <input type="number" name="qtdTemp" [(ngModel)]="itemTemp.quantidade" min="1" />
+          </div>
+
+          <!-- Preço unitário (preenchido automaticamente ou editável) -->
+          <div class="campo-grupo">
+            <label>V. Unitário (R$)</label>
+            <input type="number" name="valTemp" [(ngModel)]="itemTemp.valorUnitario" step="0.01" />
           </div>
         </div>
-  
-        <div class="botoes">
-          <button type="submit" class="btn-salvar">Finalizar e Registrar</button>
-          <button type="button" routerLink="/atendimentos" class="btn-cancelar">Cancelar</button>
+
+        <!-- Botão que aciona a inclusão temporária no carrinho -->
+        <button type="button" (click)="adicionarItemNaLista()" class="btn-add-item">
+          + Adicionar ao Carrinho
+        </button>
+      </div>
+
+      <!-- ETAPA 4: Visualização e Gestão dos Itens Adicionados ao Carrinho -->
+      <div class="tabela-container" *ngIf="itensAtendimento.length > 0">
+        <h3>🛍️ Itens Selecionados</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Item / Produto</th>
+              <th>Profissional</th>
+              <th>Qtd</th>
+              <th>V. Unitário</th>
+              <th>Subtotal</th>
+              <th class="texto-centro">Ação</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (it of itensAtendimento; track $index) {
+              <tr>
+                <td><strong>{{ it.item }}</strong></td>
+                <td>{{ it.nomeFuncionario }}</td>
+                <td>{{ it.quantidade }}</td>
+                <td>R$ {{ it.valorUnitario | number:'1.2-2' }}</td>
+                <td>R$ {{ (it.quantidade * it.valorUnitario) | number:'1.2-2' }}</td>
+                <td class="texto-centro">
+                  <!-- Permite remover um item específico do carrinho -->
+                  <button type="button" class="btn-remover" (click)="removerItem($index)">Excluir</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+
+        <!-- Total acumulado da compra calculado dinamicamente -->
+        <div class="total-bar">
+          Total do Carrinho: <strong>R$ {{ calcularTotalGeral() | number:'1.2-2' }}</strong>
         </div>
-      </form>
-    </div>
+      </div>
+
+      <!-- ETAPA 5: Ações Finais (Salvar Pedido/Atendimento no banco ou Cancelar) -->
+      <div class="botoes">
+        <button type="submit" class="btn-salvar">Finalizar Compra e Registrar</button>
+        <button type="button" routerLink="/atendimentos" class="btn-cancelar">Cancelar</button>
+      </div>
+      <div class="campo-grupo">
+        <label>Qtd</label>
+        <input 
+          type="number" 
+          name="qtdTemp" 
+          [(ngModel)]="itemTemp.quantidade" 
+          (input)="aoMudarQuantidade()" 
+          min="1" 
+        />
+      </div>
+    </form>
   </div>
+</div>

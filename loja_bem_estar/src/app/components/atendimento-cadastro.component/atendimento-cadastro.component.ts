@@ -15,20 +15,31 @@ import { Atendimento, AtendimentoItem } from '../../models/atendimento';
   styleUrl: './atendimento-cadastro.component.css'
 })
 export class AtendimentoCadastroComponent implements OnInit {
+  /* ==========================================================================
+     PROCESSO 1: Injeção de Serviços e Inicialização do Estado do Carrinho
+     ========================================================================== */
   private http = inject(HttpClient);
   private router = inject(Router);
   atendimentoService = inject(AtendimentoService);
   funcionarioService = inject(FuncionarioService);
 
+  // Dados do pedido / atendimento principal
   idPessoaSelecionada: number = 0;
-  statusAtendimento: string = 'A';
+  statusAtendimento: string = 'A'; // 'A' = Ativo / Agendado
   dataAtendimento: string = new Date().toISOString().substring(0, 10);
 
+  // Listas de dados para preenchimento dos combos
   clientes: any[] = [];
   itensDisponiveis: any[] = [];
   funcionarios: any[] = [];
+  
+  // Lista temporária que armazena os produtos/serviços adicionados ao carrinho (RF05)
   itensAtendimento: AtendimentoItem[] = [];
 
+  // Guarda o preço unitário individual do item selecionado sem a quantidade aplicada
+  precoBase: number = 0;
+
+  // Form temporário para o item selecionado atualmente no painel de inclusão
   itemTemp = {
     idItem: 0,
     idFuncionario: 0,
@@ -37,11 +48,17 @@ export class AtendimentoCadastroComponent implements OnInit {
   };
 
   ngOnInit(): void {
+    // Carrega todas as dependências ao iniciar a tela de checkout
     this.carregarClientes();
     this.carregarFuncionarios();
     this.carregarItens();
   }
 
+  /* ==========================================================================
+     PROCESSO 2: Utilitários e Carregamento de Dados das APIs
+     ========================================================================== */
+  
+  // Trata retornos flexíveis da API (Arrays puros ou envelopados com $values do EF Core)
   private extrairArray(dados: any): any[] {
     if (!dados) return [];
     if (Array.isArray(dados)) return dados;
@@ -49,6 +66,7 @@ export class AtendimentoCadastroComponent implements OnInit {
     return [];
   }
 
+  // Busca lista de clientes para vincular ao carrinho
   carregarClientes(): void {
     this.http.get<any>('https://localhost:7126/api/Pessoa').subscribe({
       next: (dados) => this.clientes = this.extrairArray(dados),
@@ -56,6 +74,7 @@ export class AtendimentoCadastroComponent implements OnInit {
     });
   }
 
+  // Busca lista de funcionários responsáveis
   carregarFuncionarios(): void {
     this.http.get<any>('https://localhost:7126/api/Funcionario').subscribe({
       next: (dados) => this.funcionarios = this.extrairArray(dados),
@@ -63,6 +82,7 @@ export class AtendimentoCadastroComponent implements OnInit {
     });
   }
 
+  // Busca produtos e serviços com sistema de fallback em cascata para evitar erros de rota
   carregarItens(): void {
     this.http.get<any>('https://localhost:7126/api/ItemService').subscribe({
       next: (dados) => {
@@ -88,6 +108,9 @@ export class AtendimentoCadastroComponent implements OnInit {
     });
   }
 
+  /* ==========================================================================
+     PROCESSO 3: Getters dinâmicos para suportar variações nos DTOs/Models
+     ========================================================================== */
   getItemId(item: any): number {
     return Number(item?.idItem ?? item?.iditem ?? item?.id ?? 0);
   }
@@ -124,14 +147,36 @@ export class AtendimentoCadastroComponent implements OnInit {
     return cli?.cpf ?? cli?.pessoa?.cpf ?? '-';
   }
 
+  /* ==========================================================================
+     PROCESSO 4: Operações Dinâmicas do Carrinho de Compras (RF05)
+     ========================================================================== */
+
+  // Atualiza o precoBase e recalcula o valor total temporário ao selecionar um item
   aoMudarItem(): void {
     const selectedId = Number(this.itemTemp.idItem);
     const itemSelected = this.itensDisponiveis.find(i => this.getItemId(i) === selectedId);
+    
     if (itemSelected) {
-      this.itemTemp.valorUnitario = this.getItemPrice(itemSelected);
+      this.precoBase = this.getItemPrice(itemSelected);
+      this.atualizarValorTemp();
+    } else {
+      this.precoBase = 0;
+      this.itemTemp.valorUnitario = 0;
     }
   }
 
+  // Método acionado pelo evento (input) do campo de quantidade no HTML
+  aoMudarQuantidade(): void {
+    this.atualizarValorTemp();
+  }
+
+  // Calcula o valor acumulado (preço base * quantidade digitada)
+  private atualizarValorTemp(): void {
+    const qtd = Number(this.itemTemp.quantidade) || 1;
+    this.itemTemp.valorUnitario = this.precoBase * qtd;
+  }
+
+  // Valida e insere o produto/serviço no carrinho de compras
   adicionarItemNaLista(): void {
     const idItem = Number(this.itemTemp.idItem);
     const idFunc = Number(this.itemTemp.idFuncionario);
@@ -155,6 +200,7 @@ export class AtendimentoCadastroComponent implements OnInit {
     const listaFuncs = this.funcionarios.length > 0 ? this.funcionarios : this.funcionarioService.funcionarios();
     const funcEncontrado = listaFuncs.find(f => this.getFuncId(f) === idFunc);
 
+    // Adiciona o item formatado na lista acumuladora do carrinho
     this.itensAtendimento.push({
       idItem: idItem,
       item: this.getItemName(itemEncontrado),
@@ -165,17 +211,24 @@ export class AtendimentoCadastroComponent implements OnInit {
       valorUnitario: Number(this.itemTemp.valorUnitario)
     });
 
+    // Reseta o formulário de inclusão e a preço base para os próximos itens
     this.itemTemp = { idItem: 0, idFuncionario: 0, quantidade: 1, valorUnitario: 0 };
+    this.precoBase = 0;
   }
 
+  // Remove um item do carrinho com base no seu índice
   removerItem(index: number): void {
     this.itensAtendimento.splice(index, 1);
   }
 
+  // Calcula o valor total geral somando todos os subtotais do carrinho
   calcularTotalGeral(): number {
     return this.itensAtendimento.reduce((acc, it) => acc + (it.quantidade * it.valorUnitario), 0);
   }
 
+  /* ==========================================================================
+     PROCESSO 5: Submissão e Persistência do Atendimento/Pedido no Backend
+     ========================================================================== */
   salvarAtendimento(): void {
     const idPessoa = Number(this.idPessoaSelecionada);
 
@@ -185,13 +238,14 @@ export class AtendimentoCadastroComponent implements OnInit {
     }
 
     if (this.itensAtendimento.length === 0) {
-      alert('Adicione pelo menos um item ao atendimento.');
+      alert('Adicione pelo menos um item ao carrinho antes de finalizar.');
       return;
     }
 
-    // Formatação da data para apenas YYYY-MM-DD (compatível com DateOnly e DATE no MySQL)
+    // Formatação da data (apenas YYYY-MM-DD para compatibilidade com DateOnly/.NET 8)
     const dataApenasData = this.dataAtendimento ? this.dataAtendimento.substring(0, 10) : new Date().toISOString().substring(0, 10);
 
+    // Montagem do payload completo com propriedades redundantes em camelCase e lowercase para prevenir discrepâncias de DTO
     const payload: any = {
       idPessoa: idPessoa,
       idpessoa: idPessoa,
@@ -209,6 +263,7 @@ export class AtendimentoCadastroComponent implements OnInit {
       }))
     };
 
+    // Envio do pedido à API
     this.atendimentoService.adicionarAtendimento(payload).subscribe({
       next: () => this.router.navigate(['/atendimentos']),
       error: (err) => {
