@@ -1,0 +1,67 @@
+<div class="container">
+    <div class="header-pagina">
+      <h2>Consulta de Estoque e Entradas</h2>
+      <div class="acoes-header">
+        <button routerLink="/" class="btn-secundario">Voltar ao Início</button>
+        <button routerLink="/estoque/novo" class="btn-primary">+ Nova Entrada de Produto</button>
+      </div>
+    </div>
+  
+    <!-- TABELA DE ESTOQUE ATUAL -->
+    <section class="card-secao">
+      <h3>Estoque Atual por Produto</h3>
+      <table class="tabela">
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Produto</th>
+            <th>Quantidade em Estoque</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of estoqueItens; track $index) {
+            <tr>
+              <td>{{ getItemId(item) }}</td>
+              <td><strong>{{ getItemNome(item) }}</strong></td>
+              <td>{{ getQuantidade(item) }}</td>
+            </tr>
+          } @empty {
+            <tr><td colspan="3">Nenhum produto encontrado no estoque.</td></tr>
+          }
+        </tbody>
+      </table>
+    </section>
+  
+    <!-- TABELA DE HISTÓRICO DE ENTRADAS -->
+    <section class="card-secao" style="margin-top: 2rem;">
+      <h3>Histórico de Entradas</h3>
+      <table class="tabela">
+        <thead>
+          <tr>
+            <th>ID Entrada</th>
+            <th>Data</th>
+            <th>Produto</th>
+            <th>Quantidade</th>
+            <th>Unidade</th>
+            <th>Valor Unitário</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (ent of historicoEntradas; track $index) {
+            <tr>
+              <td>{{ getEntradaId(ent) }}</td>
+              <td>{{ getEntradaData(ent) }}</td>
+              <td><strong>{{ getNomeProduto(getEntradaIdItem(ent)) }}</strong></td>
+              <td>{{ getEntradaQtd(ent) }}</td>
+              <td>{{ getEntradaUnidade(ent) }}</td>
+              <td>R$ {{ getEntradaValor(ent) | number:'1.2-2' }}</td>
+              <td>R$ {{ (getEntradaQtd(ent) * getEntradaValor(ent)) | number:'1.2-2' }}</td>
+            </tr>
+          } @empty {
+            <tr><td colspan="7">Nenhuma entrada registrada até o momento.</td></tr>
+          }
+        </tbody>
+      </table>
+    </section>
+  </div>

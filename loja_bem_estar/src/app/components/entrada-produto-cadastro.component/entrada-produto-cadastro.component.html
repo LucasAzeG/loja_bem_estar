@@ -1,0 +1,47 @@
+<div class="container">
+    <div class="card-form">
+      <h2>Nova Entrada de Produto</h2>
+      <p class="subtitulo">Registe a entrada de itens no estoque</p>
+  
+      <form (ngSubmit)="guardarEntrada()">
+        <div class="linha-dupla">
+          <div class="campo-grupo">
+            <label for="produto">Produto *</label>
+            <select id="produto" name="produto" [(ngModel)]="produtoSelecionado" (change)="aoMudarProduto()" required>
+              <option [ngValue]="null">-- Selecione o Produto --</option>
+              @for (p of produtos; track $index) {
+                <option [ngValue]="p">{{ getItemNome(p) }}</option>
+              }
+            </select>
+          </div>
+  
+          <div class="campo-grupo">
+            <label for="dataEntrada">Data de Entrada *</label>
+            <input type="date" id="dataEntrada" name="dataEntrada" [(ngModel)]="dataEntradaProduto" required />
+          </div>
+        </div>
+  
+        <div class="linha-tripla">
+          <div class="campo-grupo">
+            <label for="quantidade">Quantidade *</label>
+            <input type="number" id="quantidade" name="quantidade" [(ngModel)]="quantidadeEntrada" min="1" step="1" required />
+          </div>
+  
+          <div class="campo-grupo">
+            <label for="unidade">Unidade *</label>
+            <input type="text" id="unidade" name="unidade" [(ngModel)]="unidade" placeholder="Ex: UN, KG, CX" required />
+          </div>
+  
+          <div class="campo-grupo">
+            <label for="valorUnitario">Valor Unitário (R$) *</label>
+            <input type="number" id="valorUnitario" name="valorUnitario" [(ngModel)]="valorUnitarioEntrada" step="0.01" required />
+          </div>
+        </div>
+  
+        <div class="botoes">
+          <button type="submit" class="btn-salvar">Registar Entrada</button>
+          <button type="button" routerLink="/estoque" class="btn-cancelar">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>

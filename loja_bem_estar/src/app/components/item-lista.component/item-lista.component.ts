@@ -19,15 +19,26 @@ export class ItemListaComponent implements OnInit {
   // Signal para guardar a categoria selecionada (0 = Todas)
   categoriaSelecionadaId = signal<number>(0);
 
-  // Computa a lista filtrada automaticamente
+  // Signal para guardar o ID pesquisado
+  buscaId = signal<number | null>(null);
+
+  // Computa a lista filtrada por ID e/ou por Categoria automaticamente
   itensFiltrados = computed(() => {
     const idCat = Number(this.categoriaSelecionadaId());
-    const lista = this.itemService.itens();
+    const idBusca = this.buscaId();
+    let lista = this.itemService.itens();
 
-    if (!idCat || idCat === 0) {
-      return lista;
+    // Filtra por ID se algum número for digitado
+    if (idBusca && idBusca > 0) {
+      lista = lista.filter(item => item.iditem === idBusca);
     }
-    return lista.filter(item => item.idcategoria === idCat);
+
+    // Filtra por Categoria se selecionada
+    if (idCat && idCat !== 0) {
+      lista = lista.filter(item => item.idcategoria === idCat);
+    }
+
+    return lista;
   });
 
   ngOnInit(): void {
@@ -43,5 +54,10 @@ export class ItemListaComponent implements OnInit {
   aoMudarFiltro(event: Event): void {
     const valor = (event.target as HTMLSelectElement).value;
     this.categoriaSelecionadaId.set(Number(valor));
+  }
+
+  aoMudarBuscaId(event: Event): void {
+    const valor = (event.target as HTMLInputElement).value;
+    this.buscaId.set(valor ? Number(valor) : null);
   }
 }

@@ -11,6 +11,8 @@ import { FuncionarioListaComponent } from './components/funcionario-lista.compon
 import { FuncionarioCadastroComponent } from './components/funcionario-cadastro.component/funcionario-cadastro.component';
 import { AtendimentoListaComponent } from './components/atendimento-lista.component/atendimento-lista.component';
 import { AtendimentoCadastroComponent } from './components/atendimento-cadastro.component/atendimento-cadastro.component';
+import { EntradaProdutoListaComponent } from './components/entrada-produto-lista.component/entrada-produto-lista.component';
+import { EntradaProdutoCadastroComponent } from './components/entrada-produto-cadastro.component/entrada-produto-cadastro.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -29,5 +31,7 @@ export const routes: Routes = [
   { path: 'funcionarios/editar/:id', component: FuncionarioCadastroComponent },
   { path: 'atendimentos', component: AtendimentoListaComponent },
   { path: 'atendimentos/novo', component: AtendimentoCadastroComponent },
+  { path: 'estoque', component: EntradaProdutoListaComponent },
+  { path: 'estoque/novo', component: EntradaProdutoCadastroComponent },
   { path: '**', redirectTo: '' }
 ];

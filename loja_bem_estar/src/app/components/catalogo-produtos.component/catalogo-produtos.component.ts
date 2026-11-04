@@ -19,15 +19,24 @@ export class CatalogoProdutosComponent implements OnInit {
   categoriaService = inject(CategoriaService);
 
   categoriaSelecionadaId = signal<number>(0);
+  buscaId = signal<number | null>(null);
 
   produtosFiltrados = computed(() => {
     const idCat = Number(this.categoriaSelecionadaId());
-    const lista = this.produtoService.produtos();
+    const idBusca = this.buscaId();
+    let lista = this.produtoService.produtos();
 
-    if (!idCat || idCat === 0) {
-      return lista;
+    // Filtra por ID do Item ou Código de Preço (RF02)
+    if (idBusca && idBusca > 0) {
+      lista = lista.filter((p: ProdutoCatalogo) => p.iditem === idBusca || p.codigoPreco === idBusca);
     }
-    return lista.filter((p: ProdutoCatalogo) => p.idCategoria === idCat);
+
+    // Filtra por Categoria
+    if (idCat && idCat !== 0) {
+      lista = lista.filter((p: ProdutoCatalogo) => p.idCategoria === idCat);
+    }
+
+    return lista;
   });
 
   ngOnInit(): void {
@@ -43,5 +52,10 @@ export class CatalogoProdutosComponent implements OnInit {
   aoMudarFiltro(event: Event): void {
     const valor = (event.target as HTMLSelectElement).value;
     this.categoriaSelecionadaId.set(Number(valor));
+  }
+
+  aoMudarBuscaId(event: Event): void {
+    const valor = (event.target as HTMLInputElement).value;
+    this.buscaId.set(valor ? Number(valor) : null);
   }
 }

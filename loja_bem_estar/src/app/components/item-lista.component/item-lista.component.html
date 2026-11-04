@@ -1,17 +1,29 @@
 <div class="container">
-    <header class="header-container">
-      <div>
-        <h1>Gerenciamento de Itens</h1>
-        <p>Produtos e Serviços cadastrados</p>
-      </div>
-      <div class="acoes">
-        <button routerLink="/itens/novo" class="btn-novo">+ Novo Item</button>
-        <button routerLink="/" class="btn-home">Home</button>
-      </div>
-    </header>
-  
-    <!-- Barra de Filtro por Categoria -->
-    <div class="bar-filtro">
+  <header class="header-container">
+    <div>
+      <h1>Gerenciamento de Itens</h1>
+      <p>Produtos e Serviços cadastrados</p>
+    </div>
+    <div class="acoes">
+      <button routerLink="/itens/novo" class="btn-novo">+ Novo Item</button>
+      <button routerLink="/" class="btn-home">Home</button>
+    </div>
+  </header>
+
+  <!-- Barra de Filtros (Por ID e por Categoria) -->
+  <div class="bar-filtro">
+    <div class="grupo-filtro">
+      <label for="buscaId">Consultar por ID:</label>
+      <input 
+        type="number" 
+        id="buscaId" 
+        placeholder="Ex: 1" 
+        [value]="buscaId() ?? ''" 
+        (input)="aoMudarBuscaId($event)"
+      />
+    </div>
+
+    <div class="grupo-filtro">
       <label for="filtroCategoria">Filtrar por Categoria:</label>
       <select id="filtroCategoria" [value]="categoriaSelecionadaId()" (change)="aoMudarFiltro($event)">
         <option [value]="0">Todas as Categorias</option>
@@ -20,50 +32,51 @@
         }
       </select>
     </div>
-  
-    <div class="tabela-container">
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>ITEM</th>
-            <th>CATEGORIA</th>
-            <th>TIPO</th>
-            <th>PREÇO</th>
-            <th>STATUS</th>
-            <th class="texto-centro">AÇÕES</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (item of itensFiltrados(); track item.iditem) {
-            <tr>
-              <td>#{{ item.iditem }}</td>
-              <td>
-                <strong>{{ item.item }}</strong>
-                <small *ngIf="item.descricao_item" class="descricao-sub">{{ item.descricao_item }}</small>
-              </td>
-              <td>{{ obterNomeCategoria(item.idcategoria) }}</td>
-              <td>
-                <span class="badge" [class.badge-prod]="item.tipo_item === 'P'" [class.badge-serv]="item.tipo_item === 'S'">
-                  {{ item.tipo_item === 'P' ? 'Produto' : 'Serviço' }}
-                </span>
-              </td>
-              <td>R$ {{ item.preco | number:'1.2-2' }}</td>
-              <td>
-                <span class="status-dot" [class.ativo]="item.ativo_produto_servico === 'S'">
-                  {{ item.ativo_produto_servico === 'S' ? 'Ativo' : 'Inativo' }}
-                </span>
-              </td>
-              <td class="texto-centro">
-                <button [routerLink]="['/itens/editar', item.iditem]" class="btn-editar">Editar</button>
-              </td>
-            </tr>
-          } @empty {
-            <tr>
-              <td colspan="7" class="sem-registros">Nenhum item encontrado para esta categoria.</td>
-            </tr>
-          }
-        </tbody>
-      </table>
-    </div>
   </div>
+
+  <div class="tabela-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>ITEM</th>
+          <th>CATEGORIA</th>
+          <th>TIPO</th>
+          <th>PREÇO</th>
+          <th>STATUS</th>
+          <th class="texto-centro">AÇÕES</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of itensFiltrados(); track item.iditem) {
+          <tr>
+            <td>#{{ item.iditem }}</td>
+            <td>
+              <strong>{{ item.item }}</strong>
+              <small *ngIf="item.descricao_item" class="descricao-sub">{{ item.descricao_item }}</small>
+            </td>
+            <td>{{ obterNomeCategoria(item.idcategoria) }}</td>
+            <td>
+              <span class="badge" [class.badge-prod]="item.tipo_item === 'P'" [class.badge-serv]="item.tipo_item === 'S'">
+                {{ item.tipo_item === 'P' ? 'Produto' : 'Serviço' }}
+              </span>
+            </td>
+            <td>R$ {{ item.preco | number:'1.2-2' }}</td>
+            <td>
+              <span class="status-dot" [class.ativo]="item.ativo_produto_servico === 'S'">
+                {{ item.ativo_produto_servico === 'S' ? 'Ativo' : 'Inativo' }}
+              </span>
+            </td>
+            <td class="texto-centro">
+              <button [routerLink]="['/itens/editar', item.iditem]" class="btn-editar">Editar</button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="7" class="sem-registros">Nenhum item encontrado.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
