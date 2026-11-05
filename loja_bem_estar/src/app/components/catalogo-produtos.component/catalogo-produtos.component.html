@@ -4,7 +4,10 @@
       <h1>Catálogo de Produtos</h1>
       <p>Visualização e consulta de produtos da loja</p>
     </div>
-    <button routerLink="/" class="btn-home">Home</button>
+    <div class="acoes-header">
+      <button routerLink="/itens/novo" class="btn-novo">+ Novo Produto</button>
+      <button routerLink="/" class="btn-home">Home</button>
+    </div>
   </header>
 
   <!-- Barra de Filtros (Por ID e por Categoria) -->
@@ -33,19 +36,33 @@
 
   <div class="grid-catalogo">
     @for (prod of produtosFiltrados(); track prod.codigoPreco) {
-      <div class="card-produto">
+      <div class="card-produto" [class.inativo]="!isAtivo(prod)">
         <div class="header-card">
           <span class="categoria-tag">{{ obterNomeCategoria(prod.idCategoria) }}</span>
           <span class="codigo-tag">Cód. Preço: #{{ prod.codigoPreco }}</span>
         </div>
         <h3>{{ prod.item }}</h3>
         <p class="descricao">{{ prod.descricaoItem || 'Sem descrição cadastrada.' }}</p>
+
         <div class="footer-card">
           <div class="preco-container">
             <span class="label-preco">Preço de Venda</span>
             <span class="valor-preco">R$ {{ prod.precoVenda | number:'1.2-2' }}</span>
           </div>
           <span class="unidade-badge">{{ prod.unidade }}</span>
+        </div>
+
+        <!-- Ações do Card (RF10: Editar e Desativar) -->
+        <div class="card-acoes">
+          <button [routerLink]="['/itens/editar', prod.iditem || prod.codigoPreco]" class="btn-card-editar">
+            Editar
+          </button>
+          <button 
+            type="button" 
+            (click)="alternarStatus(prod)" 
+            [class]="isAtivo(prod) ? 'btn-card-desativar' : 'btn-card-ativar'">
+            {{ isAtivo(prod) ? 'Desativar' : 'Ativar' }}
+          </button>
         </div>
       </div>
     } @empty {

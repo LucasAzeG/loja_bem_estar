@@ -58,4 +58,25 @@ export class CatalogoProdutosComponent implements OnInit {
     const valor = (event.target as HTMLInputElement).value;
     this.buscaId.set(valor ? Number(valor) : null);
   }
+
+  // Verifica se o produto está ativo (suporta 'S', true ou 1)
+  isAtivo(prod: any): boolean {
+    const status = prod?.ativoItem ?? prod?.ativo ?? 'S';
+    return status === 'S' || status === true || status === 1;
+  }
+
+  // Alterna o status entre Ativado/Desativado
+  alternarStatus(prod: any): void {
+    const novoStatus = this.isAtivo(prod) ? 'N' : 'S';
+    const id = prod.iditem || prod.codigoPreco;
+
+    // Atualiza localmente no objeto
+    if ('ativoItem' in prod) prod.ativoItem = novoStatus;
+    if ('ativo' in prod) prod.ativo = novoStatus === 'S';
+
+    // Chama o serviço se houver integração HTTP implementada
+    if (typeof (this.produtoService as any).alterarStatus === 'function') {
+      (this.produtoService as any).alterarStatus(id, novoStatus);
+    }
+  }
 }
