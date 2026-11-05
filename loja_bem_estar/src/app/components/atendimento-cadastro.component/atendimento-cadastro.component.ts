@@ -5,7 +5,7 @@ import { Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AtendimentoService } from '../../services/atendimento.service';
 import { FuncionarioService } from '../../services/funcionario.service';
-import { Atendimento, AtendimentoItem } from '../../models/atendimento';
+import { AtendimentoItem } from '../../models/atendimento';
 
 @Component({
   selector: 'app-atendimento-cadastro',
@@ -16,30 +16,26 @@ import { Atendimento, AtendimentoItem } from '../../models/atendimento';
 })
 export class AtendimentoCadastroComponent implements OnInit {
   /* ==========================================================================
-     PROCESSO 1: Injeção de Serviços e Inicialização do Estado do Carrinho
+     PROCESSO 1: Injeção de Serviços e Estado do Carrinho
      ========================================================================== */
   private http = inject(HttpClient);
   private router = inject(Router);
   atendimentoService = inject(AtendimentoService);
   funcionarioService = inject(FuncionarioService);
 
-  // Dados do pedido / atendimento principal
   idPessoaSelecionada: number = 0;
-  statusAtendimento: string = 'A'; // 'A' = Ativo / Agendado
+  statusAtendimento: string = 'A';
   dataAtendimento: string = new Date().toISOString().substring(0, 10);
 
-  // Listas de dados para preenchimento dos combos
   clientes: any[] = [];
   itensDisponiveis: any[] = [];
   funcionarios: any[] = [];
   
-  // Lista temporária que armazena os produtos/serviços adicionados ao carrinho (RF05)
   itensAtendimento: AtendimentoItem[] = [];
 
-  // Guarda o preço unitário individual do item selecionado sem a quantidade aplicada
+  // Preço unitário base retornado pelo backend (ex: R$ 250)
   precoBase: number = 0;
 
-  // Form temporário para o item selecionado atualmente no painel de inclusão
   itemTemp = {
     idItem: 0,
     idFuncionario: 0,
@@ -48,17 +44,14 @@ export class AtendimentoCadastroComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    // Carrega todas as dependências ao iniciar a tela de checkout
     this.carregarClientes();
     this.carregarFuncionarios();
     this.carregarItens();
   }
 
   /* ==========================================================================
-     PROCESSO 2: Utilitários e Carregamento de Dados das APIs
+     PROCESSO 2: Utilitários e Carregamento de Dados
      ========================================================================== */
-  
-  // Trata retornos flexíveis da API (Arrays puros ou envelopados com $values do EF Core)
   private extrairArray(dados: any): any[] {
     if (!dados) return [];
     if (Array.isArray(dados)) return dados;
@@ -66,7 +59,6 @@ export class AtendimentoCadastroComponent implements OnInit {
     return [];
   }
 
-  // Busca lista de clientes para vincular ao carrinho
   carregarClientes(): void {
     this.http.get<any>('https://localhost:7126/api/Pessoa').subscribe({
       next: (dados) => this.clientes = this.extrairArray(dados),
@@ -74,7 +66,6 @@ export class AtendimentoCadastroComponent implements OnInit {
     });
   }
 
-  // Busca lista de funcionários responsáveis
   carregarFuncionarios(): void {
     this.http.get<any>('https://localhost:7126/api/Funcionario').subscribe({
       next: (dados) => this.funcionarios = this.extrairArray(dados),
@@ -82,7 +73,6 @@ export class AtendimentoCadastroComponent implements OnInit {
     });
   }
 
-  // Busca produtos e serviços com sistema de fallback em cascata para evitar erros de rota
   carregarItens(): void {
     this.http.get<any>('https://localhost:7126/api/ItemService').subscribe({
       next: (dados) => {
@@ -109,7 +99,7 @@ export class AtendimentoCadastroComponent implements OnInit {
   }
 
   /* ==========================================================================
-     PROCESSO 3: Getters dinâmicos para suportar variações nos DTOs/Models
+     PROCESSO 3: Getters de Formatação
      ========================================================================== */
   getItemId(item: any): number {
     return Number(item?.idItem ?? item?.iditem ?? item?.id ?? 0);
@@ -148,10 +138,10 @@ export class AtendimentoCadastroComponent implements OnInit {
   }
 
   /* ==========================================================================
-     PROCESSO 4: Operações Dinâmicas do Carrinho de Compras (RF05)
+     PROCESSO 4: Operações Dinâmicas do Carrinho
      ========================================================================== */
 
-  // Atualiza o precoBase e recalcula o valor total temporário ao selecionar um item
+  // Atualiza o precoBase ao selecionar o item no combo
   aoMudarItem(): void {
     const selectedId = Number(this.itemTemp.idItem);
     const itemSelected = this.itensDisponiveis.find(i => this.getItemId(i) === selectedId);
@@ -165,18 +155,21 @@ export class AtendimentoCadastroComponent implements OnInit {
     }
   }
 
-  // Método acionado pelo evento (input) do campo de quantidade no HTML
+  // Recalcula o valor dinâmico sempre que a quantidade mudar na tela
   aoMudarQuantidade(): void {
+    if (!this.itemTemp.quantidade || this.itemTemp.quantidade < 1) {
+      this.itemTemp.quantidade = 1;
+    }
     this.atualizarValorTemp();
   }
 
-  // Calcula o valor acumulado (preço base * quantidade digitada)
+  // Multiplica Preço Base x Quantidade para exibir no campo
   private atualizarValorTemp(): void {
     const qtd = Number(this.itemTemp.quantidade) || 1;
     this.itemTemp.valorUnitario = this.precoBase * qtd;
   }
 
-  // Valida e insere o produto/serviço no carrinho de compras
+  // Adiciona o item na lista mantendo o preço unitário real (precoBase) para o cálculo final
   adicionarItemNaLista(): void {
     const idItem = Number(this.itemTemp.idItem);
     const idFunc = Number(this.itemTemp.idFuncionario);
@@ -200,7 +193,6 @@ export class AtendimentoCadastroComponent implements OnInit {
     const listaFuncs = this.funcionarios.length > 0 ? this.funcionarios : this.funcionarioService.funcionarios();
     const funcEncontrado = listaFuncs.find(f => this.getFuncId(f) === idFunc);
 
-    // Adiciona o item formatado na lista acumuladora do carrinho
     this.itensAtendimento.push({
       idItem: idItem,
       item: this.getItemName(itemEncontrado),
@@ -208,26 +200,24 @@ export class AtendimentoCadastroComponent implements OnInit {
       nomeFuncionario: this.getFuncName(funcEncontrado),
       cargo: this.getFuncCargo(funcEncontrado),
       quantidade: Number(this.itemTemp.quantidade),
-      valorUnitario: Number(this.itemTemp.valorUnitario)
+      valorUnitario: Number(this.precoBase)
     });
 
-    // Reseta o formulário de inclusão e a preço base para os próximos itens
+    // Reseta o painel de inclusão
     this.itemTemp = { idItem: 0, idFuncionario: 0, quantidade: 1, valorUnitario: 0 };
     this.precoBase = 0;
   }
 
-  // Remove um item do carrinho com base no seu índice
   removerItem(index: number): void {
     this.itensAtendimento.splice(index, 1);
   }
 
-  // Calcula o valor total geral somando todos os subtotais do carrinho
   calcularTotalGeral(): number {
     return this.itensAtendimento.reduce((acc, it) => acc + (it.quantidade * it.valorUnitario), 0);
   }
 
   /* ==========================================================================
-     PROCESSO 5: Submissão e Persistência do Atendimento/Pedido no Backend
+     PROCESSO 5: Persistência no Backend
      ========================================================================== */
   salvarAtendimento(): void {
     const idPessoa = Number(this.idPessoaSelecionada);
@@ -242,10 +232,8 @@ export class AtendimentoCadastroComponent implements OnInit {
       return;
     }
 
-    // Formatação da data (apenas YYYY-MM-DD para compatibilidade com DateOnly/.NET 8)
     const dataApenasData = this.dataAtendimento ? this.dataAtendimento.substring(0, 10) : new Date().toISOString().substring(0, 10);
 
-    // Montagem do payload completo com propriedades redundantes em camelCase e lowercase para prevenir discrepâncias de DTO
     const payload: any = {
       idPessoa: idPessoa,
       idpessoa: idPessoa,
@@ -263,10 +251,9 @@ export class AtendimentoCadastroComponent implements OnInit {
       }))
     };
 
-    // Envio do pedido à API
     this.atendimentoService.adicionarAtendimento(payload).subscribe({
       next: () => this.router.navigate(['/atendimentos']),
-      error: (err) => {
+      error: (err: any) => {
         console.error('Erro detalhado retornado pela API:', err.error);
         
         let detalhe = '';
@@ -280,7 +267,7 @@ export class AtendimentoCadastroComponent implements OnInit {
           detalhe = err.error.title;
         }
 
-        alert(`Erro 400 ao guardar atendimento:\n${detalhe || 'Verifique o console para mais detalhes.'}`);
+        alert(`Erro 400 ao guardar atendimento:\n${detalhe || 'Verifique a consola para mais detalhes.'}`);
       }
     });
   }

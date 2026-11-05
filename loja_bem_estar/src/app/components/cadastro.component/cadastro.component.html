@@ -62,12 +62,11 @@
       <button type="submit" [disabled]="cadastroForm.invalid" class="btn-salvar">
         Salvar
       </button>
-      
+
       <button type="button" routerLink="/clientes" class="btn-cancelar">
         Cancelar
       </button>
 
-      <!-- Botão de exclusão visível apenas quando estiver editando um cliente existente -->
       @if (isEdicao) {
         <button type="button" (click)="excluirCliente()" class="btn-excluir">
           Excluir

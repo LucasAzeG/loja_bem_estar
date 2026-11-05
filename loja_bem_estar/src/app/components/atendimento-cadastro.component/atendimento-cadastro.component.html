@@ -1,136 +1,138 @@
-<!-- Container principal centralizado do Carrinho de Compras -->
 <div class="container">
-  
-  <!-- Cartão container do formulário estilo Checkout / Carrinho -->
-  <div class="card-form">
-    
-    <!-- ETAPA 1: Cabeçalho com identificação clara da funcionalidade do Carrinho -->
-    <h2>🛒 Carrinho de Compras & Atendimento</h2>
-    <p class="subtitulo">Selecione o cliente, adicione os produtos/serviços ao carrinho e finalize a compra.</p>
+  <header class="header-container">
+    <div>
+      <h1>Carrinho de Compras & Atendimento</h1>
+      <p>Selecione o cliente, adicione os produtos/serviços ao carrinho e finalize a compra.</p>
+    </div>
+  </header>
 
-    <!-- Formulário principal vinculado ao método de salvamento/finalização -->
-    <form (ngSubmit)="salvarAtendimento()">
+  <div class="card-checkout">
+    <!-- Seleção de Cliente e Data -->
+    <div class="form-row">
+      <div class="form-group flex-2">
+        <label>Cliente *</label>
+        <select [(ngModel)]="idPessoaSelecionada" name="idPessoaSelecionada">
+          <option [ngValue]="0">-- Selecione o Cliente --</option>
+          @for (cli of clientes; track getCliId(cli)) {
+            <option [ngValue]="getCliId(cli)">
+              {{ getCliNome(cli) }} (CPF: {{ getCliCpf(cli) }})
+            </option>
+          }
+        </select>
+      </div>
+
+      <div class="form-group flex-1">
+        <label>Data do Pedido *</label>
+        <input type="date" [(ngModel)]="dataAtendimento" name="dataAtendimento" />
+      </div>
+    </div>
+
+    <!-- Painel de Inclusão de Itens -->
+    <div class="box-incluir-item">
+      <h3>+ Incluir Item ou Serviço no Carrinho</h3>
       
-      <!-- ETAPA 2: Dados Principais da Compra (Cliente e Data/Hora do Pedido) -->
-      <div class="linha-dupla">
-        
-        <!-- Seleção do Cliente vinculado ao pedido -->
-        <div class="campo-grupo">
-          <label for="cliente">Cliente *</label>
-          <select id="cliente" name="cliente" [(ngModel)]="idPessoaSelecionada" required>
-            <option [value]="0">-- Selecione o Cliente --</option>
-            @for (cli of clientes; track $index) {
-              <option [value]="getCliId(cli)">{{ getCliNome(cli) }} (CPF: {{ getCliCpf(cli) }})</option>
+      <div class="form-row">
+        <div class="form-group flex-2">
+          <label>Item / Serviço</label>
+          <select [(ngModel)]="itemTemp.idItem" (change)="aoMudarItem()" name="idItem">
+            <option [ngValue]="0">-- Selecione --</option>
+            @for (it of itensDisponiveis; track getItemId(it)) {
+              <option [ngValue]="getItemId(it)">
+                {{ getItemName(it) }} - R$ {{ getItemPrice(it) | number:'1.2-2' }}
+              </option>
             }
           </select>
         </div>
 
-        <!-- Data do registro/atendimento (padrão YYYY-MM-DD para backend .NET) -->
-        <div class="campo-grupo">
-          <label for="dataAtendimento">Data do Pedido *</label>
-          <input type="date" id="dataAtendimento" name="dataAtendimento" [(ngModel)]="dataAtendimento" required />
+        <div class="form-group flex-2">
+          <label>Profissional</label>
+          <select [(ngModel)]="itemTemp.idFuncionario" name="idFuncionario">
+            <option [ngValue]="0">-- Selecione --</option>
+            @for (func of funcionarios; track getFuncId(func)) {
+              <option [ngValue]="getFuncId(func)">
+                {{ getFuncName(func) }} <ng-container *ngIf="getFuncCargo(func)">({{ getFuncCargo(func) }})</ng-container>
+              </option>
+            }
+          </select>
+        </div>
+
+        <!-- Campo Qtd com escuta ativa de alterações -->
+        <div class="form-group flex-1">
+          <label>Qtd</label>
+          <input 
+            type="number" 
+            [(ngModel)]="itemTemp.quantidade" 
+            (ngModelChange)="aoMudarQuantidade()"
+            (input)="aoMudarQuantidade()"
+            name="quantidade" 
+            min="1" 
+          />
+        </div>
+
+        <!-- Campo do Valor Calculado (Preço Unitário x Quantidade) -->
+        <div class="form-group flex-1">
+          <label>V. Total Item (R$)</label>
+          <input 
+            type="number" 
+            [value]="itemTemp.valorUnitario" 
+            readonly 
+            class="input-readonly" 
+          />
         </div>
       </div>
 
-      <!-- ETAPA 3: Painel para adicionar itens/serviços ao carrinho (RF05) -->
-      <div class="painel-item-add">
-        <h3>+ Incluir Item ou Serviço no Carrinho</h3>
-        
-        <div class="linha-quadrupla">
-          
-          <!-- Seleção do produto/serviço com atualização automática de valor unitário -->
-          <div class="campo-grupo">
-            <label>Item / Serviço</label>
-            <select name="itemTemp" [(ngModel)]="itemTemp.idItem" (change)="aoMudarItem()">
-              <option [value]="0">-- Selecione --</option>
-              @for (it of itensDisponiveis; track $index) {
-                <option [value]="getItemId(it)">{{ getItemName(it) }}</option>
-              }
-            </select>
-          </div>
+      <button type="button" (click)="adicionarItemNaLista()" class="btn-adicionar">
+        + Adicionar ao Carrinho
+      </button>
+    </div>
 
-          <!-- Seleção do profissional responsável pelo atendimento/item -->
-          <div class="campo-grupo">
-            <label>Profissional</label>
-            <select name="funcTemp" [(ngModel)]="itemTemp.idFuncionario">
-              <option [value]="0">-- Selecione --</option>
-              @for (func of funcionarios; track $index) {
-                <option [value]="getFuncId(func)">{{ getFuncName(func) }} ({{ getFuncCargo(func) }})</option>
-              }
-            </select>
-          </div>
-
-          <!-- Definir quantidade a ser adicionada ao carrinho -->
-          <div class="campo-grupo">
-            <label>Qtd</label>
-            <input type="number" name="qtdTemp" [(ngModel)]="itemTemp.quantidade" min="1" />
-          </div>
-
-          <!-- Preço unitário (preenchido automaticamente ou editável) -->
-          <div class="campo-grupo">
-            <label>V. Unitário (R$)</label>
-            <input type="number" name="valTemp" [(ngModel)]="itemTemp.valorUnitario" step="0.01" />
-          </div>
-        </div>
-
-        <!-- Botão que aciona a inclusão temporária no carrinho -->
-        <button type="button" (click)="adicionarItemNaLista()" class="btn-add-item">
-          + Adicionar ao Carrinho
-        </button>
-      </div>
-
-      <!-- ETAPA 4: Visualização e Gestão dos Itens Adicionados ao Carrinho -->
-      <div class="tabela-container" *ngIf="itensAtendimento.length > 0">
-        <h3>🛍️ Itens Selecionados</h3>
+    <!-- Tabela do Carrinho de Compras -->
+    @if (itensAtendimento.length > 0) {
+      <div class="tabela-carrinho">
         <table>
           <thead>
             <tr>
-              <th>Item / Produto</th>
+              <th>Item / Serviço</th>
               <th>Profissional</th>
               <th>Qtd</th>
               <th>V. Unitário</th>
               <th>Subtotal</th>
-              <th class="texto-centro">Ação</th>
+              <th>Ações</th>
             </tr>
           </thead>
           <tbody>
             @for (it of itensAtendimento; track $index) {
               <tr>
-                <td><strong>{{ it.item }}</strong></td>
+                <td>{{ it.item }}</td>
                 <td>{{ it.nomeFuncionario }}</td>
                 <td>{{ it.quantidade }}</td>
                 <td>R$ {{ it.valorUnitario | number:'1.2-2' }}</td>
                 <td>R$ {{ (it.quantidade * it.valorUnitario) | number:'1.2-2' }}</td>
-                <td class="texto-centro">
-                  <!-- Permite remover um item específico do carrinho -->
-                  <button type="button" class="btn-remover" (click)="removerItem($index)">Excluir</button>
+                <td>
+                  <button type="button" (click)="removerItem($index)" class="btn-remover">
+                    Remover
+                  </button>
                 </td>
               </tr>
             }
           </tbody>
         </table>
 
-        <!-- Total acumulado da compra calculado dinamicamente -->
-        <div class="total-bar">
-          Total do Carrinho: <strong>R$ {{ calcularTotalGeral() | number:'1.2-2' }}</strong>
+        <div class="total-geral">
+          <span>Total Geral:</span>
+          <strong>R$ {{ calcularTotalGeral() | number:'1.2-2' }}</strong>
         </div>
       </div>
+    }
 
-      <!-- ETAPA 5: Ações Finais (Salvar Pedido/Atendimento no banco ou Cancelar) -->
-      <div class="botoes">
-        <button type="submit" class="btn-salvar">Finalizar Compra e Registrar</button>
-        <button type="button" routerLink="/atendimentos" class="btn-cancelar">Cancelar</button>
-      </div>
-      <div class="campo-grupo">
-        <label>Qtd</label>
-        <input 
-          type="number" 
-          name="qtdTemp" 
-          [(ngModel)]="itemTemp.quantidade" 
-          (input)="aoMudarQuantidade()" 
-          min="1" 
-        />
-      </div>
-    </form>
+    <!-- Botões Finais de Ação -->
+    <div class="botoes-checkout">
+      <button type="button" (click)="salvarAtendimento()" class="btn-finalizar">
+        Finalizar Compra e Registrar
+      </button>
+      <button type="button" routerLink="/atendimentos" class="btn-cancelar">
+        Cancelar
+      </button>
+    </div>
   </div>
 </div>

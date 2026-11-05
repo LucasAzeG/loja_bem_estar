@@ -16,138 +16,129 @@
 
 /* Limitador de largura centralizado para visualização confortável */
 .container { 
-  max-width: 880px; 
+  max-width: 900px; 
   margin: 0 auto; 
 }
 
-/* Card central contendo o formulário de checkout/carrinho */
-.card-form {
+/* Cabeçalho da página */
+.header-container {
+  margin-bottom: 1.5rem;
+}
+
+.header-container h1 {
+  color: #ea580c;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem 0;
+}
+
+.header-container p {
+  color: #7c2d12;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* Card central do checkout */
+.card-checkout {
   background-color: #ffffff;
   border: 1px solid #fed7aa;
-  border-radius: 12px;
-  padding: 2.25rem;
+  padding: 2rem;
   box-shadow: 0 4px 16px rgba(234, 88, 12, 0.05);
 }
 
 /* ==========================================================================
-   2. CABEÇALHO DO CARRINHO E FORMULÁRIOS
+   2. ESTRUTURA DE FORMULÁRIOS E CAMPOS
    ========================================================================== */
 
-.card-form h2 { 
-  color: #ea580c; 
-  font-size: 1.6rem;
-  font-weight: 700;
-  margin: 0 0 0.25rem 0; 
-}
-
-.subtitulo { 
-  color: #7c2d12; 
-  font-size: 0.875rem; 
-  margin-bottom: 1.75rem; 
-}
-
-/* Disposição flexível em linhas duplas e quadruplas para formulários responsivos */
-.linha-dupla { 
+.form-row { 
   display: flex; 
-  gap: 1.25rem; 
+  gap: 1rem; 
   margin-bottom: 1.25rem; 
-}
-
-.linha-quadrupla { 
-  display: flex; 
-  gap: 0.85rem; 
-  margin-bottom: 1rem; 
   flex-wrap: wrap;
 }
 
-.campo-grupo { 
+.form-group { 
   display: flex; 
   flex-direction: column; 
-  gap: 0.35rem; 
-  flex: 1; 
-  min-width: 140px;
+  gap: 0.4rem; 
 }
 
+/* Proporções do Flexbox */
+.flex-1 { flex: 1; min-width: 120px; }
+.flex-2 { flex: 2; min-width: 200px; }
+
 label { 
-  font-size: 0.8rem; 
+  font-size: 0.85rem; 
   font-weight: 600; 
   color: #7c2d12; 
 }
 
 /* Padronização visual de campos de entrada e seleção */
 input, select {
-  padding: 0.65rem 0.85rem;
+  padding: 0.75rem;
   border: 1px solid #fed7aa;
-  border-radius: 8px;
+  border-radius: 0;
   font-family: inherit;
-  font-size: 0.875rem;
-  background-color: #fffaf5;
+  font-size: 0.9rem;
+  background-color: #ffffff;
   color: #2c1810;
   outline: none;
-  transition: border-color 0.2s ease, background-color 0.2s ease;
+  transition: border-color 0.2s ease;
 }
 
 input:focus, select:focus {
   border-color: #ea580c;
-  background-color: #ffffff;
+}
+
+/* Campo somente leitura em destaque */
+.input-readonly {
+  background-color: #fff7ed;
+  color: #ea580c;
+  font-weight: 700;
 }
 
 /* ==========================================================================
-   3. PAINEL DE ADIÇÃO DE PRODUTOS / SERVIÇOS (RF05)
+   3. PAINEL DE INCLUSÃO DE ITENS NO CARRINHO
    ========================================================================== */
 
-.painel-item-add {
+.box-incluir-item {
   background-color: #fff7ed;
   border: 1px solid #fed7aa;
-  border-radius: 10px;
   padding: 1.25rem;
   margin-bottom: 1.5rem;
 }
 
-.painel-item-add h3 { 
+.box-incluir-item h3 { 
   margin: 0 0 1rem 0; 
-  font-size: 0.95rem; 
+  font-size: 1rem; 
   font-weight: 700;
   color: #ea580c; 
 }
 
-.btn-add-item {
+.btn-adicionar {
   background-color: #ffffff;
   color: #ea580c;
   border: 1px solid #ea580c;
-  border-radius: 8px;
-  padding: 0.55rem 1.25rem;
+  padding: 0.65rem 1.25rem;
   font-family: inherit;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.btn-add-item:hover {
+.btn-adicionar:hover {
   background-color: #ea580c;
   color: #ffffff;
 }
 
 /* ==========================================================================
-   4. TABELA DE COMPRAS E TOTALIZADOR
+   4. TABELA DO CARRINHO E TOTALIZADOR
    ========================================================================== */
 
-.tabela-container { 
+.tabela-carrinho { 
   margin-bottom: 1.75rem; 
   border: 1px solid #fed7aa; 
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.tabela-container h3 {
-  background-color: #fff7ed;
-  color: #ea580c;
-  font-size: 0.9rem;
-  font-weight: 700;
-  padding: 0.75rem 1rem;
-  margin: 0;
-  border-bottom: 1px solid #fed7aa;
 }
 
 table { 
@@ -156,11 +147,10 @@ table {
 }
 
 th { 
-  background-color: #ffffff; 
-  color: #7c2d12; 
-  font-size: 0.75rem; 
+  background-color: #fff7ed; 
+  color: #ea580c; 
+  font-size: 0.8rem; 
   font-weight: 700;
-  text-transform: uppercase;
   padding: 0.75rem 1rem; 
   text-align: left; 
   border-bottom: 1px solid #fed7aa;
@@ -168,18 +158,15 @@ th {
 
 td { 
   padding: 0.75rem 1rem; 
-  border-bottom: 1px solid #fffaf5; 
+  border-bottom: 1px solid #fff7ed; 
   font-size: 0.875rem; 
 }
 
-.texto-centro { text-align: center; }
-
-/* Botão para remover item do carrinho */
+/* Botão de remoção de item */
 .btn-remover { 
   background-color: #fee2e2; 
   color: #dc2626; 
   border: 1px solid #fca5a5; 
-  border-radius: 6px;
   padding: 0.35rem 0.75rem; 
   cursor: pointer; 
   font-size: 0.75rem; 
@@ -192,47 +179,46 @@ td {
   color: #ffffff;
 }
 
-/* Faixa destacada com o valor total acumulado no carrinho */
-.total-bar { 
+/* Totalizador Geral do Carrinho */
+.total-geral { 
   text-align: right; 
   padding: 1rem 1.25rem; 
   background-color: #fff7ed; 
   color: #7c2d12; 
-  font-size: 1.05rem; 
+  font-size: 1rem; 
   border-top: 1px solid #fed7aa;
 }
 
-.total-bar strong {
+.total-geral strong {
   color: #ea580c;
   font-size: 1.25rem;
   margin-left: 0.5rem;
 }
 
 /* ==========================================================================
-   5. BOTÕES DE FINALIZAÇÃO DA COMPRA
+   5. BOTÕES DE AÇÃO DO CHECKOUT
    ========================================================================== */
 
-.botoes { 
+.botoes-checkout { 
   display: flex; 
   gap: 1rem; 
+  margin-top: 1.5rem;
 }
 
-.btn-salvar { 
+.btn-finalizar { 
   flex: 1; 
   background-color: #ea580c; 
   color: #ffffff; 
   border: none; 
-  border-radius: 8px;
   padding: 0.85rem; 
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 700; 
   cursor: pointer; 
   transition: background-color 0.2s ease;
-  box-shadow: 0 2px 8px rgba(234, 88, 12, 0.25);
 }
 
-.btn-salvar:hover { 
+.btn-finalizar:hover { 
   background-color: #c2410c; 
 }
 
@@ -240,10 +226,9 @@ td {
   background-color: #ffffff; 
   color: #ea580c; 
   border: 1px solid #ea580c; 
-  border-radius: 8px;
   padding: 0.85rem 1.75rem; 
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 600; 
   cursor: pointer; 
   transition: background-color 0.2s ease;
@@ -253,42 +238,10 @@ td {
   background-color: #fff7ed; 
 }
 
-/* ==========================================================================
-   CORREÇÃO DE SOBREPOSIÇÃO DOS MENUS SELECT (Z-INDEX)
-   ========================================================================== */
-
-/* Linha superior (Cliente e Data): prioridade máxima de camada */
-.linha-dupla { 
-  display: flex; 
-  gap: 1.25rem; 
-  margin-bottom: 1.25rem; 
-  position: relative;
-  z-index: 10; /* Eleva os selects do cliente/data acima do painel de itens */
-}
-
-/* Painel de inclusão de itens: camada intermediária */
-.painel-item-add {
-  background-color: #fff7ed;
-  border: 1px solid #fed7aa;
-  border-radius: 10px;
-  padding: 1.25rem;
-  margin-bottom: 1.5rem;
-  position: relative;
-  z-index: 1; /* Mantém o painel abaixo da linha do cliente */
-}
-
-/* Linha interna do painel (Item, Profissional, Qtd): prioridade para seus próprios selects */
-.linha-quadrupla { 
-  display: flex; 
-  gap: 0.85rem; 
-  margin-bottom: 1rem; 
-  flex-wrap: wrap;
-  position: relative;
-  z-index: 5;
-}
-
-/* Garantia adicional para os elementos select em foco */
-select:focus {
-  position: relative;
-  z-index: 20;
+/* Responsividade para telas menores */
+@media (max-width: 600px) {
+  .form-row,
+  .botoes-checkout {
+    flex-direction: column;
+  }
 }
