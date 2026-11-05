@@ -67,6 +67,20 @@ export class CadastroComponent implements OnInit {
     }
   }
 
+  /**
+   * Solicita confirmação e chama o serviço para excluir o cliente atual no backend.
+   * Certifique-se de que o método 'excluirCliente' existe no seu 'CadastroService'.
+   */
+  excluirCliente(): void {
+    if (!this.clienteId) return;
 
-  
+    const confirmacao = confirm('Tem certeza de que deseja excluir este cliente?');
+    if (confirmacao) {
+      // Ajuste o nome do método caso no seu CadastroService ele tenha outro nome (ex: deletarCliente, removerCliente)
+      this.cadastroService.excluirCliente(this.clienteId).subscribe({
+        next: () => this.router.navigate(['/clientes']),
+        error: (err) => console.error('Erro ao excluir cliente no backend:', err)
+      });
+    }
+  }
 }

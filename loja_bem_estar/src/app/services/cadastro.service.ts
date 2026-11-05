@@ -37,4 +37,11 @@ export class CadastroService {
       tap(() => this.carregarClientes())
     );
   }
+
+  // Método adicionado para realizar a exclusão e recarregar o Signal
+  excluirCliente(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
+      tap(() => this.carregarClientes())
+    );
+  }
 }

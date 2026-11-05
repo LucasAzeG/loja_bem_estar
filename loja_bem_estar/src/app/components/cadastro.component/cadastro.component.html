@@ -5,7 +5,8 @@
       <p>Preencha os dados abaixo para {{ isEdicao ? 'atualizar' : 'cadastrar' }} a pessoa</p>
     </div>
     <div class="acoes-header">
-      <button routerLink="/clientes" class="btn-voltar">Lista de Clientes</button>
+      <button routerLink="/clientes" class="btn-lista">Lista de Clientes</button>
+      <button routerLink="/" class="btn-home">Home</button>
     </div>
   </header>
 
@@ -61,13 +62,17 @@
       <button type="submit" [disabled]="cadastroForm.invalid" class="btn-salvar">
         Salvar
       </button>
+      
       <button type="button" routerLink="/clientes" class="btn-cancelar">
         Cancelar
       </button>
 
-
-      
-
+      <!-- Botão de exclusão visível apenas quando estiver editando um cliente existente -->
+      @if (isEdicao) {
+        <button type="button" (click)="excluirCliente()" class="btn-excluir">
+          Excluir
+        </button>
+      }
     </div>
   </form>
 </div>
