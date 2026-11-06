@@ -14,6 +14,7 @@
   margin: 0 auto;
 }
 
+/* Header */
 .header-container {
   display: flex;
   justify-content: space-between;
@@ -21,7 +22,8 @@
   padding: 1.5rem 2rem;
   background-color: #ffffff;
   border: 1px solid #fed7aa;
-  margin-bottom: 1rem;
+  border-radius: 0;
+  margin-bottom: 1.5rem;
 }
 
 .header-container h1 {
@@ -37,7 +39,7 @@
   margin: 0.25rem 0 0 0;
 }
 
-.acoes {
+.acoes-header {
   display: flex;
   gap: 0.75rem;
 }
@@ -45,8 +47,11 @@
 .btn-novo {
   background-color: #ea580c;
   color: #ffffff;
-  border: none;
+  border: 1px solid #ea580c;
+  border-radius: 0;
   padding: 0.65rem 1.25rem;
+  font-family: inherit;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.2s ease;
@@ -60,7 +65,10 @@
   background-color: #ffffff;
   color: #ea580c;
   border: 1px solid #ea580c;
+  border-radius: 0;
   padding: 0.65rem 1.25rem;
+  font-family: inherit;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.2s ease;
@@ -70,194 +78,184 @@
   background-color: #fff7ed;
 }
 
-.bar-filtro {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+/* Painel de Filtros */
+.busca-container {
   background-color: #ffffff;
   border: 1px solid #fed7aa;
-  padding: 1rem 1.5rem;
+  border-radius: 0;
+  padding: 1.25rem 1.75rem;
   margin-bottom: 1.5rem;
 }
 
-.bar-filtro label {
+.filtros-grid {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.campo-filtro {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1;
+  min-width: 180px;
+}
+
+.campo-filtro label {
   font-size: 0.85rem;
   font-weight: 600;
   color: #7c2d12;
 }
 
-.bar-filtro select {
-  padding: 0.5rem 1rem;
+.campo-filtro input,
+.campo-filtro select {
+  padding: 0.65rem 0.85rem;
   border: 1px solid #fed7aa;
-  background-color: #fffaf5;
+  border-radius: 0;
   font-family: inherit;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
+  background-color: #ffffff;
   color: #2c1810;
   outline: none;
-  cursor: pointer;
-  min-width: 220px;
 }
 
-.bar-filtro select:focus {
+.campo-filtro input:focus,
+.campo-filtro select:focus {
   border-color: #ea580c;
-  background-color: #ffffff;
 }
 
+.campo-acoes-filtro {
+  display: flex;
+  align-items: flex-end;
+}
+
+.btn-limpar {
+  background-color: #ffffff;
+  color: #ea580c;
+  border: 1px solid #ea580c;
+  border-radius: 0;
+  padding: 0.65rem 1.2rem;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+}
+
+.btn-limpar:hover {
+  background-color: #fff7ed;
+}
+
+/* Tabela */
 .tabela-container {
   background-color: #ffffff;
   border: 1px solid #fed7aa;
+  border-radius: 0;
+  overflow-x: auto;
 }
 
-table {
+.tabela-itens {
   width: 100%;
+  min-width: 900px;
   border-collapse: collapse;
 }
 
-th {
+.tabela-itens th {
   background-color: #fff7ed;
   color: #7c2d12;
   font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
-  padding: 1rem;
+  padding: 0.85rem 1rem;
   text-align: left;
   border-bottom: 1px solid #fed7aa;
 }
 
-td {
-  padding: 1rem;
+.tabela-itens td {
+  padding: 0.85rem 1rem;
   border-bottom: 1px solid #fffaf5;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
+  vertical-align: middle;
 }
 
-.descricao-sub {
-  display: block;
-  color: #7c2d12;
-  font-size: 0.75rem;
-  font-weight: normal;
-}
-
-.badge {
-  padding: 0.25rem 0.5rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  border-radius: 2px;
-}
-
-.badge-prod { background-color: #e0f2fe; color: #0369a1; }
-.badge-serv { background-color: #fef3c7; color: #b45309; }
-
-.status-dot {
-  font-weight: 600;
-  color: #991b1b;
-}
-
-.status-dot.ativo {
-  color: #166534;
-}
-
-.texto-centro { text-align: center; }
-
-.btn-editar {
-  background-color: #ffffff;
+.col-id {
+  font-weight: 700;
   color: #ea580c;
-  border: 1px solid #ea580c;
-  padding: 0.4rem 1rem;
-  font-size: 0.85rem;
+}
+
+.col-nome {
   font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
 }
 
-.btn-editar:hover {
-  background-color: #fff7ed;
+.col-acoes {
+  width: 170px;
+  min-width: 170px;
 }
 
-.sem-registros {
+.texto-centro {
   text-align: center;
-  color: #7c2d12;
-  padding: 2rem;
 }
 
-.bar-filtro {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  background-color: #ffffff;
-  border: 1px solid #fed7aa;
-  padding: 1rem 1.5rem;
-  margin-bottom: 1.5rem;
-  flex-wrap: wrap;
-}
-
-.grupo-filtro {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.grupo-filtro label {
-  font-size: 0.85rem;
+/* Badges de Tipo */
+.badge-tipo {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.8rem;
   font-weight: 600;
-  color: #7c2d12;
+  border-radius: 0;
 }
 
-.grupo-filtro input {
-  padding: 0.5rem 0.75rem;
-  border: 1px solid #fed7aa;
-  background-color: #fffaf5;
-  font-family: inherit;
-  font-size: 0.9rem;
-  color: #2c1810;
-  outline: none;
-  width: 110px;
+.badge-tipo.produto {
+  background-color: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
 }
 
-.grupo-filtro input:focus {
-  border-color: #ea580c;
-  background-color: #ffffff;
+.badge-tipo.servico {
+  background-color: #fef9c3;
+  color: #a16207;
+  border: 1px solid #fde047;
 }
 
-.bar-filtro select {
-  padding: 0.5rem 1rem;
-  border: 1px solid #fed7aa;
-  background-color: #fffaf5;
-  font-family: inherit;
-  font-size: 0.9rem;
-  color: #2c1810;
-  outline: none;
-  cursor: pointer;
-  min-width: 200px;
+/* Badges de Status */
+.status-badge.ativo {
+  color: #166534;
+  font-weight: 700;
 }
 
-.bar-filtro select:focus {
-  border-color: #ea580c;
-  background-color: #ffffff;
+.status-badge.inativo {
+  color: #dc2626;
+  font-weight: 700;
 }
 
-/* Contentor para alinhar os botões horizontalmente */
+.linha-inativa {
+  opacity: 0.6;
+}
+
+/* Ações */
 .grupo-acoes {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.4rem;
   justify-content: center;
   align-items: center;
 }
 
-/* Reset e base de estilo dos botões da tabela */
 .btn-editar,
-.btn-desativar,
-.btn-ativar {
+.btn-status-desativar,
+.btn-status-ativar {
   padding: 0.4rem 0.75rem;
+  font-family: inherit;
   font-size: 0.8rem;
   font-weight: 600;
+  border-radius: 0;
   cursor: pointer;
-  border: none;
-  font-family: inherit;
-  transition: all 0.2s ease;
+  white-space: nowrap;
   line-height: 1;
+  transition: all 0.2s ease;
 }
 
-/* Botão Editar */
 .btn-editar {
   background-color: #ffffff;
   color: #ea580c;
@@ -268,26 +266,30 @@ td {
   background-color: #fff7ed;
 }
 
-/* Botão Desativar (Vermelho) */
-.btn-desativar {
-  background-color: #fee2e2 !important;
-  color: #dc2626 !important;
-  border: 1px solid #fca5a5 !important;
+.btn-status-desativar {
+  background-color: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fca5a5;
 }
 
-.btn-desativar:hover {
-  background-color: #dc2626 !important;
-  color: #ffffff !important;
+.btn-status-desativar:hover {
+  background-color: #dc2626;
+  color: #ffffff;
 }
 
-/* Botão Ativar (Verde) */
-.btn-ativar {
-  background-color: #dcfce7 !important;
-  color: #166534 !important;
-  border: 1px solid #86efac !important;
+.btn-status-ativar {
+  background-color: #dcfce7;
+  color: #15803d;
+  border: 1px solid #86efac;
 }
 
-.btn-ativar:hover {
-  background-color: #166534 !important;
-  color: #ffffff !important;
+.btn-status-ativar:hover {
+  background-color: #15803d;
+  color: #ffffff;
+}
+
+.sem-registros {
+  text-align: center;
+  padding: 2.5rem;
+  color: #7c2d12;
 }

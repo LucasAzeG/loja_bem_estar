@@ -1,87 +1,106 @@
 <div class="container">
+  <!-- Cabeçalho -->
   <header class="header-container">
     <div>
       <h1>Gerenciamento de Itens</h1>
       <p>Produtos e Serviços cadastrados</p>
     </div>
-    <div class="acoes">
+    <div class="acoes-header">
       <button routerLink="/itens/novo" class="btn-novo">+ Novo Item</button>
       <button routerLink="/" class="btn-home">Home</button>
     </div>
   </header>
 
-  <!-- Barra de Filtros (Por ID e por Categoria) -->
-  <div class="bar-filtro">
-    <div class="grupo-filtro">
-      <label for="buscaId">Consultar por ID:</label>
-      <input 
-        type="number" 
-        id="buscaId" 
-        placeholder="Ex: 1" 
-        [value]="buscaId() ?? ''" 
-        (input)="aoMudarBuscaId($event)"
-      />
-    </div>
+  <!-- Painel de Filtros (ID, Categoria e Tipo) -->
+  <div class="busca-container">
+    <div class="filtros-grid">
+      <div class="campo-filtro">
+        <label for="buscaId">Consultar por ID:</label>
+        <input 
+          id="buscaId" 
+          type="text" 
+          [(ngModel)]="termoBuscaId" 
+          placeholder="Ex: 1" 
+        />
+      </div>
 
-    <div class="grupo-filtro">
-      <label for="filtroCategoria">Filtrar por Categoria:</label>
-      <select id="filtroCategoria" [value]="categoriaSelecionadaId()" (change)="aoMudarFiltro($event)">
-        <option [value]="0">Todas as Categorias</option>
-        @for (cat of categoriaService.categorias(); track cat.idcategoria) {
-          <option [value]="cat.idcategoria">{{ cat.categoria }}</option>
-        }
-      </select>
+      <div class="campo-filtro">
+        <label for="filtroCategoria">Filtrar por Categoria:</label>
+        <select id="filtroCategoria" [(ngModel)]="categoriaSelecionada">
+          <option value="TODAS">Todas as Categorias</option>
+          @for (cat of categorias; track (cat.idcategoria || cat.idCategoria)) {
+            <option [value]="cat.idcategoria || cat.idCategoria || cat.nomeCategoria">
+              {{ cat.nomeCategoria || cat.nome }}
+            </option>
+          }
+        </select>
+      </div>
+
+      <div class="campo-filtro">
+        <label for="filtroTipo">Filtrar por Tipo:</label>
+        <select id="filtroTipo" [(ngModel)]="tipoSelecionado">
+          <option value="TODOS">Todos os Tipos</option>
+          <option value="PRODUTO">Produto</option>
+          <option value="SERVICO">Serviço</option>
+        </select>
+      </div>
+
+      <div class="campo-acoes-filtro">
+        <button type="button" (click)="limparFiltros()" class="btn-limpar">Limpar Filtros</button>
+      </div>
     </div>
   </div>
 
+  <!-- Tabela de Itens -->
   <div class="tabela-container">
-    <table>
+    <table class="tabela-itens">
       <thead>
         <tr>
-          <th>ID</th>
+          <th class="col-id">ID</th>
           <th>ITEM</th>
           <th>CATEGORIA</th>
           <th>TIPO</th>
           <th>PREÇO</th>
           <th>STATUS</th>
-          <th class="texto-centro">AÇÕES</th>
+          <th class="col-acoes texto-centro">AÇÕES</th>
         </tr>
       </thead>
       <tbody>
-        @for (item of itensFiltrados(); track item.iditem) {
-          <tr [class.linha-inativa]="item.ativo_produto_servico === 'N'">
-            <td>#{{ item.iditem }}</td>
-            <td>
-              <strong>{{ item.item }}</strong>
-              <small *ngIf="item.descricao_item" class="descricao-sub">{{ item.descricao_item }}</small>
+        @for (item of itensFiltrados; track getIdItem(item)) {
+          <tr [class.linha-inativa]="!isAtivo(item)">
+            <td class="col-id">#{{ getIdItem(item) }}</td>
+            <td class="col-nome">
+              <strong>{{ item.item || item.nomeItem || item.nome }}</strong>
             </td>
-            <td>{{ obterNomeCategoria(item.idcategoria) }}</td>
+            <td>{{ item.categoria?.nomeCategoria || item.nomeCategoria || item.categoria || '-' }}</td>
             <td>
-              <span class="badge" [class.badge-prod]="item.tipo_item === 'P'" [class.badge-serv]="item.tipo_item === 'S'">
-                {{ item.tipo_item === 'P' ? 'Produto' : 'Serviço' }}
+              <span [class]="isProduto(item) ? 'badge-tipo produto' : 'badge-tipo servico'">
+                {{ isProduto(item) ? 'Produto' : 'Serviço' }}
               </span>
             </td>
-            <td>R$ {{ item.preco | number:'1.2-2' }}</td>
+            <td>R$ {{ (item.precoVenda || item.preco || item.valorUnitario || 0) | number:'1.2-2' }}</td>
             <td>
-              <span class="status-dot" [class.ativo]="item.ativo_produto_servico === 'S'">
-                {{ item.ativo_produto_servico === 'S' ? 'Ativo' : 'Inativo' }}
+              <span [class]="isAtivo(item) ? 'status-badge ativo' : 'status-badge inativo'">
+                {{ isAtivo(item) ? 'Ativo' : 'Inativo' }}
               </span>
             </td>
-            <td class="texto-centro">
+            <td class="col-acoes">
               <div class="grupo-acoes">
-                <button [routerLink]="['/itens/editar', item.iditem]" class="btn-editar">Editar</button>
+                <button [routerLink]="['/itens/editar', getIdItem(item)]" class="btn-editar">
+                  Editar
+                </button>
                 <button 
                   type="button" 
-                  (click)="alternarStatus(item)" 
-                  [class]="item.ativo_produto_servico === 'S' ? 'btn-desativar' : 'btn-ativar'">
-                  {{ item.ativo_produto_servico === 'S' ? 'Desativar' : 'Ativar' }}
+                  (click)="toggleStatusItem(item)" 
+                  [class]="isAtivo(item) ? 'btn-status-desativar' : 'btn-status-ativar'">
+                  {{ isAtivo(item) ? 'Desativar' : 'Ativar' }}
                 </button>
               </div>
             </td>
           </tr>
         } @empty {
           <tr>
-            <td colspan="7" class="sem-registros">Nenhum item encontrado.</td>
+            <td colspan="7" class="sem-registros">Nenhum item encontrado com os filtros selecionados.</td>
           </tr>
         }
       </tbody>
