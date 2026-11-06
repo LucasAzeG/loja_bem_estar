@@ -14,6 +14,7 @@
   margin: 0 auto;
 }
 
+/* Header */
 .header-container {
   display: flex;
   justify-content: space-between;
@@ -46,6 +47,7 @@
   background-color: #ea580c;
   color: #ffffff;
   border: 1px solid #ea580c;
+  border-radius: 0;
   padding: 0.65rem 1.25rem;
   font-family: inherit;
   font-size: 0.9rem;
@@ -63,6 +65,7 @@
   background-color: #ffffff;
   color: #ea580c;
   border: 1px solid #ea580c;
+  border-radius: 0;
   padding: 0.65rem 1.25rem;
   font-family: inherit;
   font-size: 0.9rem;
@@ -75,6 +78,92 @@
   background-color: #fff7ed;
 }
 
+/* Painel de Pesquisa por ID */
+.busca-container {
+  background-color: #ffffff;
+  border: 1px solid #fed7aa;
+  padding: 1.5rem 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-busca {
+  width: 100%;
+}
+
+.campo-busca {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 650px;
+}
+
+.campo-busca label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #7c2d12;
+}
+
+.input-com-botao {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.input-com-botao input {
+  flex: 1;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid #fed7aa;
+  border-radius: 0;
+  font-family: inherit;
+  font-size: 0.9rem;
+  background-color: #fffaf5;
+  color: #2c1810;
+  outline: none;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.input-com-botao input:focus {
+  border-color: #ea580c;
+  background-color: #ffffff;
+}
+
+.btn-buscar {
+  background-color: #ea580c;
+  color: #ffffff;
+  border: none;
+  border-radius: 0;
+  padding: 0.7rem 1.4rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+}
+
+.btn-buscar:hover {
+  background-color: #c2410c;
+}
+
+.btn-limpar {
+  background-color: #ffffff;
+  color: #ea580c;
+  border: 1px solid #ea580c;
+  border-radius: 0;
+  padding: 0.7rem 1.2rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+}
+
+.btn-limpar:hover {
+  background-color: #fff7ed;
+}
+
+/* Tabela */
 .tabela-container {
   background-color: #ffffff;
   border: 1px solid #fed7aa;
@@ -83,6 +172,7 @@
 
 table {
   width: 100%;
+  min-width: 900px;
   border-collapse: collapse;
   text-align: left;
 }
@@ -102,10 +192,21 @@ td {
   border-bottom: 1px solid #fff7ed;
   font-size: 0.9rem;
   color: #2c1810;
+  vertical-align: middle;
 }
 
 tr:hover {
   background-color: #fffaf5;
+}
+
+.col-id {
+  font-weight: 700;
+  color: #ea580c;
+}
+
+.col-acoes {
+  width: 150px;
+  min-width: 150px;
 }
 
 .texto-centro {
@@ -118,31 +219,55 @@ tr:hover {
   color: #ea580c;
   border: 1px solid #fed7aa;
   padding: 0.25rem 0.6rem;
-  border-radius: 4px;
+  border-radius: 0;
   font-size: 0.8rem;
   font-weight: 600;
+}
+
+/* Grupo de Ações (Editar / Excluir) */
+.grupo-acoes {
+  display: flex;
+  gap: 0.4rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-editar,
+.btn-excluir {
+  padding: 0.4rem 0.75rem;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 0;
+  cursor: pointer;
+  line-height: 1;
+  transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .btn-editar {
   background-color: #ffffff;
   color: #ea580c;
   border: 1px solid #ea580c;
-  padding: 0.4rem 0.85rem;
-  font-family: inherit;
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
 }
 
 .btn-editar:hover {
-  background-color: #ea580c;
+  background-color: #fff7ed;
+}
+
+.btn-excluir {
+  background-color: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fca5a5;
+}
+
+.btn-excluir:hover {
+  background-color: #dc2626;
   color: #ffffff;
 }
 
 .sem-registros {
   text-align: center;
   color: #7c2d12;
-  padding: 2rem;
-  font-style: italic;
+  padding: 2.5rem;
 }

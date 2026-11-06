@@ -31,4 +31,9 @@ export class FuncionarioService {
   atualizarFuncionario(id: number, funcionario: Funcionario): Observable<Funcionario> {
     return this.http.put<Funcionario>(`${this.apiUrl}/${id}`, funcionario);
   }
+
+  // Método para excluir o funcionário pelo ID no backend
+  excluirFuncionario(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 }

@@ -1,45 +1,74 @@
 <div class="container">
-    <header class="header-container">
-      <div>
-        <h1>Gestão de Funcionários</h1>
-        <p>Consulta e controlo da equipa da clínica</p>
-      </div>
-      <div class="acoes">
-        <button routerLink="/funcionarios/novo" class="btn-novo">+ Novo Funcionário</button>
-        <button routerLink="/" class="btn-home">Home</button>
-      </div>
-    </header>
-  
-    <div class="tabela-container">
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>NOME</th>
-            <th>CARGO</th>
-            <th>DATA ADMISSÃO</th>
-            <th>CONTACTO</th>
-            <th class="texto-centro">AÇÕES</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (func of funcionarioService.funcionarios(); track (func.idpessoa || func.pessoa?.idPessoa)) {
-            <tr>
-              <td>#{{ func.idpessoa || func.pessoa?.idPessoa }}</td>
-              <td><strong>{{ func.pessoa?.nome || '-' }}</strong></td>
-              <td><span class="badge-cargo">{{ func.cargo }}</span></td>
-              <td>{{ func.dataAdmissao | date:'dd/MM/yyyy' }}</td>
-              <td>{{ func.pessoa?.telefone || func.pessoa?.email || '-' }}</td>
-              <td class="texto-centro">
-                <button [routerLink]="['/funcionarios/editar', func.idpessoa || func.pessoa?.idPessoa]" class="btn-editar">Editar</button>
-              </td>
-            </tr>
-          } @empty {
-            <tr>
-              <td colspan="6" class="sem-registros">Nenhum funcionário cadastrado.</td>
-            </tr>
-          }
-        </tbody>
-      </table>
+  <header class="header-container">
+    <div>
+      <h1>Gestão de Funcionários</h1>
+      <p>Consulta e controle da equipe da clínica</p>
     </div>
+    <div class="acoes">
+      <button routerLink="/funcionarios/novo" class="btn-novo">+ Novo Funcionário</button>
+      <button routerLink="/" class="btn-home">Home</button>
+    </div>
+  </header>
+
+  <!-- Painel de Pesquisa por ID -->
+  <div class="busca-container">
+    <form (ngSubmit)="buscar()" class="form-busca">
+      <div class="campo-busca">
+        <label for="buscaId">Buscar Funcionário por ID</label>
+        <div class="input-com-botao">
+          <input 
+            id="buscaId" 
+            type="text" 
+            [(ngModel)]="termoInput" 
+            name="termoInput"
+            placeholder="Digite o ID do funcionário (ex: 1, 5)..." 
+          />
+          <button type="submit" class="btn-buscar">Buscar</button>
+          <button type="button" (click)="limparBusca()" class="btn-limpar">Limpar</button>
+        </div>
+      </div>
+    </form>
   </div>
+
+  <div class="tabela-container">
+    <table>
+      <thead>
+        <tr>
+          <th class="col-id">ID</th>
+          <th>NOME</th>
+          <th>CARGO</th>
+          <th>DATA ADMISSÃO</th>
+          <th>CONTATO</th>
+          <th class="texto-centro col-acoes">AÇÕES</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (func of funcionariosFiltrados; track getIdFuncionario(func)) {
+          <tr>
+            <td class="col-id">#{{ getIdFuncionario(func) }}</td>
+            <td><strong>{{ func.pessoa?.nome || func.nome || '-' }}</strong></td>
+            <td><span class="badge-cargo">{{ func.cargo || 'Sem Cargo' }}</span></td>
+            <td>{{ func.dataAdmissao | date:'dd/MM/yyyy' }}</td>
+            <td>{{ func.pessoa?.telefone || func.pessoa?.email || func.telefone || func.email || '-' }}</td>
+            <td class="texto-centro col-acoes">
+              <div class="grupo-acoes">
+                <button [routerLink]="['/funcionarios/editar', getIdFuncionario(func)]" class="btn-editar">
+                  Editar
+                </button>
+                <button type="button" (click)="excluirFuncionario(getIdFuncionario(func))" class="btn-excluir">
+                  Excluir
+                </button>
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6" class="sem-registros">
+              {{ termoAplicado ? 'Nenhum funcionário encontrado para o ID pesquisado.' : 'Nenhum funcionário cadastrado.' }}
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
