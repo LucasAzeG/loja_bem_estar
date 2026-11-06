@@ -5,10 +5,23 @@
       <p>Preencha os dados abaixo para {{ isEdicao ? 'atualizar' : 'cadastrar' }} a pessoa</p>
     </div>
     <div class="acoes-header">
-      <button routerLink="/clientes" class="btn-lista">Lista de Clientes</button>
       <button routerLink="/" class="btn-home">Home</button>
     </div>
   </header>
+
+  <!-- Banner de Feedback Sucesso -->
+  @if (mensagemSucesso) {
+    <div class="mensagem-sucesso">
+      <span>✨ {{ mensagemSucesso }}</span>
+    </div>
+  }
+
+  <!-- Banner de Feedback Erro -->
+  @if (mensagemErro) {
+    <div class="mensagem-erro">
+      <span>⚠️ {{ mensagemErro }}</span>
+    </div>
+  }
 
   <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()" class="form-cadastro">
     <div class="form-group">

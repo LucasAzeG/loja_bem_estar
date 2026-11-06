@@ -1,62 +1,83 @@
-/* Importação da tipografia 'Plus Jakarta Sans' do Google Fonts com variações de peso */
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
-/* Estilização do elemento hospedeiro raiz do Angular (<app-cadastro>) */
 :host {
   display: block;
-  min-height: 100vh; /* Garante ocupação de toda a altura da tela */
-  background-color: #fffaf5; /* Fundo tom creme/suave característico do tema da aplicação */
+  min-height: 100vh;
+  background-color: #fffaf5;
   font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-  color: #2c1810; /* Cor escura terrosa para os textos principais */
+  color: #2c1810;
   padding: 2rem;
 }
 
-/* Container centralizador da tela de cadastro */
 .cadastro-container {
-  max-width: 800px; /* Limita a largura máxima para manter a leitura confortável */
-  margin: 0 auto; /* Centraliza o bloco na página */
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-/* Cabeçalho da página: agrupa o título/subtítulo e as ações da barra superior */
+/* Banners de Mensagem de Feedback */
+.mensagem-sucesso {
+  background-color: #dcfce7;
+  color: #15803d;
+  border: 1px solid #86efac;
+  border-radius: 0;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+}
+
+.mensagem-erro {
+  background-color: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fca5a5;
+  border-radius: 0;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+}
+
+/* Header */
 .header-container {
   display: flex;
-  justify-content: space-between; /* Distribui o texto à esquerda e os botões à direita */
+  justify-content: space-between;
   align-items: center;
   padding: 1.5rem 2rem;
   background-color: #ffffff;
-  border: 1px solid #fed7aa; /* Borda sutil em tom pêssego */
+  border: 1px solid #fed7aa;
   border-radius: 0;
   box-shadow: none;
   margin-bottom: 1.5rem;
 }
 
-/* Título e subtítulo do cabeçalho */
 .header-container h1 {
-  color: #ea580c; /* Tom de laranja principal de destaque */
+  color: #ea580c;
   font-size: 1.8rem;
   font-weight: 700;
   margin: 0;
 }
 
 .header-container p {
-  color: #7c2d12; /* Tom marrom-avermelhado */
+  color: #7c2d12;
   font-size: 0.9rem;
   margin: 0.25rem 0 0 0;
 }
 
-/* Agrupador dos botões do cabeçalho */
 .acoes-header {
   display: flex;
-  gap: 0.75rem; /* Espaçamento constante entre os botões da barra superior */
+  gap: 0.75rem;
 }
 
-/* Estilo comum para botões secundários de navegação do topo (Lista de Clientes, Home, Voltar) */
 .btn-voltar,
 .btn-lista,
 .btn-home {
   background-color: #ffffff;
   color: #ea580c;
-  border: 1px solid #ea580c; /* Estilo vazado (outlined) com borda laranja */
+  border: 1px solid #ea580c;
   border-radius: 0;
   padding: 0.6rem 1.2rem;
   font-size: 0.9rem;
@@ -66,51 +87,45 @@
   transition: background-color 0.2s ease;
 }
 
-/* Efeito ao passar o mouse sobre os botões secundários do topo */
 .btn-voltar:hover,
 .btn-lista:hover,
 .btn-home:hover {
-  background-color: #fff7ed; /* Fundo suave ao passar o mouse */
+  background-color: #fff7ed;
 }
 
-/* Estrutura do card/painel principal do formulário */
+/* Formulário */
 .form-cadastro {
   background-color: #ffffff;
   border: 1px solid #fed7aa;
   border-radius: 0;
   padding: 2rem;
   display: flex;
-  flex-direction: column; /* Empilha as linhas de campos verticalmente */
+  flex-direction: column;
   gap: 1.25rem;
   box-shadow: none;
 }
 
-/* Linha com múltiplos campos lado a lado (ex: CPF e Data de Nascimento) */
 .form-row {
   display: flex;
   gap: 1rem;
 }
 
-/* Faz com que cada campo dentro da linha ocupe largura proporcional igual */
 .form-row .form-group {
   flex: 1;
 }
 
-/* Agrupador de rótulo (label) e controle (input/select) */
 .form-group {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
 }
 
-/* Rótulo dos campos */
 .form-group label {
   font-size: 0.9rem;
   font-weight: 600;
   color: #9a3412;
 }
 
-/* Estilização padronizada dos campos de entrada de texto e seleções */
 .form-group input,
 .form-group select {
   padding: 0.75rem;
@@ -123,22 +138,19 @@
   box-shadow: none;
 }
 
-/* Destaque na borda do campo quando o usuário clica/foca nele */
 .form-group input:focus,
 .form-group select:focus {
   border-color: #ea580c;
 }
 
-/* Container dos botões de ação na parte inferior do formulário */
 .botoes-form {
   display: flex;
   gap: 1rem;
   margin-top: 0.5rem;
 }
 
-/* Botão principal (Salvar) */
 .btn-salvar {
-  flex: 1; /* Ocupa espaço proporcional na barra de botões */
+  flex: 1;
   background-color: #ea580c;
   color: #ffffff;
   border: none;
@@ -151,18 +163,15 @@
   transition: background-color 0.2s ease;
 }
 
-/* Estado ativo do botão Salvar ao passar o mouse */
 .btn-salvar:hover:not(:disabled) {
   background-color: #c2410c;
 }
 
-/* Estado desabilitado (quando o formulário estiver inválido) */
 .btn-salvar:disabled {
-  background-color: #fdba74; /* Laranja opaco */
+  background-color: #fdba74;
   cursor: not-allowed;
 }
 
-/* Botão de Cancelar */
 .btn-cancelar {
   flex: 1;
   background-color: #ffffff;
@@ -182,10 +191,9 @@
   background-color: #fff7ed;
 }
 
-/* Botão de Excluir em tom de alerta/destaque destrutivo */
 .btn-excluir {
   flex: 1;
-  background-color: #dc2626; /* Vermelho alerta */
+  background-color: #dc2626;
   color: #ffffff;
   border: none;
   border-radius: 0;
@@ -199,13 +207,12 @@
 }
 
 .btn-excluir:hover {
-  background-color: #991b1b; /* Vermelho mais escuro no hover */
+  background-color: #991b1b;
 }
 
-/* Regra de responsividade para telas móveis (Smartphones <= 600px) */
 @media (max-width: 600px) {
   .form-row,
   .botoes-form {
-    flex-direction: column; /* Empilha campos duplos e botões verticalmente em telas pequenas */
+    flex-direction: column;
   }
 }
