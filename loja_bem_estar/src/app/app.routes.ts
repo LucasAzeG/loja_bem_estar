@@ -13,6 +13,7 @@ import { AtendimentoListaComponent } from './components/atendimento-lista.compon
 import { AtendimentoCadastroComponent } from './components/atendimento-cadastro.component/atendimento-cadastro.component';
 import { EntradaProdutoListaComponent } from './components/entrada-produto-lista.component/entrada-produto-lista.component';
 import { EntradaProdutoCadastroComponent } from './components/entrada-produto-cadastro.component/entrada-produto-cadastro.component';
+import { AdministracaoComponent } from './components/administracao.component/administracao.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -33,5 +34,6 @@ export const routes: Routes = [
   { path: 'atendimentos/novo', component: AtendimentoCadastroComponent },
   { path: 'estoque', component: EntradaProdutoListaComponent },
   { path: 'estoque/novo', component: EntradaProdutoCadastroComponent },
+  { path: 'administracao', component: AdministracaoComponent },
   { path: '**', redirectTo: '' }
 ];

@@ -1,0 +1,70 @@
+<div class="admin-container">
+    <!-- Cabeçalho da Home Admin -->
+    <header class="header-container">
+      <div>
+        <span class="badge-admin">🔒 Painel de Controle</span>
+        <h1>Home do Administrador</h1>
+        <p>Selecione um módulo abaixo para gerenciar os dados da aplicação</p>
+      </div>
+      <div class="acoes-header">
+        <button routerLink="/" class="btn-home">Ver Visão da Loja</button>
+      </div>
+    </header>
+  
+    <!-- Grade de Atalhos de Gestão -->
+    <section class="admin-grid">
+      <div class="card-admin" routerLink="/clientes">
+        <div class="card-icon">👥</div>
+        <div class="card-content">
+          <h3>Clientes</h3>
+          <p>Cadastrar, consultar e editar informações dos clientes.</p>
+        </div>
+        <span class="card-link">Acessar Clientes →</span>
+      </div>
+  
+      <div class="card-admin" routerLink="/categorias">
+        <div class="card-icon">🏷️</div>
+        <div class="card-content">
+          <h3>Categorias</h3>
+          <p>Organizar grupos de produtos e serviços.</p>
+        </div>
+        <span class="card-link">Acessar Categorias →</span>
+      </div>
+  
+      <div class="card-admin" routerLink="/itens">
+        <div class="card-icon">🛍️</div>
+        <div class="card-content">
+          <h3>Itens (Produtos & Serviços)</h3>
+          <p>Gestão completa da tabela de produtos, serviços e preços.</p>
+        </div>
+        <span class="card-link">Acessar Itens →</span>
+      </div>
+  
+      <div class="card-admin" routerLink="/funcionarios">
+        <div class="card-icon">👨‍💼</div>
+        <div class="card-content">
+          <h3>Funcionários</h3>
+          <p>Gerenciar a equipe de profissionais e atendentes.</p>
+        </div>
+        <span class="card-link">Acessar Funcionários →</span>
+      </div>
+  
+      <div class="card-admin" routerLink="/atendimentos">
+        <div class="card-icon">📅</div>
+        <div class="card-content">
+          <h3>Atendimentos</h3>
+          <p>Consultar histórico de vendas e serviços realizados.</p>
+        </div>
+        <span class="card-link">Acessar Atendimentos →</span>
+      </div>
+  
+      <div class="card-admin" routerLink="/estoque">
+        <div class="card-icon">📦</div>
+        <div class="card-content">
+          <h3>Controle de Estoque</h3>
+          <p>Acompanhar a quantidade e reposição de produtos em loja.</p>
+        </div>
+        <span class="card-link">Acessar Estoque →</span>
+      </div>
+    </section>
+  </div>
