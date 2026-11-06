@@ -99,7 +99,17 @@
   flex-direction: column;
   gap: 0.4rem;
   flex: 1;
-  min-width: 180px;
+  min-width: 170px;
+}
+
+.col-id-filtro {
+  max-width: 130px;
+  min-width: 100px;
+}
+
+.col-nome-filtro {
+  flex: 1.5;
+  min-width: 200px;
 }
 
 .campo-filtro label {

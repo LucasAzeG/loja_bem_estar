@@ -11,16 +11,26 @@
     </div>
   </header>
 
-  <!-- Painel de Filtros (ID, Categoria e Tipo) -->
+  <!-- Painel de Filtros (ID, Nome, Categoria e Tipo) -->
   <div class="busca-container">
     <div class="filtros-grid">
-      <div class="campo-filtro">
+      <div class="campo-filtro col-id-filtro">
         <label for="buscaId">Consultar por ID:</label>
         <input 
           id="buscaId" 
           type="text" 
           [(ngModel)]="termoBuscaId" 
           placeholder="Ex: 1" 
+        />
+      </div>
+
+      <div class="campo-filtro col-nome-filtro">
+        <label for="buscaNome">Buscar por Nome:</label>
+        <input 
+          id="buscaNome" 
+          type="text" 
+          [(ngModel)]="termoBuscaNome" 
+          placeholder="Ex: Mouse, Formatação..." 
         />
       </div>
 
@@ -78,7 +88,7 @@
                 {{ isProduto(item) ? 'Produto' : 'Serviço' }}
               </span>
             </td>
-            <td>R$ {{ (item.precoVenda || item.preco || item.valorUnitario || 0) | number:'1.2-2' }}</td>
+            <td>R\$ {{ (item.precoVenda || item.preco || item.valorUnitario || 0) | number:'1.2-2' }}</td>
             <td>
               <span [class]="isAtivo(item) ? 'status-badge ativo' : 'status-badge inativo'">
                 {{ isAtivo(item) ? 'Ativo' : 'Inativo' }}

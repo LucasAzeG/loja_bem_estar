@@ -17,6 +17,7 @@ export class ItemListaComponent implements OnInit {
   categoriaService = inject(CategoriaService);
 
   termoBuscaId: string = '';
+  termoBuscaNome: string = '';
   categoriaSelecionada: string = 'TODAS';
   tipoSelecionado: string = 'TODOS';
 
@@ -57,7 +58,6 @@ export class ItemListaComponent implements OnInit {
   isProduto(item: any): boolean {
     if (!item) return true;
 
-    // Procura a propriedade de tipo em múltiplos campos comuns de API/BD
     const val = (
       item.tipoItem ?? 
       item.tipo ?? 
@@ -67,21 +67,17 @@ export class ItemListaComponent implements OnInit {
       ''
     ).toString().trim().toUpperCase();
 
-    // Se for explicitamente um Serviço ('S', 'SERVICO', 'SERVIÇO', '2')
     if (val === 'S' || val === 'SERVICO' || val === 'SERVIÇO' || val === 'SERVICE' || val === '2') {
       return false;
     }
 
-    // Se for explicitamente um Produto ('P', 'PRODUTO', 'PRODUCT', '1')
     if (val === 'P' || val === 'PRODUTO' || val === 'PRODUCT' || val === '1') {
       return true;
     }
 
-    // Verificação se existir propriedade booleana direta
     if (typeof item.isProduto === 'boolean') return item.isProduto;
     if (typeof item.isServico === 'boolean') return !item.isServico;
 
-    // Fallback pelo nome do item/serviço caso o campo venha vazio
     const nome = (item.item || item.nomeItem || item.nome || '').toString().toLowerCase();
     if (
       nome.includes('serviço') || 
@@ -99,6 +95,7 @@ export class ItemListaComponent implements OnInit {
 
   limparFiltros(): void {
     this.termoBuscaId = '';
+    this.termoBuscaNome = '';
     this.categoriaSelecionada = 'TODAS';
     this.tipoSelecionado = 'TODOS';
   }
@@ -115,7 +112,17 @@ export class ItemListaComponent implements OnInit {
       });
     }
 
-    // 2. Filtro por Categoria
+    // 2. Filtro por Nome do Item (insensível a maiúsculas/minúsculas)
+    if (this.termoBuscaNome.trim()) {
+      const termo = this.termoBuscaNome.trim().toLowerCase();
+      lista = lista.filter(item => {
+        const nome = (item?.item || item?.nomeItem || item?.nome || '').toString().toLowerCase();
+        const desc = (item?.descricao || item?.descricaoItem || '').toString().toLowerCase();
+        return nome.includes(termo) || desc.includes(termo);
+      });
+    }
+
+    // 3. Filtro por Categoria
     if (this.categoriaSelecionada && this.categoriaSelecionada !== 'TODAS') {
       lista = lista.filter(item => {
         const catId = (item?.idcategoria ?? item?.idCategoria ?? item?.categoria?.idcategoria ?? item?.categoria?.idCategoria ?? '').toString();
@@ -124,7 +131,7 @@ export class ItemListaComponent implements OnInit {
       });
     }
 
-    // 3. Filtro por Tipo (Produto / Serviço)
+    // 4. Filtro por Tipo (Produto / Serviço)
     if (this.tipoSelecionado && this.tipoSelecionado !== 'TODOS') {
       lista = lista.filter(item => {
         const ehProduto = this.isProduto(item);
