@@ -60,4 +60,17 @@ export class ItemListaComponent implements OnInit {
     const valor = (event.target as HTMLInputElement).value;
     this.buscaId.set(valor ? Number(valor) : null);
   }
+
+  // Alterna o status do item entre 'S' (Ativo) e 'N' (Inativo)
+  alternarStatus(item: any): void {
+    const novoStatus = item.ativo_produto_servico === 'S' ? 'N' : 'S';
+    
+    // Atualização reativa imediata na propriedade do objeto
+    item.ativo_produto_servico = novoStatus;
+
+    // Se o seu ItemService possuir método de alteração HTTP, ele é acionado aqui:
+    if (typeof (this.itemService as any).alterarStatus === 'function') {
+      (this.itemService as any).alterarStatus(item.iditem, novoStatus);
+    }
+  }
 }

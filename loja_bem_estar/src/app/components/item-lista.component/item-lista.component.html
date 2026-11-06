@@ -49,7 +49,7 @@
       </thead>
       <tbody>
         @for (item of itensFiltrados(); track item.iditem) {
-          <tr>
+          <tr [class.linha-inativa]="item.ativo_produto_servico === 'N'">
             <td>#{{ item.iditem }}</td>
             <td>
               <strong>{{ item.item }}</strong>
@@ -68,7 +68,15 @@
               </span>
             </td>
             <td class="texto-centro">
-              <button [routerLink]="['/itens/editar', item.iditem]" class="btn-editar">Editar</button>
+              <div class="grupo-acoes">
+                <button [routerLink]="['/itens/editar', item.iditem]" class="btn-editar">Editar</button>
+                <button 
+                  type="button" 
+                  (click)="alternarStatus(item)" 
+                  [class]="item.ativo_produto_servico === 'S' ? 'btn-desativar' : 'btn-ativar'">
+                  {{ item.ativo_produto_servico === 'S' ? 'Desativar' : 'Ativar' }}
+                </button>
+              </div>
             </td>
           </tr>
         } @empty {

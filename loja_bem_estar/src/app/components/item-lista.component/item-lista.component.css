@@ -234,3 +234,60 @@ td {
   border-color: #ea580c;
   background-color: #ffffff;
 }
+
+/* Contentor para alinhar os botões horizontalmente */
+.grupo-acoes {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Reset e base de estilo dos botões da tabela */
+.btn-editar,
+.btn-desativar,
+.btn-ativar {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+
+/* Botão Editar */
+.btn-editar {
+  background-color: #ffffff;
+  color: #ea580c;
+  border: 1px solid #ea580c;
+}
+
+.btn-editar:hover {
+  background-color: #fff7ed;
+}
+
+/* Botão Desativar (Vermelho) */
+.btn-desativar {
+  background-color: #fee2e2 !important;
+  color: #dc2626 !important;
+  border: 1px solid #fca5a5 !important;
+}
+
+.btn-desativar:hover {
+  background-color: #dc2626 !important;
+  color: #ffffff !important;
+}
+
+/* Botão Ativar (Verde) */
+.btn-ativar {
+  background-color: #dcfce7 !important;
+  color: #166534 !important;
+  border: 1px solid #86efac !important;
+}
+
+.btn-ativar:hover {
+  background-color: #166534 !important;
+  color: #ffffff !important;
+}
