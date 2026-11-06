@@ -1,88 +1,168 @@
-/* Importação da fonte do Google Fonts: 'Plus Jakarta Sans' com diferentes pesos */
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
-/* Estilização do elemento hospedeiro (o próprio componente Angular) */
 :host {
   display: block;
-  min-height: 100vh; /* Garante que o fundo ocupe toda a altura da tela */
-  background-color: #fffaf5; /* Fundo suave em tom creme/marmoreado (Identidade Estética & Bem-Estar) */
-  font-family: 'Plus Jakarta Sans', system-ui, sans-serif; /* Aplicação da tipografia padrão */
-  color: #2c1810; /* Cor principal dos textos (tom marrom escuro/terroso) */
+  min-height: 100vh;
+  background-color: #fffaf5;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  color: #2c1810;
   padding: 2rem;
 }
 
-/* Container centralizador das seções */
 .container {
-  max-width: 1100px; /* Delimita a largura máxima para boa leitura em telas grandes */
-  margin: 0 auto; /* Centraliza o conteúdo horizontalmente */
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
-/* Cabeçalho superior: organiza o título e os botões de ação */
+/* Header Superior */
 .header-container {
   display: flex;
-  justify-content: space-between; /* Separa o título (esquerda) dos botões (direita) */
-  align-items: center; /* Alinha os elementos verticalmente ao centro */
+  justify-content: space-between;
+  align-items: center;
   padding: 1.5rem 2rem;
   background-color: #ffffff;
-  border: 1px solid #fed7aa; /* Borda suave em tom pêssego/laranja claro */
+  border: 1px solid #fed7aa;
   margin-bottom: 1.5rem;
 }
 
-/* Título e subtítulo do cabeçalho */
-.header-container h1 { color: #ea580c; font-size: 1.8rem; margin: 0; } /* Laranja principal vibrante */
-.header-container p { color: #7c2d12; font-size: 0.85rem; margin: 0.25rem 0 0 0; } /* Marrom-avermelhado */
+.header-container h1 { color: #ea580c; font-size: 1.8rem; margin: 0; }
+.header-container p { color: #7c2d12; font-size: 0.85rem; margin: 0.25rem 0 0 0; }
 
-/* Container dos botões de ação do cabeçalho */
-.acoes { display: flex; gap: 0.75rem; } /* Agrupa os botões mantendo um espaçamento entre eles */
+.acoes { display: flex; gap: 0.75rem; }
 
-/* Botão principal de destaque (+ Novo Atendimento) */
 .btn-novo {
-  background-color: #ea580c; /* Preenchimento em laranja */
+  background-color: #ea580c;
   color: #ffffff;
   border: 1px solid #ea580c;
   padding: 0.65rem 1.25rem;
   font-weight: 600;
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
-/* Botão secundário vazado (Home) */
+.btn-novo:hover {
+  background-color: #c2410c;
+}
+
 .btn-home {
   background-color: #ffffff;
-  color: #ea580c; /* Texto e borda em laranja */
+  color: #ea580c;
   border: 1px solid #ea580c;
   padding: 0.65rem 1.25rem;
   font-weight: 600;
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
-/* Organização da lista de cards */
-.lista-cards { display: flex; flex-direction: column; gap: 1.5rem; } /* Empilha os cards verticalmente com espaçamento */
+.btn-home:hover {
+  background-color: #fff7ed;
+}
 
-/* Estrutura do Card de Atendimento */
+/* Painel de Busca por ID */
+.busca-container {
+  background-color: #ffffff;
+  border: 1px solid #fed7aa;
+  padding: 1.5rem 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-busca {
+  width: 100%;
+}
+
+.campo-busca {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 650px;
+}
+
+.campo-busca label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #7c2d12;
+}
+
+.input-com-botao {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.input-com-botao input {
+  flex: 1;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid #fed7aa;
+  font-family: inherit;
+  font-size: 0.9rem;
+  background-color: #fffaf5;
+  color: #2c1810;
+  outline: none;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.input-com-botao input:focus {
+  border-color: #ea580c;
+  background-color: #ffffff;
+}
+
+.btn-buscar {
+  background-color: #ea580c;
+  color: #ffffff;
+  border: none;
+  padding: 0.7rem 1.4rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+}
+
+.btn-buscar:hover {
+  background-color: #c2410c;
+}
+
+.btn-limpar {
+  background-color: #ffffff;
+  color: #ea580c;
+  border: 1px solid #ea580c;
+  padding: 0.7rem 1.2rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+}
+
+.btn-limpar:hover {
+  background-color: #fff7ed;
+}
+
+/* Cards de Atendimento */
+.lista-cards { display: flex; flex-direction: column; gap: 1.5rem; }
+
 .card-atendimento {
   background-color: #ffffff;
-  border: 1px solid #fed7aa; /* Borda pêssego padronizada */
+  border: 1px solid #fed7aa;
   padding: 1.5rem;
 }
 
-/* Cabeçalho interno de cada Card */
 .card-header {
   display: flex;
-  justify-content: space-between; /* Separa o código/nome do cliente da badge de status/data */
+  justify-content: space-between;
   align-items: flex-start;
-  border-bottom: 1px solid #fff7ed; /* Linha divisória bem suave */
+  border-bottom: 1px solid #fff7ed;
   padding-bottom: 1rem;
   margin-bottom: 1rem;
 }
 
-/* Identificadores do atendimento (Código e Nome) */
 .codigo-atendimento { font-size: 0.8rem; font-weight: 700; color: #ea580c; }
 .card-header h3 { margin: 0.2rem 0 0 0; color: #2c1810; }
 
-/* Lado direito do cabeçalho do card (Tag de Status + Data) */
 .header-dir { display: flex; align-items: center; gap: 0.75rem; }
 
-/* Badge/Etiqueta visual de Status */
 .status-tag {
   background-color: #fff7ed;
   border: 1px solid #fed7aa;
@@ -92,13 +172,31 @@
   font-weight: 600;
 }
 
-/* Texto formatado da data do atendimento */
 .data-tag { font-size: 0.85rem; color: #7c2d12; }
 
-/* Estilização da tabela de itens/serviços dentro do card */
+/* Botão Excluir no Card */
+.btn-excluir {
+  background-color: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fca5a5;
+  padding: 0.35rem 0.75rem;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  line-height: 1;
+  transition: all 0.2s ease;
+}
+
+.btn-excluir:hover {
+  background-color: #dc2626;
+  color: #ffffff;
+}
+
+/* Tabela de Itens */
 .tabela-itens table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
 .tabela-itens th { 
-  background-color: #fff7ed; /* Fundo suave para os cabeçalhos da tabela */
+  background-color: #fff7ed; 
   color: #ea580c; 
   font-size: 0.75rem; 
   padding: 0.6rem 0.8rem; 
@@ -106,25 +204,23 @@
 }
 .tabela-itens td { 
   padding: 0.6rem 0.8rem; 
-  border-bottom: 1px solid #fff7ed; /* Linhas separadoras entre as linhas da tabela */
+  border-bottom: 1px solid #fff7ed; 
   font-size: 0.85rem; 
 }
 
-/* Rodapé do card onde é exibido o valor total do atendimento */
+/* Rodapé do Card */
 .card-footer {
   display: flex;
-  justify-content: flex-end; /* Alinha o valor total à direita */
+  justify-content: flex-end;
   align-items: center;
   gap: 0.5rem;
   padding-top: 0.5rem;
-  border-top: 1px solid #fed7aa; /* Linha divisória destacando o total */
+  border-top: 1px solid #fed7aa;
 }
 
-/* Tipografia do valor total */
 .label-total { font-weight: 600; color: #7c2d12; font-size: 0.9rem; }
 .valor-total { font-size: 1.2rem; font-weight: 700; color: #ea580c; }
 
-/* Bloco de estado vazio (quando não existem atendimentos cadastrados) */
 .sem-registros { 
   text-align: center; 
   color: #7c2d12; 

@@ -1,52 +1,68 @@
-<!-- Container principal que centraliza e delimita a largura do layout da página de listagem -->
 <div class="container">
 
-  <!-- Cabeçalho da página: título, subtítulo e botões de ação principais -->
+  <!-- Cabeçalho da página -->
   <header class="header-container">
     <div>
       <h1>Registo de Atendimentos</h1>
       <p>Consulta e histórico de atendimentos prestados</p>
     </div>
 
-    <!-- Seção de navegação rápida: atalhos para abrir o carrinho/novo atendimento e voltar à Home -->
     <div class="acoes">
       <button routerLink="/atendimentos/novo" class="btn-novo">+ Novo Atendimento</button>
       <button routerLink="/" class="btn-home">Home</button>
     </div>
   </header>
 
+  <!-- Painel de Pesquisa por ID -->
+  <div class="busca-container">
+    <form (ngSubmit)="buscar()" class="form-busca">
+      <div class="campo-busca">
+        <label for="buscaId">Buscar Atendimento por ID</label>
+        <div class="input-com-botao">
+          <input 
+            id="buscaId" 
+            type="text" 
+            [(ngModel)]="termoInput" 
+            name="termoInput"
+            placeholder="Digite o ID do atendimento (ex: 1, 5)..." 
+          />
+          <button type="submit" class="btn-buscar">Buscar</button>
+          <button type="button" (click)="limparBusca()" class="btn-limpar">Limpar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
   <!-- Container principal que agrupa a lista de cards de atendimentos -->
   <div class="lista-cards">
 
-    <!-- Estrutura de repetição moderna do Angular (@for):
-         Itera sobre o Signal/Array de atendimentos vindos do 'atendimentoService'.
-         O 'track' otimiza a renderização acompanhando cada item pelo seu idAtendimento único. -->
-    @for (atend of atendimentoService.atendimentos(); track atend.idAtendimento) {
+    @for (atend of atendimentosFiltrados; track atend.idAtendimento) {
       
-      <!-- Card individual representando um registro completo de atendimento -->
+      <!-- Card individual de atendimento -->
       <div class="card-atendimento">
         
-        <!-- Cabeçalho do Card: mostra o código do pedido, nome do cliente, status e data -->
+        <!-- Cabeçalho do Card -->
         <div class="card-header">
           <div>
             <span class="codigo-atendimento">Atendimento #{{ atend.idAtendimento }}</span>
-            <!-- Exibe o nome da pessoa/cliente ou um texto fallback com a ID caso o nome não venha do backend -->
             <h3>{{ atend.nomePessoa || 'Cliente ID #' + atend.idPessoa }}</h3>
           </div>
 
           <div class="header-dir">
-            <!-- Badge de Status: aplica classe dinâmica CSS via [ngClass] baseada no status (ex: status-a, status-f).
-                 O operador ternário traduz 'A' para 'Ativo', 'F' para 'Finalizado' ou mantém o valor original. -->
-            <span class="status-tag" [ngClass]="'status-' + atend.statusAtendimento.toLowerCase()">
+            <span class="status-tag" [ngClass]="'status-' + (atend.statusAtendimento || '').toLowerCase()">
               {{ atend.statusAtendimento === 'A' ? 'Ativo' : (atend.statusAtendimento === 'F' ? 'Finalizado' : atend.statusAtendimento) }}
             </span>
 
-            <!-- Formatação da data/hora do atendimento usando o Pipe 'date' no padrão brasileiro (dd/MM/yyyy HH:mm) -->
             <span class="data-tag">{{ atend.dataAtendimento | date:'dd/MM/yyyy HH:mm' }}</span>
+
+            <!-- Botão Excluir Atendimento -->
+            <button type="button" (click)="excluirAtendimento(atend.idAtendimento)" class="btn-excluir">
+              Excluir
+            </button>
           </div>
         </div>
 
-        <!-- Tabela detalhada dos produtos e serviços vinculados a este atendimento -->
+        <!-- Tabela detalhada de itens e serviços -->
         <div class="tabela-itens">
           <table>
             <thead>
@@ -59,43 +75,31 @@
               </tr>
             </thead>
             <tbody>
-
-              <!-- Loop interno (@for): percorre a lista de itens/produtos de cada atendimento específico -->
               @for (it of atend.itens; track it.idItem) {
                 <tr>
-                  <!-- Nome do item/produto ou fallback com o ID -->
                   <td><strong>{{ it.item || 'Item #' + it.idItem }}</strong></td>
-
-                  <!-- Nome do funcionário responsável e seu cargo entre parênteses -->
                   <td>{{ it.nomeFuncionario || 'Func. #' + it.idFuncionario }} <small>({{ it.cargo || '-' }})</small></td>
-
-                  <!-- Quantidade solicitada do item -->
                   <td>{{ it.quantidade }}</td>
-
-                  <!-- Valor unitário formatado em padrão monetário (duas casas decimais) usando o Pipe 'number' -->
-                  <td>R$ {{ it.valorUnitario | number:'1.2-2' }}</td>
-
-                  <!-- Cálculo dinâmico do subtotal (Quantidade * Valor Unitário) com formatação monetária -->
-                  <td>R$ {{ (it.quantidade * it.valorUnitario) | number:'1.2-2' }}</td>
+                  <td>R\$ {{ it.valorUnitario | number:'1.2-2' }}</td>
+                  <td>R\$ {{ (it.quantidade * it.valorUnitario) | number:'1.2-2' }}</td>
                 </tr>
               }
-
             </tbody>
           </table>
         </div>
 
-        <!-- Rodapé do Card: soma e exibe o valor total acumulado de todos os itens do atendimento -->
+        <!-- Rodapé do Card: total acumulado -->
         <div class="card-footer">
           <span class="label-total">Total do Atendimento:</span>
-          <!-- Invoca a função do componente 'calcularTotal()' passando o array de itens e formatando o resultado em R$ -->
-          <span class="valor-total">R$ {{ calcularTotal(atend.itens) | number:'1.2-2' }}</span>
+          <span class="valor-total">R\$ {{ calcularTotal(atend.itens) | number:'1.2-2' }}</span>
         </div>
 
       </div>
 
-    <!-- Bloco fallback (@empty): exibido automaticamente pelo Angular caso a lista de atendimentos esteja vazia -->
     } @empty {
-      <div class="sem-registros">Nenhum atendimento registado.</div>
+      <div class="sem-registros">
+        {{ termoAplicado ? 'Nenhum atendimento encontrado para o ID pesquisado.' : 'Nenhum atendimento registado.' }}
+      </div>
     }
 
   </div>
