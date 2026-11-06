@@ -26,7 +26,7 @@
   border-radius: 0;
   box-shadow: 0 4px 20px rgba(234, 88, 12, 0.05);
   margin-bottom: 2rem;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .brand {
@@ -76,13 +76,40 @@
   background-color: #ffffff;
 }
 
+/* Container dos botões à direita (Mapeado para nav-actions e nav-acoes) */
+.nav-actions,
+.nav-acoes {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.btn-criar-conta {
+  background-color: #ffffff;
+  color: #ea580c;
+  border: 1px solid #ea580c;
+  border-radius: 0;
+  padding: 0.75rem 1.25rem;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+}
+
+.btn-criar-conta:hover {
+  background-color: #fff7ed;
+}
+
 .btn-cart {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   background-color: #ea580c;
   color: #ffffff;
-  border: none;
+  border: 1px solid #ea580c;
   border-radius: 0;
   padding: 0.75rem 1.4rem;
   font-family: inherit;
@@ -95,6 +122,7 @@
 
 .btn-cart:hover {
   background-color: #c2410c;
+  border-color: #c2410c;
 }
 
 /* ==========================================================================
@@ -232,6 +260,10 @@
     align-items: stretch;
   }
   .nav-links {
+    justify-content: center;
+  }
+  .nav-actions,
+  .nav-acoes {
     justify-content: center;
   }
   .hero-banner {
