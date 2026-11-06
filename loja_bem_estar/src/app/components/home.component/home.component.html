@@ -1,34 +1,72 @@
-<!-- Container principal que centraliza e delimita a largura do layout da Home -->
-<div class="container">
+<div class="storefront-container">
 
-  <!-- Cabeçalho da página: agrupa a identificação do sistema e a barra de navegação -->
-  <header class="header-container">
-    
-    <!-- Bloco de títulos da aplicação -->
-    <div>
-      <h1>Estética & Bem-Estar</h1>
-      <p>■ Sistema de Gestão Integrada</p>
+  <!-- Navbar Superior Retangular -->
+  <header class="navbar">
+    <div class="brand">
+      <div class="brand-logo">✨</div>
+      <span class="brand-title">Estética & Bem-Estar</span>
     </div>
 
-    <!-- Seção de navegação: agrupa os botões de atalho -->
-    <div class="acoes">
-      <button routerLink="/clientes" class="btn-outline">Ver Clientes</button>
-      <button routerLink="/categorias" class="btn-outline">Ver Categorias</button>
-      <button routerLink="/itens" class="btn-outline">Ver Itens</button>
-      <button routerLink="/produtos/catalogo" class="btn-outline">Ver Produtos</button>
-      <button routerLink="/funcionarios" class="btn-outline">Ver Funcionários</button>
-      <button routerLink="/atendimentos" class="btn-outline">Ver Atendimentos</button>
-      <button routerLink="/estoque" class="btn-outline">Ver Estoque</button>
+    <!-- Links de Navegação Principal -->
+    <nav class="nav-links">
+      <a routerLink="/produtos/catalogo" class="nav-link">Catálogo</a>
+      <a routerLink="/clientes" class="nav-link">Clientes</a>
+      <a routerLink="/categorias" class="nav-link">Categorias</a>
+      <a routerLink="/itens" class="nav-link">Itens</a>
+      <a routerLink="/funcionarios" class="nav-link">Funcionários</a>
+      <a routerLink="/atendimentos" class="nav-link">Atendimentos</a>
+      <a routerLink="/estoque" class="nav-link">Estoque</a>
+    </nav>
 
-      <!-- Botão principal em destaque para abrir diretamente o Carrinho de Compras -->
-      <button routerLink="/atendimentos/novo" class="btn-primary">🛒 Carrinho de Compras</button>
-    </div>
+    <!-- Botão de Ação do Carrinho -->
+    <button routerLink="/atendimentos/novo" class="btn-cart">
+      <span class="cart-icon">🛒</span>
+      <span>Carrinho de Compras</span>
+    </button>
   </header>
 
-  <!-- Área de conteúdo principal -->
-  <main class="card-bem-vindo">
-    <h2>Catálogo de Serviços e Produtos</h2>
-    <p>Utilize os botões acima para navegar entre a gestão de clientes, categorias, itens, produtos, funcionários, atendimentos e estoque.</p>
-  </main>
+  <!-- Banner Hero Quadrado -->
+  <section class="hero-banner">
+    <div class="hero-content">
+      <span class="hero-badge">Gestão Integrada</span>
+      <h1>Realce sua beleza e renove seu bem-estar</h1>
+      
+      <div class="hero-actions">
+        <button routerLink="/atendimentos/novo" class="btn-hero-primary">
+          ✨ Iniciar Atendimento / Compra
+        </button>
+        <button routerLink="/produtos/catalogo" class="btn-hero-secondary">
+          Ver Catálogo Completo
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Grade de Atalhos/Destaques Sem Descrições -->
+  <section class="store-features">
+    <div class="feature-card" routerLink="/produtos/catalogo">
+      <div class="feature-icon">🧴</div>
+      <h3>Produtos & Cosméticos</h3>
+      <span class="feature-link">Acessar Catálogo →</span>
+    </div>
+
+    <div class="feature-card" routerLink="/atendimentos/novo">
+      <div class="feature-icon">🛍️</div>
+      <h3>Novo Atendimento</h3>
+      <span class="feature-link">Abrir Carrinho →</span>
+    </div>
+
+    <div class="feature-card" routerLink="/atendimentos">
+      <div class="feature-icon">📅</div>
+      <h3>Atendimentos</h3>
+      <span class="feature-link">Ver Atendimentos →</span>
+    </div>
+
+    <div class="feature-card" routerLink="/estoque">
+      <div class="feature-icon">📦</div>
+      <h3>Controle de Estoque</h3>
+      <span class="feature-link">Gerenciar Estoque →</span>
+    </div>
+  </section>
 
 </div>
