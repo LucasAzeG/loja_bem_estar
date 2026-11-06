@@ -61,15 +61,20 @@
               </span>
             </td>
             <td class="col-acoes">
-              <button [routerLink]="['/cadastro', getIdPessoa(cliente)]" class="btn-editar">
-                Editar
-              </button>
+              <div class="grupo-acoes">
+                <button [routerLink]="['/cadastro', getIdPessoa(cliente)]" class="btn-editar">
+                  Editar
+                </button>
+                <button type="button" (click)="excluirCliente(getIdPessoa(cliente))" class="btn-excluir">
+                  Excluir
+                </button>
+              </div>
             </td>
           </tr>
         } @empty {
           <tr>
             <td colspan="9" class="sem-dados">
-              {{ termoAplicado ? 'Nenhum cliente encontrado para o ID pesquisado.' : 'Nenhum cliente cadastrado até ao momento.' }}
+              {{ termoAplicado ? 'Nenhum cliente encontrado para o ID pesquisado.' : 'Nenhum cliente cadastrado até o momento.' }}
             </td>
           </tr>
         }

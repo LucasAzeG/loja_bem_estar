@@ -15,9 +15,7 @@ import { Cliente } from '../../models/cadastro';
 export class ListaClientesComponent implements OnInit {
   cadastroService = inject(CadastroService);
 
-  // Variável vinculada ao [(ngModel)] do input
   termoInput: string = '';
-  // Variável atualizada apenas ao clicar em "Buscar" ou dar Enter
   termoAplicado: string = '';
 
   ngOnInit(): void {
@@ -44,10 +42,22 @@ export class ListaClientesComponent implements OnInit {
       return lista;
     }
 
-    // Filtra EXCLUSIVAMENTE pelo ID do cliente
     return lista.filter(cliente => {
       const idStr = this.getIdPessoa(cliente).toString();
       return idStr.includes(this.termoAplicado);
     });
+  }
+
+  excluirCliente(id: number): void {
+    if (!id) return;
+
+    if (confirm('Tem certeza de que deseja excluir este cliente?')) {
+      this.cadastroService.excluirCliente(id).subscribe({
+        next: () => {
+          this.cadastroService.carregarClientes();
+        },
+        error: (err: any) => console.error('Erro ao excluir cliente no backend:', err)
+      });
+    }
   }
 }
