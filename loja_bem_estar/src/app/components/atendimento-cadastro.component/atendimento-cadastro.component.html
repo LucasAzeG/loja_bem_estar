@@ -7,13 +7,12 @@
   </header>
 
   <div class="card-checkout">
-    <!-- Seleção de Cliente e Data -->
     <div class="form-row">
       <div class="form-group flex-2">
         <label>Cliente *</label>
         <select [(ngModel)]="idPessoaSelecionada" name="idPessoaSelecionada">
           <option [ngValue]="0">-- Selecione o Cliente --</option>
-          @for (cli of clientes; track getCliId(cli)) {
+          @for (cli of cadastroService.clientes(); track getCliId(cli)) {
             <option [ngValue]="getCliId(cli)">
               {{ getCliNome(cli) }} (CPF: {{ getCliCpf(cli) }})
             </option>
@@ -27,7 +26,6 @@
       </div>
     </div>
 
-    <!-- Painel de Inclusão de Itens -->
     <div class="box-incluir-item">
       <h3>+ Incluir Item ou Serviço no Carrinho</h3>
       
@@ -36,7 +34,7 @@
           <label>Item / Serviço</label>
           <select [(ngModel)]="itemTemp.idItem" (change)="aoMudarItem()" name="idItem">
             <option [ngValue]="0">-- Selecione --</option>
-            @for (it of itensDisponiveis; track getItemId(it)) {
+            @for (it of itemService.itens(); track getItemId(it)) {
               <option [ngValue]="getItemId(it)">
                 {{ getItemName(it) }} - R$ {{ getItemPrice(it) | number:'1.2-2' }}
               </option>
@@ -47,8 +45,8 @@
         <div class="form-group flex-2">
           <label>Profissional</label>
           <select [(ngModel)]="itemTemp.idFuncionario" name="idFuncionario">
-            <option [ngValue]="0">-- Selecione --</option>
-            @for (func of funcionarios; track getFuncId(func)) {
+            <option [ngValue]="0">-- Opcional / Padrão --</option>
+            @for (func of funcionarioService.funcionarios(); track getFuncId(func)) {
               <option [ngValue]="getFuncId(func)">
                 {{ getFuncName(func) }} <ng-container *ngIf="getFuncCargo(func)">({{ getFuncCargo(func) }})</ng-container>
               </option>
@@ -56,7 +54,6 @@
           </select>
         </div>
 
-        <!-- Campo Qtd com escuta ativa de alterações -->
         <div class="form-group flex-1">
           <label>Qtd</label>
           <input 
@@ -69,7 +66,6 @@
           />
         </div>
 
-        <!-- Campo do Valor Calculado (Preço Unitário x Quantidade) -->
         <div class="form-group flex-1">
           <label>V. Total Item (R$)</label>
           <input 
@@ -86,14 +82,13 @@
       </button>
     </div>
 
-    <!-- Tabela do Carrinho de Compras -->
     @if (itensAtendimento.length > 0) {
       <div class="tabela-carrinho">
         <table>
           <thead>
             <tr>
               <th>Item / Serviço</th>
-              <th>Profissional</th>
+              <th>Profissional Responsável</th>
               <th>Qtd</th>
               <th>V. Unitário</th>
               <th>Subtotal</th>
@@ -104,7 +99,19 @@
             @for (it of itensAtendimento; track $index) {
               <tr>
                 <td>{{ it.item }}</td>
-                <td>{{ it.nomeFuncionario }}</td>
+                <td>
+                  <select 
+                    [ngModel]="it.idFuncionario" 
+                    (ngModelChange)="atualizarFuncionarioItem($index, $event)"
+                    class="select-tabela">
+                    <option [ngValue]="0">-- A definir --</option>
+                    @for (func of funcionarioService.funcionarios(); track getFuncId(func)) {
+                      <option [ngValue]="getFuncId(func)">
+                        {{ getFuncName(func) }}
+                      </option>
+                    }
+                  </select>
+                </td>
                 <td>{{ it.quantidade }}</td>
                 <td>R$ {{ it.valorUnitario | number:'1.2-2' }}</td>
                 <td>R$ {{ (it.quantidade * it.valorUnitario) | number:'1.2-2' }}</td>
@@ -125,7 +132,6 @@
       </div>
     }
 
-    <!-- Botões Finais de Ação -->
     <div class="botoes-checkout">
       <button type="button" (click)="salvarAtendimento()" class="btn-finalizar">
         Finalizar Compra e Registrar

@@ -2,9 +2,11 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { AtendimentoService } from '../../services/atendimento.service';
+import { CadastroService } from '../../services/cadastro.service';
 import { FuncionarioService } from '../../services/funcionario.service';
+import { ItemService } from '../../services/item.service';
+import { CarrinhoService } from '../../services/carrinho.service';
 import { AtendimentoItem } from '../../models/atendimento';
 
 @Component({
@@ -15,25 +17,17 @@ import { AtendimentoItem } from '../../models/atendimento';
   styleUrl: './atendimento-cadastro.component.css'
 })
 export class AtendimentoCadastroComponent implements OnInit {
-  /* ==========================================================================
-     PROCESSO 1: Injeção de Serviços e Estado do Carrinho
-     ========================================================================== */
-  private http = inject(HttpClient);
   private router = inject(Router);
   atendimentoService = inject(AtendimentoService);
+  cadastroService = inject(CadastroService);
   funcionarioService = inject(FuncionarioService);
+  itemService = inject(ItemService);
+  carrinhoService = inject(CarrinhoService);
 
   idPessoaSelecionada: number = 0;
   statusAtendimento: string = 'A';
   dataAtendimento: string = new Date().toISOString().substring(0, 10);
 
-  clientes: any[] = [];
-  itensDisponiveis: any[] = [];
-  funcionarios: any[] = [];
-  
-  itensAtendimento: AtendimentoItem[] = [];
-
-  // Preço unitário base retornado pelo backend (ex: R$ 250)
   precoBase: number = 0;
 
   itemTemp = {
@@ -44,73 +38,42 @@ export class AtendimentoCadastroComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    this.carregarClientes();
-    this.carregarFuncionarios();
-    this.carregarItens();
+    this.cadastroService.carregarClientes();
+    this.funcionarioService.carregarFuncionarios();
+    this.itemService.carregarItens();
+
+    if (this.carrinhoService.clienteSelecionado()) {
+      const cli = this.carrinhoService.clienteSelecionado();
+      this.idPessoaSelecionada = Number(cli?.idpessoa ?? (cli as any)?.idPessoa ?? 0);
+    }
   }
 
-  /* ==========================================================================
-     PROCESSO 2: Utilitários e Carregamento de Dados
-     ========================================================================== */
-  private extrairArray(dados: any): any[] {
-    if (!dados) return [];
-    if (Array.isArray(dados)) return dados;
-    if (Array.isArray(dados.$values)) return dados.$values;
-    return [];
+  get itensAtendimento(): AtendimentoItem[] {
+    return this.carrinhoService.itens();
   }
 
-  carregarClientes(): void {
-    this.http.get<any>('https://localhost:7126/api/Pessoa').subscribe({
-      next: (dados) => this.clientes = this.extrairArray(dados),
-      error: (err) => console.error('Erro ao carregar clientes:', err)
-    });
+  getCliId(cli: any): number {
+    return Number(cli?.idpessoa ?? cli?.idPessoa ?? cli?.id ?? 0);
   }
 
-  carregarFuncionarios(): void {
-    this.http.get<any>('https://localhost:7126/api/Funcionario').subscribe({
-      next: (dados) => this.funcionarios = this.extrairArray(dados),
-      error: () => this.funcionarioService.carregarFuncionarios()
-    });
+  getCliNome(cli: any): string {
+    return cli?.nome ?? cli?.pessoa?.nome ?? 'Cliente';
   }
 
-  carregarItens(): void {
-    this.http.get<any>('https://localhost:7126/api/ItemService').subscribe({
-      next: (dados) => {
-        const arr = this.extrairArray(dados);
-        if (arr.length > 0) {
-          this.itensDisponiveis = arr;
-        } else {
-          this.carregarItensFallback();
-        }
-      },
-      error: () => this.carregarItensFallback()
-    });
+  getCliCpf(cli: any): string {
+    return cli?.cpf ?? cli?.pessoa?.cpf ?? '-';
   }
 
-  private carregarItensFallback(): void {
-    this.http.get<any>('https://localhost:7126/api/Item').subscribe({
-      next: (dados) => this.itensDisponiveis = this.extrairArray(dados),
-      error: () => {
-        this.http.get<any>('https://localhost:7126/api/ProdutoItem').subscribe({
-          next: (d) => this.itensDisponiveis = this.extrairArray(d)
-        });
-      }
-    });
-  }
-
-  /* ==========================================================================
-     PROCESSO 3: Getters de Formatação
-     ========================================================================== */
   getItemId(item: any): number {
-    return Number(item?.idItem ?? item?.iditem ?? item?.id ?? 0);
+    return Number(item?.iditem ?? item?.idItem ?? item?.id ?? 0);
   }
 
   getItemName(item: any): string {
-    return item?.item ?? item?.descricaoItem ?? item?.nome ?? item?.nomeItem ?? 'Item sem nome';
+    return item?.item ?? item?.descricao_item ?? item?.descricaoItem ?? item?.nome ?? 'Item sem nome';
   }
 
   getItemPrice(item: any): number {
-    return Number(item?.precoVenda ?? item?.preco ?? item?.valorUnitario ?? 0);
+    return Number(item?.preco ?? item?.precoVenda ?? item?.valorUnitario ?? 0);
   }
 
   getFuncId(func: any): number {
@@ -125,26 +88,9 @@ export class AtendimentoCadastroComponent implements OnInit {
     return func?.cargo ?? '';
   }
 
-  getCliId(cli: any): number {
-    return Number(cli?.idPessoa ?? cli?.idpessoa ?? cli?.id ?? 0);
-  }
-
-  getCliNome(cli: any): string {
-    return cli?.nome ?? cli?.pessoa?.nome ?? 'Cliente';
-  }
-
-  getCliCpf(cli: any): string {
-    return cli?.cpf ?? cli?.pessoa?.cpf ?? '-';
-  }
-
-  /* ==========================================================================
-     PROCESSO 4: Operações Dinâmicas do Carrinho
-     ========================================================================== */
-
-  // Atualiza o precoBase ao selecionar o item no combo
   aoMudarItem(): void {
     const selectedId = Number(this.itemTemp.idItem);
-    const itemSelected = this.itensDisponiveis.find(i => this.getItemId(i) === selectedId);
+    const itemSelected = this.itemService.itens().find(i => this.getItemId(i) === selectedId);
     
     if (itemSelected) {
       this.precoBase = this.getItemPrice(itemSelected);
@@ -155,7 +101,6 @@ export class AtendimentoCadastroComponent implements OnInit {
     }
   }
 
-  // Recalcula o valor dinâmico sempre que a quantidade mudar na tela
   aoMudarQuantidade(): void {
     if (!this.itemTemp.quantidade || this.itemTemp.quantidade < 1) {
       this.itemTemp.quantidade = 1;
@@ -163,13 +108,11 @@ export class AtendimentoCadastroComponent implements OnInit {
     this.atualizarValorTemp();
   }
 
-  // Multiplica Preço Base x Quantidade para exibir no campo
   private atualizarValorTemp(): void {
     const qtd = Number(this.itemTemp.quantidade) || 1;
     this.itemTemp.valorUnitario = this.precoBase * qtd;
   }
 
-  // Adiciona o item na lista mantendo o preço unitário real (precoBase) para o cálculo final
   adicionarItemNaLista(): void {
     const idItem = Number(this.itemTemp.idItem);
     const idFunc = Number(this.itemTemp.idFuncionario);
@@ -179,46 +122,45 @@ export class AtendimentoCadastroComponent implements OnInit {
       return;
     }
 
-    if (!idFunc || idFunc === 0) {
-      alert('Selecione um profissional responsável.');
-      return;
-    }
+    const itemEncontrado = this.itemService.itens().find(i => this.getItemId(i) === idItem);
+    const funcEncontrado = this.funcionarioService.funcionarios().find(f => this.getFuncId(f) === idFunc);
+    const precoUnitario = this.getItemPrice(itemEncontrado);
 
-    if (this.itemTemp.quantidade <= 0) {
-      alert('Informe uma quantidade maior que zero.');
-      return;
-    }
-
-    const itemEncontrado = this.itensDisponiveis.find(i => this.getItemId(i) === idItem);
-    const listaFuncs = this.funcionarios.length > 0 ? this.funcionarios : this.funcionarioService.funcionarios();
-    const funcEncontrado = listaFuncs.find(f => this.getFuncId(f) === idFunc);
-
-    this.itensAtendimento.push({
+    this.carrinhoService.adicionarItem({
       idItem: idItem,
       item: this.getItemName(itemEncontrado),
       idFuncionario: idFunc,
-      nomeFuncionario: this.getFuncName(funcEncontrado),
-      cargo: this.getFuncCargo(funcEncontrado),
-      quantidade: Number(this.itemTemp.quantidade),
-      valorUnitario: Number(this.precoBase)
+      nomeFuncionario: funcEncontrado ? this.getFuncName(funcEncontrado) : 'A definir',
+      cargo: funcEncontrado ? this.getFuncCargo(funcEncontrado) : '',
+      quantidade: Number(this.itemTemp.quantidade || 1),
+      valorUnitario: Number(precoUnitario)
     });
 
-    // Reseta o painel de inclusão
     this.itemTemp = { idItem: 0, idFuncionario: 0, quantidade: 1, valorUnitario: 0 };
     this.precoBase = 0;
   }
 
+  atualizarFuncionarioItem(index: number, idFuncNovo: any): void {
+    const idFunc = Number(idFuncNovo);
+    const funcEncontrado = this.funcionarioService.funcionarios().find(f => this.getFuncId(f) === idFunc);
+    const lista = [...this.carrinhoService.itens()];
+    
+    if (lista[index]) {
+      lista[index].idFuncionario = idFunc;
+      lista[index].nomeFuncionario = funcEncontrado ? this.getFuncName(funcEncontrado) : 'A definir';
+      lista[index].cargo = funcEncontrado ? this.getFuncCargo(funcEncontrado) : '';
+      this.carrinhoService.itens.set(lista);
+    }
+  }
+
   removerItem(index: number): void {
-    this.itensAtendimento.splice(index, 1);
+    this.carrinhoService.removerItem(index);
   }
 
   calcularTotalGeral(): number {
-    return this.itensAtendimento.reduce((acc, it) => acc + (it.quantidade * it.valorUnitario), 0);
+    return this.carrinhoService.valorTotal();
   }
 
-  /* ==========================================================================
-     PROCESSO 5: Persistência no Backend
-     ========================================================================== */
   salvarAtendimento(): void {
     const idPessoa = Number(this.idPessoaSelecionada);
 
@@ -232,6 +174,10 @@ export class AtendimentoCadastroComponent implements OnInit {
       return;
     }
 
+    const funcionariosLista = this.funcionarioService.funcionarios();
+    const primeiroFuncId = funcionariosLista.length > 0 ? this.getFuncId(funcionariosLista[0]) : 1;
+    const idFuncPadrao = Number(this.itemTemp.idFuncionario) > 0 ? Number(this.itemTemp.idFuncionario) : primeiroFuncId;
+
     const dataApenasData = this.dataAtendimento ? this.dataAtendimento.substring(0, 10) : new Date().toISOString().substring(0, 10);
 
     const payload: any = {
@@ -239,35 +185,40 @@ export class AtendimentoCadastroComponent implements OnInit {
       idpessoa: idPessoa,
       dataAtendimento: dataApenasData,
       statusAtendimento: this.statusAtendimento || 'A',
-      itens: this.itensAtendimento.map(it => ({
-        idItem: Number(it.idItem),
-        iditem: Number(it.idItem),
-        idFuncionario: Number(it.idFuncionario),
-        idfuncionario: Number(it.idFuncionario),
-        quantidade: Number(it.quantidade),
-        quantidadeItens: Number(it.quantidade),
-        valorUnitario: Number(it.valorUnitario),
-        valorunitarioEntrada: Number(it.valorUnitario)
-      }))
+      itens: this.itensAtendimento.map(it => {
+        const nomeItemOriginal = (it.item || '').trim().toLowerCase();
+        
+        const itemDb = this.itemService.itens().find(i => {
+          const idDb = this.getItemId(i);
+          const nomeDb = this.getItemName(i).trim().toLowerCase();
+          return idDb === Number(it.idItem) || (nomeItemOriginal.length > 0 && nomeDb === nomeItemOriginal);
+        });
+        
+        const realIdItem = itemDb ? this.getItemId(itemDb) : Number(it.idItem);
+        const idFuncOriginal = Number(it.idFuncionario);
+        const idFuncFinal = idFuncOriginal > 0 ? idFuncOriginal : idFuncPadrao;
+
+        return {
+          idItem: realIdItem,
+          iditem: realIdItem,
+          idFuncionario: idFuncFinal,
+          idfuncionario: idFuncFinal,
+          quantidade: Number(it.quantidade),
+          quantidadeItens: Number(it.quantidade),
+          valorUnitario: Number(it.valorUnitario),
+          valorunitarioEntrada: Number(it.valorUnitario)
+        };
+      })
     };
 
     this.atendimentoService.adicionarAtendimento(payload).subscribe({
-      next: () => this.router.navigate(['/atendimentos']),
+      next: () => {
+        this.carrinhoService.limpar();
+        this.router.navigate(['/atendimentos']);
+      },
       error: (err: any) => {
-        console.error('Erro detalhado retornado pela API:', err.error);
-        
-        let detalhe = '';
-        if (err.error?.errors) {
-          detalhe = Object.entries(err.error.errors)
-            .map(([campo, msgs]: [string, any]) => `${campo}: ${Array.isArray(msgs) ? msgs.join(', ') : msgs}`)
-            .join('\n');
-        } else if (typeof err.error === 'string') {
-          detalhe = err.error;
-        } else if (err.error?.title) {
-          detalhe = err.error.title;
-        }
-
-        alert(`Erro 400 ao guardar atendimento:\n${detalhe || 'Verifique a consola para mais detalhes.'}`);
+        console.error('Erro retornado pela API:', err.error);
+        alert('Erro ao guardar atendimento. Verifique os dados selecionados.');
       }
     });
   }

@@ -245,3 +245,24 @@ td {
     flex-direction: column;
   }
 }
+
+.btn-card-carrinho {
+  flex: 1;
+  background-color: #ea580c;
+  color: #ffffff;
+  border: none;
+  padding: 0.45rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-card-carrinho:hover {
+  background-color: #c2410c;
+}
+
+.btn-card-carrinho:disabled {
+  background-color: #fdba74;
+  cursor: not-allowed;
+}

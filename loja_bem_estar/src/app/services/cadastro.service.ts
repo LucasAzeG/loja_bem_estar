@@ -8,8 +8,6 @@ import { Observable, tap } from 'rxjs';
 })
 export class CadastroService {
   private http = inject(HttpClient);
-  
-  // URL correta capturada do seu Swagger UI
   private readonly apiUrl = 'https://localhost:7126/api/Pessoa';
 
   private clientesSignal = signal<Cliente[]>([]);
@@ -38,7 +36,6 @@ export class CadastroService {
     );
   }
 
-  // Método adicionado para realizar a exclusão e recarregar o Signal
   excluirCliente(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
       tap(() => this.carregarClientes())

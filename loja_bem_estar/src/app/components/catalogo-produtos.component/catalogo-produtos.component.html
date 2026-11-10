@@ -5,12 +5,15 @@
       <p>Visualização e consulta de produtos da loja</p>
     </div>
     <div class="acoes-header">
-      <button routerLink="/itens/novo" class="btn-novo">+ Novo Produto</button>
-      <button routerLink="/" class="btn-home">Home</button>
+      <!-- Botão para ir ao carrinho quando o usuário quiser -->
+      <button type="button" routerLink="/atendimentos/novo" class="btn-carrinho-topo">
+        🛒 Ver Carrinho ({{ carrinhoService.itens().length }})
+      </button>
+      <button type="button" routerLink="/itens/novo" class="btn-novo">+ Novo Produto</button>
+      <button type="button" routerLink="/" class="btn-home">Home</button>
     </div>
   </header>
 
-  <!-- Barra de Filtros (Por ID e por Categoria) -->
   <div class="bar-filtro">
     <div class="grupo-filtro">
       <label for="buscaId">Consultar por ID:</label>
@@ -27,15 +30,17 @@
       <label for="filtroCategoria">Filtrar por Categoria:</label>
       <select id="filtroCategoria" [value]="categoriaSelecionadaId()" (change)="aoMudarFiltro($event)">
         <option [value]="0">Todas as Categorias</option>
-        @for (cat of categoriaService.categorias(); track cat.idcategoria) {
-          <option [value]="cat.idcategoria">{{ cat.categoria }}</option>
+        @for (cat of categoriaService.categorias(); track ($any(cat).idcategoria || $any(cat).idCategoria)) {
+          <option [value]="$any(cat).idcategoria || $any(cat).idCategoria">
+            {{ cat.categoria }}
+          </option>
         }
       </select>
     </div>
   </div>
 
   <div class="grid-catalogo">
-    @for (prod of produtosFiltrados(); track prod.codigoPreco) {
+    @for (prod of produtosFiltrados(); track (prod.iditem || prod.codigoPreco)) {
       <div class="card-produto" [class.inativo]="!isAtivo(prod)">
         <div class="header-card">
           <span class="categoria-tag">{{ obterNomeCategoria(prod.idCategoria) }}</span>
@@ -47,19 +52,28 @@
         <div class="footer-card">
           <div class="preco-container">
             <span class="label-preco">Preço de Venda</span>
-            <span class="valor-preco">R$ {{ prod.precoVenda | number:'1.2-2' }}</span>
+            <span class="valor-preco">R$ {{ (prod.precoVenda || prod.preco || 0) | number:'1.2-2' }}</span>
           </div>
-          <span class="unidade-badge">{{ prod.unidade }}</span>
+          <span class="unidade-badge">{{ prod.unidade || 'UN' }}</span>
         </div>
 
-        <!-- Ações do Card (RF10: Editar e Desativar) -->
         <div class="card-acoes">
-          <button [routerLink]="['/itens/editar', prod.iditem || prod.codigoPreco]" class="btn-card-editar">
-            Editar
-          </button>
+          <!-- Adiciona o produto ao carrinho mantendo o usuário na página -->
           <button 
             type="button" 
-            (click)="alternarStatus(prod)" 
+            (click)="adicionarAoCarrinho(prod, $event)" 
+            class="btn-card-carrinho"
+            [disabled]="!isAtivo(prod)">
+            🛒 + Carrinho
+          </button>
+          
+          <button type="button" [routerLink]="['/itens/editar', prod.iditem || prod.codigoPreco]" class="btn-card-editar">
+            Editar
+          </button>
+          
+          <button 
+            type="button" 
+            (click)="alternarStatus(prod, $event)" 
             [class]="isAtivo(prod) ? 'btn-card-desativar' : 'btn-card-ativar'">
             {{ isAtivo(prod) ? 'Desativar' : 'Ativar' }}
           </button>

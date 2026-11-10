@@ -1,9 +1,10 @@
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ProdutoService } from '../../services/produto.service';
 import { CategoriaService } from '../../services/categoria.service';
+import { CarrinhoService } from '../../services/carrinho.service';
 import { ProdutoCatalogo } from '../../models/produto';
 import { Categoria } from '../../models/categoria';
 
@@ -17,6 +18,8 @@ import { Categoria } from '../../models/categoria';
 export class CatalogoProdutosComponent implements OnInit {
   produtoService = inject(ProdutoService);
   categoriaService = inject(CategoriaService);
+  carrinhoService = inject(CarrinhoService);
+  private router = inject(Router);
 
   categoriaSelecionadaId = signal<number>(0);
   buscaId = signal<number | null>(null);
@@ -26,12 +29,10 @@ export class CatalogoProdutosComponent implements OnInit {
     const idBusca = this.buscaId();
     let lista = this.produtoService.produtos();
 
-    // Filtra por ID do Item ou Código de Preço (RF02)
     if (idBusca && idBusca > 0) {
-      lista = lista.filter((p: ProdutoCatalogo) => p.iditem === idBusca || p.codigoPreco === idBusca);
+      lista = lista.filter((p: ProdutoCatalogo) => (p.iditem ?? p.codigoPreco) === idBusca);
     }
 
-    // Filtra por Categoria
     if (idCat && idCat !== 0) {
       lista = lista.filter((p: ProdutoCatalogo) => p.idCategoria === idCat);
     }
@@ -44,8 +45,33 @@ export class CatalogoProdutosComponent implements OnInit {
     this.categoriaService.carregarCategorias();
   }
 
+  adicionarAoCarrinho(prod: any, event?: Event): void {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    // Captura prioritariamente o ID de chave primária real do banco de dados (iditem / idItem / id)
+    const idItem = prod.iditem || prod.idItem || prod.id || prod.codigoPreco;
+    const nome = prod.item || prod.descricaoItem || 'Produto';
+    const preco = prod.precoVenda || prod.preco || 0;
+
+    this.carrinhoService.adicionarItem({
+      idItem: Number(idItem),
+      item: nome,
+      idFuncionario: 0,
+      nomeFuncionario: 'A definir',
+      quantidade: 1,
+      valorUnitario: Number(preco)
+    });
+
+    // Permanece no catálogo sem navegar para o carrinho automaticamente
+  }
+
   obterNomeCategoria(idcategoria: number): string {
-    const cat = this.categoriaService.categorias().find((c: Categoria) => c.idcategoria === idcategoria);
+    const cat = this.categoriaService.categorias().find(
+      (c: Categoria) => (c.idcategoria ?? (c as any).idCategoria) === idcategoria
+    );
     return cat?.categoria ?? 'Sem Categoria';
   }
 
@@ -59,22 +85,22 @@ export class CatalogoProdutosComponent implements OnInit {
     this.buscaId.set(valor ? Number(valor) : null);
   }
 
-  // Verifica se o produto está ativo (suporta 'S', true ou 1)
   isAtivo(prod: any): boolean {
     const status = prod?.ativoItem ?? prod?.ativo ?? 'S';
     return status === 'S' || status === true || status === 1;
   }
 
-  // Alterna o status entre Ativado/Desativado
-  alternarStatus(prod: any): void {
-    const novoStatus = this.isAtivo(prod) ? 'N' : 'S';
-    const id = prod.iditem || prod.codigoPreco;
+  alternarStatus(prod: any, event?: Event): void {
+    if (event) {
+      event.preventDefault();
+    }
 
-    // Atualiza localmente no objeto
+    const novoStatus = this.isAtivo(prod) ? 'N' : 'S';
+    const id = prod.iditem || prod.idItem || prod.id || prod.codigoPreco;
+
     if ('ativoItem' in prod) prod.ativoItem = novoStatus;
     if ('ativo' in prod) prod.ativo = novoStatus === 'S';
 
-    // Chama o serviço se houver integração HTTP implementada
     if (typeof (this.produtoService as any).alterarStatus === 'function') {
       (this.produtoService as any).alterarStatus(id, novoStatus);
     }

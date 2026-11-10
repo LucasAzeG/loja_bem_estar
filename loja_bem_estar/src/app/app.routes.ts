@@ -32,6 +32,10 @@ export const routes: Routes = [
   { path: 'funcionarios/editar/:id', component: FuncionarioCadastroComponent },
   { path: 'atendimentos', component: AtendimentoListaComponent },
   { path: 'atendimentos/novo', component: AtendimentoCadastroComponent },
+  
+  // 🟢 Adicionado para redirecionar para a rota oficial do carrinho:
+  { path: 'atendimento-cadastro', redirectTo: 'atendimentos/novo' },
+
   { path: 'estoque', component: EntradaProdutoListaComponent },
   { path: 'estoque/novo', component: EntradaProdutoCadastroComponent },
   { path: 'administracao', component: AdministracaoComponent },
