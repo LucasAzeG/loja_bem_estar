@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AtendimentoService } from '../../services/atendimento.service';
+import { CadastroService } from '../../services/cadastro.service';
 import { Atendimento, AtendimentoItem } from '../../models/atendimento';
 
 @Component({
@@ -14,13 +15,16 @@ import { Atendimento, AtendimentoItem } from '../../models/atendimento';
 })
 export class AtendimentoListaComponent implements OnInit {
   atendimentoService = inject(AtendimentoService);
+  cadastroService = inject(CadastroService);
 
-  // Propriedades vinculadas ao formulário e controle de pesquisa por ID
+  // Propriedades vinculadas ao formulário e controle de pesquisa por ID e Cliente
   termoInput: string = '';
   termoAplicado: string = '';
+  idClienteSelecionado: number = 0;
 
   ngOnInit(): void {
     this.atendimentoService.carregarAtendimentos();
+    this.cadastroService.carregarClientes();
   }
 
   buscar(): void {
@@ -30,21 +34,44 @@ export class AtendimentoListaComponent implements OnInit {
   limparBusca(): void {
     this.termoInput = '';
     this.termoAplicado = '';
+    this.idClienteSelecionado = 0;
   }
 
-  // Getter reativo com tratamento seguro de propriedades opcionais (evita TS2551 e TS2339)
-  get atendimentosFiltrados(): Atendimento[] {
-    const lista = this.atendimentoService.atendimentos();
+  getCliId(cli: any): number {
+    return Number(cli?.idpessoa ?? cli?.idPessoa ?? cli?.id ?? 0);
+  }
 
-    if (!this.termoAplicado) {
-      return lista;
+  getCliNome(cli: any): string {
+    return cli?.nome ?? cli?.pessoa?.nome ?? 'Cliente';
+  }
+
+  getCliCpf(cli: any): string {
+    return cli?.cpf ?? cli?.pessoa?.cpf ?? '';
+  }
+
+  get atendimentosFiltrados(): Atendimento[] {
+    let lista = this.atendimentoService.atendimentos();
+
+    // Filtro por ID do Atendimento
+    if (this.termoAplicado) {
+      lista = lista.filter(atend => {
+        const objetoGenerico = atend as any;
+        const id = atend.idAtendimento ?? objetoGenerico.idatendimento ?? objetoGenerico.id ?? 0;
+        return id.toString().includes(this.termoAplicado);
+      });
     }
 
-    return lista.filter(atend => {
-      const objetoGenerico = atend as any;
-      const id = atend.idAtendimento ?? objetoGenerico.idatendimento ?? objetoGenerico.id ?? 0;
-      return id.toString().includes(this.termoAplicado);
-    });
+    // Filtro por Cliente selecionado no dropdown
+    const idCliente = Number(this.idClienteSelecionado);
+    if (idCliente > 0) {
+      lista = lista.filter(atend => {
+        const objetoGenerico = atend as any;
+        const idCliAtend = Number(atend.idPessoa ?? objetoGenerico.idpessoa ?? objetoGenerico.pessoa?.idPessoa ?? objetoGenerico.pessoa?.idpessoa ?? 0);
+        return idCliAtend === idCliente;
+      });
+    }
+
+    return lista;
   }
 
   calcularTotal(itens: AtendimentoItem[]): number {

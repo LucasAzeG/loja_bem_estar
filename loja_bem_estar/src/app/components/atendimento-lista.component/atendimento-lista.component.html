@@ -13,10 +13,11 @@
     </div>
   </header>
 
-  <!-- Painel de Pesquisa por ID -->
+  <!-- Painel de Pesquisa por ID e Filtro por Cliente -->
   <div class="busca-container">
     <form (ngSubmit)="buscar()" class="form-busca">
-      <div class="campo-busca">
+      
+      <div class="campo-busca flex-2">
         <label for="buscaId">Buscar Atendimento por ID</label>
         <div class="input-com-botao">
           <input 
@@ -27,9 +28,28 @@
             placeholder="Digite o ID do atendimento (ex: 1, 5)..." 
           />
           <button type="submit" class="btn-buscar">Buscar</button>
-          <button type="button" (click)="limparBusca()" class="btn-limpar">Limpar</button>
         </div>
       </div>
+
+      <div class="campo-busca flex-2">
+        <label for="filtroCliente">Filtrar por Cliente</label>
+        <select 
+          id="filtroCliente" 
+          [(ngModel)]="idClienteSelecionado" 
+          name="idClienteSelecionado">
+          <option [ngValue]="0">-- Todos os Clientes --</option>
+          @for (cli of cadastroService.clientes(); track getCliId(cli)) {
+            <option [ngValue]="getCliId(cli)">
+              {{ getCliNome(cli) }} <ng-container *ngIf="getCliCpf(cli)">(CPF: {{ getCliCpf(cli) }})</ng-container>
+            </option>
+          }
+        </select>
+      </div>
+
+      <div class="campo-acoes">
+        <button type="button" (click)="limparBusca()" class="btn-limpar">Limpar</button>
+      </div>
+
     </form>
   </div>
 
@@ -80,8 +100,8 @@
                   <td><strong>{{ it.item || 'Item #' + it.idItem }}</strong></td>
                   <td>{{ it.nomeFuncionario || 'Func. #' + it.idFuncionario }} <small>({{ it.cargo || '-' }})</small></td>
                   <td>{{ it.quantidade }}</td>
-                  <td>R\$ {{ it.valorUnitario | number:'1.2-2' }}</td>
-                  <td>R\$ {{ (it.quantidade * it.valorUnitario) | number:'1.2-2' }}</td>
+                  <td>R$ {{ it.valorUnitario | number:'1.2-2' }}</td>
+                  <td>R$ {{ (it.quantidade * it.valorUnitario) | number:'1.2-2' }}</td>
                 </tr>
               }
             </tbody>
@@ -91,14 +111,14 @@
         <!-- Rodapé do Card: total acumulado -->
         <div class="card-footer">
           <span class="label-total">Total do Atendimento:</span>
-          <span class="valor-total">R\$ {{ calcularTotal(atend.itens) | number:'1.2-2' }}</span>
+          <span class="valor-total">R$ {{ calcularTotal(atend.itens) | number:'1.2-2' }}</span>
         </div>
 
       </div>
 
     } @empty {
       <div class="sem-registros">
-        {{ termoAplicado ? 'Nenhum atendimento encontrado para o ID pesquisado.' : 'Nenhum atendimento registado.' }}
+        {{ (termoAplicado || idClienteSelecionado > 0) ? 'Nenhum atendimento encontrado para os filtros pesquisados.' : 'Nenhum atendimento registado.' }}
       </div>
     }
 
